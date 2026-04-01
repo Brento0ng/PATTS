@@ -5,12 +5,12 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '../frontend/public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Simple JSON file database (no need for MySQL for beginners)
 const DB_PATH = path.join(__dirname, 'database.json');
@@ -179,7 +179,7 @@ app.get('/api/stats', (req, res) => {
 
 // Serve frontend for all other routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/public/index.html'));
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
