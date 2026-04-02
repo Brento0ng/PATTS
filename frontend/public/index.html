@@ -801,6 +801,7 @@
   function doLogin(){
     const u=$('lu').value.trim(), p=$('lp').value.trim();
     if(u==='admin'&&p==='patts2024'){
+      localStorage.setItem('patts_logged_in','true');
       $('login-page').style.display='none';
       $('app').style.display='flex';
       loadDashboard();
@@ -808,7 +809,15 @@
   }
   $('lp').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
 
+  // Auto-login if already logged in
+  if(localStorage.getItem('patts_logged_in')==='true'){
+    $('login-page').style.display='none';
+    $('app').style.display='flex';
+    loadDashboard();
+  }
+
   function doLogout(){
+    localStorage.removeItem('patts_logged_in');
     $('app').style.display='none';
     $('login-page').style.display='flex';
     $('lu').value=''; $('lp').value='';
@@ -981,7 +990,14 @@
       <td class="td-muted">${v.section||'N/A'}</td>
       <td><span class="chip c-${scls(v.status)}">${v.status||'Pending'}</span></td>
       <td class="td-muted">${fmt(v.timestamp)}</td>
-      <td><span class="td-link" onclick="delVio('${v.id||v._id}')">Delete</span></td>
+      <td style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <select class="fsel" style="padding:5px 8px;font-size:.75rem;border-radius:6px;" onchange="updateStatus('${v.id||v._id}',this.value)">
+          <option value="Pending"   ${(v.status||'Pending')==='Pending'   ?'selected':''}>Pending</option>
+          <option value="Resolved"  ${(v.status||'')==='Resolved'         ?'selected':''}>Resolved</option>
+          <option value="Under Review" ${(v.status||'')==='Under Review'  ?'selected':''}>Under Review</option>
+        </select>
+        <span class="td-link" style="color:#dc2626;" onclick="delVio('${v.id||v._id}')">Delete</span>
+      </td>
     </tr>`).join('');
   }
 
@@ -995,6 +1011,24 @@
       const ms=!sts||(v.status||'Pending')===sts;
       return mq&&mc&&ms;
     }));
+  }
+
+  async function updateStatus(id, status){
+    try{
+      const r=await fetch(`/api/violations/${id}/status`,{
+        method:'PATCH',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({status})
+      });
+      const d=await r.json();
+      if(d.success){
+        toast(`Status updated to: ${status}`,'success');
+        // update local array so filter still works without full reload
+        const v=allViolations.find(v=>(v.id||v._id)===id||(v._id&&v._id.toString()===id));
+        if(v) v.status=status;
+        loadDashboard();
+      } else toast(d.message||'Error updating status','error');
+    }catch(e){ toast('Server error','error'); }
   }
 
   async function delVio(id){
