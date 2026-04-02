@@ -8,47 +8,16 @@
  *  Setting : "ESP32S3 Dev Module"
  *  USB CDC On Boot: Enabled
  *  Serial  : 115200 baud
- *
- * ----------------------------------------------------------------
- *  ACTIVE COMPONENTS:
- *    - GM65 Barcode Scanner     (TX->GPIO14, RX->GPIO21, 5V)
- *    - HuskyLens (Face Recog.)  (TX->GPIO17, RX->GPIO18, 5V)
- *    - 16x2 I2C LCD             (SDA->GPIO8, SCL->GPIO9,  5V)
- *    - 3x Violation Buttons     (GPIO 4, 5, 6)
- *    - 1x Register Button       (GPIO 13)
- *    - 1x Clear/Reset Button    (GPIO 10)
- *    - Buzzer                   (GPIO 7)
- *    - Green LED                (GPIO 15)
- *    - Red LED                  (GPIO 16)
- *
- * ----------------------------------------------------------------
- *  LIBRARIES NEEDED:
- *    1. HUSKYLENS  by DFRobot
- *    2. LiquidCrystal I2C  by Frank de Brabander
- *    3. ArduinoJson  by Benoit Blanchon
- *       (WiFi and HTTPClient are built into ESP32 — no install needed)
- *
- * ----------------------------------------------------------------
- *  WIFI SETUP:
- *    Change WIFI_SSID and WIFI_PASSWORD below to your WiFi name/password.
- *    Change SERVER_IP to your PC's IP address (run ipconfig in terminal).
- *    Make sure your PC and ESP32 are on the SAME WiFi network!
- *
  * ================================================================
  */
 
-// ─────────────────────────────────────────────────────────────
-//  WIFI + SERVER CONFIG  <-- CHANGE THESE 3 LINES
-// ─────────────────────────────────────────────────────────────
-const char* WIFI_SSID     = "UwU muna bago connect";   // Your WiFi name
-const char* WIFI_PASSWORD = "Surinaman";               // Your WiFi password
-const char* SERVER_IP     = "192.168.0.111";           // Your PC's IP address
+const char* WIFI_SSID     = "UwU muna bago connect";
+const char* WIFI_PASSWORD = "Surinaman";
+const char* SERVER_URL    = "https://patts.onrender.com";
 
-// ─────────────────────────────────────────────────────────────
-//  INCLUDES
-// ─────────────────────────────────────────────────────────────
 #include <WiFi.h>
 #include <HTTPClient.h>
+#include <WiFiClientSecure.h>
 #include <ArduinoJson.h>
 #include <HUSKYLENS.h>
 #include <Wire.h>
@@ -56,9 +25,6 @@ const char* SERVER_IP     = "192.168.0.111";           // Your PC's IP address
 #include <HardwareSerial.h>
 #include <Preferences.h>
 
-// ─────────────────────────────────────────────────────────────
-//  PIN DEFINITIONS
-// ─────────────────────────────────────────────────────────────
 #define BARCODE_RX_PIN   14
 #define BARCODE_TX_PIN   21
 #define HL_RX_PIN        17
@@ -74,9 +40,6 @@ const char* SERVER_IP     = "192.168.0.111";           // Your PC's IP address
 #define LED_GREEN        15
 #define LED_RED          16
 
-// ─────────────────────────────────────────────────────────────
-//  FORWARD DECLARATIONS
-// ─────────────────────────────────────────────────────────────
 void lcdPrint(String l1, String l2);
 void showReadyScreen();
 void successBeep();
@@ -108,24 +71,16 @@ void loadStudentsFromMemory();
 bool findStudentByBarcode(String code);
 int  getFaceID();
 int  getNextFaceID();
-
-// WiFi + HTTP
 void connectWiFi();
 bool sendRegisterToServer(String studentNumber, String faceId);
 bool sendViolationToServer(String studentNumber, String faceId, String violationType);
 
-// ─────────────────────────────────────────────────────────────
-//  OBJECTS
-// ─────────────────────────────────────────────────────────────
 HardwareSerial    barcodeSerial(2);
 HardwareSerial    huskySerial(1);
 HUSKYLENS         huskylens;
 LiquidCrystal_I2C lcd(0x27, 16, 2);
 Preferences       prefs;
 
-// ─────────────────────────────────────────────────────────────
-//  STUDENT DATA
-// ─────────────────────────────────────────────────────────────
 struct Student {
   String barcodeCode;
   String studentNumber;
@@ -135,16 +90,10 @@ struct Student {
 Student registeredStudents[MAX_STUDENTS];
 int totalStudents = 0;
 
-// ─────────────────────────────────────────────────────────────
-//  VIOLATION TYPES
-// ─────────────────────────────────────────────────────────────
 #define VIOLATION_UNIFORM     "Uniform Violation"
 #define VIOLATION_IMPROPER_ID "Improper ID"
 #define VIOLATION_PROHIBITED  "Prohibited Items"
 
-// ─────────────────────────────────────────────────────────────
-//  SYSTEM STATE
-// ─────────────────────────────────────────────────────────────
 bool   studentVerified   = false;
 bool   faceMatch         = false;
 String detectedViolation = "";
@@ -224,35 +173,29 @@ void printGateState() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  WIFI CONNECTION
+//  WIFI
 // ─────────────────────────────────────────────────────────────
 void connectWiFi() {
   logSep();
   logInfo("Connecting to WiFi: " + String(WIFI_SSID));
   lcdPrint("Connecting WiFi", String(WIFI_SSID).substring(0, 16));
-
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
   int attempts = 0;
   while (WiFi.status() != WL_CONNECTED && attempts < 20) {
     delay(500);
     Serial.print(".");
     attempts++;
   }
-
   Serial.println();
-
   if (WiFi.status() == WL_CONNECTED) {
     String ip = WiFi.localIP().toString();
     logOK("WiFi connected!");
     logOK("ESP32 IP: " + ip);
-    logOK("Server  : http://" + String(SERVER_IP) + ":3000");
+    logOK("Server  : " + String(SERVER_URL));
     lcdPrint("WiFi Connected!", ip.substring(0, 16));
     delay(1500);
   } else {
     logFail("WiFi FAILED. Running in offline mode.");
-    logFail("Violations will NOT be sent to website.");
-    logFail("Check SSID/Password and try again.");
     lcdPrint("WiFi Failed!", "Offline Mode");
     delay(2000);
   }
@@ -260,37 +203,34 @@ void connectWiFi() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  HTTP POST - REGISTER STUDENT
+//  HTTP POST - REGISTER
 // ─────────────────────────────────────────────────────────────
 bool sendRegisterToServer(String studentNumber, String faceId) {
   if (WiFi.status() != WL_CONNECTED) {
     logFail("WiFi not connected. Cannot send register.");
     return false;
   }
-
-  String url = "http://" + String(SERVER_IP) + ":3000/api/register";
-
-  // Build JSON
+  String url = String(SERVER_URL) + "/api/register";
   StaticJsonDocument<256> doc;
   doc["studentNumber"] = studentNumber;
   doc["faceId"]        = faceId;
-  doc["name"]          = "";      // Can be filled on the website
+  doc["name"]          = "";
   doc["course"]        = "";
   doc["section"]       = "";
-
   String payload;
   serializeJson(doc, payload);
-
   logInfo("Sending register to: " + url);
   logInfo("Payload: " + payload);
-
+  lcdPrint("Waiting...", "Server waking up");
+  WiFiClientSecure client;
+  client.setInsecure();
   HTTPClient http;
-  http.begin(url);
+  http.setTimeout(60000);
+  http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
   int httpCode = http.POST(payload);
   String response = http.getString();
   http.end();
-
   if (httpCode == 200) {
     logOK("Server: Student registered on website!");
     logOK("Response: " + response);
@@ -306,46 +246,43 @@ bool sendRegisterToServer(String studentNumber, String faceId) {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  HTTP POST - RECORD VIOLATION
+//  HTTP POST - VIOLATION
 // ─────────────────────────────────────────────────────────────
 bool sendViolationToServer(String studentNumber, String faceId, String violationType) {
   if (WiFi.status() != WL_CONNECTED) {
     logFail("WiFi not connected. Violation saved locally only.");
     return false;
   }
-
-  String url = "http://" + String(SERVER_IP) + ":3000/api/violation";
-
-  // Build JSON
+  String url = String(SERVER_URL) + "/api/violation";
   StaticJsonDocument<256> doc;
   doc["studentNumber"] = studentNumber;
   doc["faceId"]        = faceId;
   doc["violationType"] = violationType;
   doc["description"]   = "Recorded via ESP32 device";
   doc["recordedBy"]    = "PATTS Guard System";
-
   String payload;
   serializeJson(doc, payload);
-
   logInfo("Sending violation to: " + url);
   logInfo("Payload: " + payload);
-
+  lcdPrint("Waiting...", "Server waking up");
+  WiFiClientSecure client;
+  client.setInsecure();
   HTTPClient http;
-  http.begin(url);
+  http.setTimeout(60000);
+  http.begin(client, url);
   http.addHeader("Content-Type", "application/json");
   int httpCode = http.POST(payload);
   String response = http.getString();
   http.end();
-
   if (httpCode == 200) {
     logOK("Server: Violation recorded on website!");
     logOK("Response: " + response);
     return true;
   } else if (httpCode == 403) {
-    logFail("Server: Face ID mismatch! Identity verification failed on server.");
+    logFail("Server: Face ID mismatch!");
     return false;
   } else if (httpCode == 404) {
-    logFail("Server: Student not found on website. Register on website first.");
+    logFail("Server: Student not found on website.");
     return false;
   } else {
     logFail("Server error. Code: " + String(httpCode));
@@ -360,14 +297,11 @@ bool sendViolationToServer(String studentNumber, String faceId, String violation
 void setup() {
   Serial.begin(115200);
   delay(1000);
-
   logTitle("PATTS VIOLATION RECORDING SYSTEM");
   logInfo("Board  : ESP32-S3 XH-S3E");
   logInfo("Mode   : HuskyLens + WiFi + Website Integration");
   logInfo("Serial : 115200 baud");
   logSep();
-
-  // GPIO
   pinMode(BTN_UNIFORM,     INPUT_PULLUP);
   pinMode(BTN_IMPROPER_ID, INPUT_PULLUP);
   pinMode(BTN_PROHIBITED,  INPUT_PULLUP);
@@ -379,8 +313,6 @@ void setup() {
   digitalWrite(LED_GREEN, LOW);
   digitalWrite(LED_RED,   LOW);
   logOK("GPIO pins initialized");
-
-  // LCD
   Wire.begin(LCD_SDA_PIN, LCD_SCL_PIN);
   delay(100);
   lcd.init();
@@ -390,15 +322,9 @@ void setup() {
   lcd.setCursor(0, 1); lcd.print("Starting...");
   logOK("LCD initialized");
   delay(1000);
-
-  // WiFi  <-- ADDED
   connectWiFi();
-
-  // GM65 Barcode Scanner
-  barcodeSerial.begin(9600, SERIAL_8N1, BARCODE_RX_PIN, BARCODE_TX_PIN);
+  barcodeSerial.begin(115200, SERIAL_8N1, BARCODE_RX_PIN, BARCODE_TX_PIN);
   logOK("GM65 Barcode Scanner ready (RX=GPIO14, TX=GPIO21)");
-
-  // HuskyLens via UART
   huskySerial.begin(9600, SERIAL_8N1, HL_RX_PIN, HL_TX_PIN);
   delay(500);
   if (huskylens.begin(huskySerial)) {
@@ -417,40 +343,33 @@ void setup() {
     errorBeep();
     while (true) { delay(1000); }
   }
-
   successBeep();
   logOK("Buzzer OK");
-
   digitalWrite(LED_GREEN, HIGH); delay(400);
   digitalWrite(LED_GREEN, LOW);
   digitalWrite(LED_RED,   HIGH); delay(400);
   digitalWrite(LED_RED,   LOW);
   logOK("LEDs OK");
-
   loadStudentsFromMemory();
-
   logSep();
   logTitle("SYSTEM READY");
   logInfo("Scan ID barcode to begin");
   logInfo("Press REGISTER button (GPIO13) to add new student");
   logInfo("Hold CLEAR button (GPIO10) 3s to clear all data");
   if (WiFi.status() == WL_CONNECTED) {
-    logOK("Website: http://" + String(SERVER_IP) + ":3000");
+    logOK("Website: " + String(SERVER_URL));
   } else {
     logFail("Website: OFFLINE - check WiFi settings");
   }
   logSep();
-
   showReadyScreen();
 }
 
 // ─────────────────────────────────────────────────────────────
-//  MAIN LOOP  (unchanged from your original)
+//  MAIN LOOP
 // ─────────────────────────────────────────────────────────────
 void loop() {
-
   checkClearButton();
-
   bool curReg = digitalRead(BTN_REGISTER);
   if (curReg == LOW && lastStateRegister == HIGH) {
     delay(100);
@@ -460,17 +379,14 @@ void loop() {
     }
   }
   if (curReg == HIGH) lastStateRegister = HIGH;
-
   if (registrationMode) {
     handleRegistration();
     return;
   }
-
   if (!studentVerified) {
     handleBarcode();
     return;
   }
-
   if (!faceMatch) {
     lcdPrint("Look at Camera", "HuskyLens...");
     int result = getFaceID();
@@ -509,12 +425,10 @@ void loop() {
     }
     return;
   }
-
   if (detectedViolation == "") {
     checkViolationButtons();
     return;
   }
-
   recordViolation();
 }
 
@@ -603,6 +517,8 @@ void handleBarcode() {
               " | Expected Face ID: " + String(currentFaceID));
         logGate("INPUT A = 1");
         printGateState();
+        lcdPrint(currentStudNum, "Get Ready...");
+        delay(5000);
         lcdPrint(currentStudNum, "Look at camera");
         logWait("Waiting for face recognition...");
         delay(500);
@@ -665,7 +581,6 @@ void checkViolationButtons() {
     }
   }
   if (curU == HIGH) lastStateUniform = HIGH;
-
   bool curI = digitalRead(BTN_IMPROPER_ID);
   if (curI == LOW && lastStateImproper == HIGH) {
     delay(50);
@@ -678,7 +593,6 @@ void checkViolationButtons() {
     }
   }
   if (curI == HIGH) lastStateImproper = HIGH;
-
   bool curP = digitalRead(BTN_PROHIBITED);
   if (curP == LOW && lastStateProhibited == HIGH) {
     delay(50);
@@ -694,7 +608,7 @@ void checkViolationButtons() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  RECORD VIOLATION  <-- NOW SENDS TO WEBSITE
+//  RECORD VIOLATION
 // ─────────────────────────────────────────────────────────────
 void recordViolation() {
   violationCount++;
@@ -702,7 +616,6 @@ void recordViolation() {
   String uptime = String(sec / 3600) + "h " +
                   String((sec % 3600) / 60) + "m " +
                   String(sec % 60) + "s";
-
   lcdPrint("Recording...", currentStudNum);
   logTitle("VIOLATION RECORDED #" + String(violationCount));
   logOK("AND Gate: A=1, B=1, C=1 -> OUTPUT = 1");
@@ -713,8 +626,6 @@ void recordViolation() {
   Serial.println("[RECORD]  Uptime    : " + uptime);
   Serial.println("[RECORD]  Record #  : " + String(violationCount));
   logSep();
-
-  // --- SEND TO WEBSITE ---
   lcdPrint("Sending to", "website...");
   bool sent = sendViolationToServer(currentStudNum, String(currentFaceID), detectedViolation);
   if (sent) {
@@ -724,8 +635,6 @@ void recordViolation() {
     logFail("Could not send to website. Saved locally only.");
     lcdPrint("Recorded!", detectedViolation.substring(0, 16));
   }
-  // -----------------------
-
   successBeep(); delay(300); successBeep();
   setLED(true);
   delay(3000);
@@ -756,7 +665,7 @@ void resetState() {
 }
 
 // ─────────────────────────────────────────────────────────────
-//  REGISTRATION MODE  <-- NOW SENDS TO WEBSITE
+//  REGISTRATION MODE
 // ─────────────────────────────────────────────────────────────
 void enterRegistrationMode() {
   registrationMode = true;
@@ -790,6 +699,8 @@ void handleRegistration() {
         regStep    = 2;
         logReg("Barcode accepted: [" + code + "]");
         logReg("Step 2 of 2: Look at HuskyLens to learn face.");
+        lcdPrint("Barcode Scanned!", "Get Ready...");
+        delay(5000);
         lcdPrint("Look at Camera", "Learning face..");
         learnFaceOnHuskyLens(regFaceID);
       }
@@ -846,13 +757,11 @@ void checkFaceLearned() {
 
 void saveNewStudent() {
   lcdPrint("Saving...", regStudNum);
-
   if (totalStudents < MAX_STUDENTS) {
     registeredStudents[totalStudents] = {regBarcode, regStudNum, regFaceID};
     totalStudents++;
   }
   saveStudentsToMemory();
-
   logTitle("STUDENT REGISTERED");
   Serial.println("[REG]  Student # : " + regStudNum);
   Serial.println("[REG]  Barcode   : " + regBarcode);
@@ -860,8 +769,6 @@ void saveNewStudent() {
   Serial.println("[REG]  Total     : " + String(totalStudents) + " student(s)");
   logSep();
   logInfo("REMINDER: On HuskyLens press function button -> Save -> Yes");
-
-  // --- SEND TO WEBSITE ---
   lcdPrint("Sending to", "website...");
   bool sent = sendRegisterToServer(regStudNum, String(regFaceID));
   if (sent) {
@@ -871,8 +778,6 @@ void saveNewStudent() {
     logFail("Could not send to website. Saved locally only.");
     lcdPrint("Registered!", regStudNum.substring(0, 16));
   }
-  // -----------------------
-
   successBeep(); delay(300); successBeep(); delay(300); successBeep();
   delay(3000);
   exitRegistrationMode();
