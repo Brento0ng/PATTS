@@ -924,9 +924,22 @@
         <td>${s.course||'N/A'}</td>
         <td>${s.year||s.section||'N/A'}</td>
         <td><span class="chip ${cc}">${ct}</span></td>
-        <td><span class="td-link" onclick="viewStu('${s.studentNumber}')">View</span></td>
+        <td style="display:flex;gap:12px;align-items:center;">
+          <span class="td-link" onclick="viewStu('${s.studentNumber}')">View</span>
+          <span class="td-link" style="color:#dc2626;" onclick="delStu('${s.id||s._id}','${s.name}')">Delete</span>
+        </td>
       </tr>`;
     }).join('');
+  }
+
+  async function delStu(id, name){
+    if(!confirm(`Delete student: ${name}?\n\nThis will permanently remove the student record.`)) return;
+    try{
+      const r=await fetch(`/api/students/${id}`,{method:'DELETE'});
+      const d=await r.json();
+      if(d.success){ toast('Student deleted','success'); loadStudents(); loadDashboard(); }
+      else toast(d.message||'Error deleting student','error');
+    }catch(e){ toast('Server error','error'); }
   }
 
   function filterStudents(){
