@@ -793,7 +793,7 @@
           When a student presses the registration button on the ESP32 device:<br/>
           1. ESP32 scans the <strong>barcode (Student Number)</strong><br/>
           2. HuskyLens captures and assigns a <strong>Face ID</strong><br/>
-          3. ESP32 sends a POST request to <code>http://YOUR_PC_IP:3000/api/register</code><br/>
+          3. ESP32 sends a POST request to <code>https://patts.onrender.com/api/register</code><br/>
           4. Student is automatically registered and appears in the roster.
         </p>
       </div>
@@ -885,7 +885,7 @@
           When a violation occurs via ESP32 device:<br/>
           1. ESP32 scans the <strong>barcode (Student Number)</strong><br/>
           2. HuskyLens verifies the <strong>Face ID</strong><br/>
-          3. If both match, ESP32 sends a POST to <code>http://YOUR_PC_IP:3000/api/violation</code><br/>
+          3. If both match, ESP32 sends a POST to <code>https://patts.onrender.com/api/violation</code><br/>
           4. Violation is automatically recorded in the database.
         </p>
       </div>
@@ -971,6 +971,10 @@
 </div><!-- /layout -->
 
 <script>
+  // ─── ONLY LINE YOU NEED TO CHANGE IF URL CHANGES ───
+  const API = 'https://patts.onrender.com';
+  // ───────────────────────────────────────────────────
+
   let allStudents = [];
   let allViolations = [];
 
@@ -1005,17 +1009,17 @@
 
   async function loadDashboard() {
     try {
-      const r = await fetch('/api/stats');
+      const r = await fetch(`${API}/api/stats`);
       const d = await r.json();
       if (d.success) {
         document.getElementById('stat-students').textContent = d.data.totalStudents;
         document.getElementById('stat-violations').textContent = d.data.totalViolations;
         document.getElementById('stat-today').textContent = d.data.todayViolations;
       }
-      const rv = await fetch('/api/violations');
+      const rv = await fetch(`${API}/api/violations`);
       const vd = await rv.json();
       if (vd.success) {
-        const recent = vd.data.slice(-10).reverse();
+        const recent = vd.data.slice(0, 10);
         document.getElementById('recent-count').textContent = recent.length;
         const tbody = document.getElementById('recent-violations-body');
         if (recent.length === 0) {
@@ -1033,13 +1037,13 @@
         }
       }
     } catch(e) {
-      toast('Cannot connect to server. Is it running?', 'error');
+      toast('Cannot connect to server. Check your internet connection.', 'error');
     }
   }
 
   async function loadStudents() {
     try {
-      const r = await fetch('/api/students');
+      const r = await fetch(`${API}/api/students`);
       const d = await r.json();
       if (d.success) { allStudents = d.data; renderStudents(allStudents); }
     } catch(e) { toast('Cannot connect to server', 'error'); }
@@ -1059,7 +1063,7 @@
         <td>${s.section || 'N/A'}</td>
         <td class="mono">${s.faceId}</td>
         <td class="mono" style="font-size:0.8rem">${fmtDate(s.registeredAt)}</td>
-        <td><button class="btn btn-danger btn-sm" onclick="deleteStudent('${s.id}', '${s.name}')">Delete</button></td>
+        <td><button class="btn btn-danger btn-sm" onclick="deleteStudent('${s._id}', '${s.name}')">Delete</button></td>
       </tr>
     `).join('');
   }
@@ -1073,16 +1077,16 @@
 
   async function deleteStudent(id, name) {
     if (!confirm(`Delete student: ${name}?`)) return;
-    const r = await fetch(`/api/students/${id}`, { method: 'DELETE' });
+    const r = await fetch(`${API}/api/students/${id}`, { method: 'DELETE' });
     const d = await r.json();
     if (d.success) { toast('Student deleted', 'success'); loadStudents(); }
   }
 
   async function loadViolations() {
     try {
-      const r = await fetch('/api/violations');
+      const r = await fetch(`${API}/api/violations`);
       const d = await r.json();
-      if (d.success) { allViolations = d.data.reverse(); renderViolations(allViolations); }
+      if (d.success) { allViolations = d.data; renderViolations(allViolations); }
     } catch(e) { toast('Cannot connect to server', 'error'); }
   }
 
@@ -1101,7 +1105,7 @@
         <td style="color:var(--text2);font-size:0.83rem">${v.description || '—'}</td>
         <td style="color:var(--text2)">${v.recordedBy}</td>
         <td class="mono" style="font-size:0.8rem">${fmtDate(v.timestamp)}</td>
-        <td><button class="btn btn-danger btn-sm" onclick="deleteViolation('${v.id}')">Delete</button></td>
+        <td><button class="btn btn-danger btn-sm" onclick="deleteViolation('${v._id}')">Delete</button></td>
       </tr>
     `).join('');
   }
@@ -1109,13 +1113,13 @@
   function filterViolations() {
     const q = document.getElementById('violation-search').value.toLowerCase();
     renderViolations(allViolations.filter(v =>
-      v.studentNumber.toLowerCase().includes(q) || v.studentName.toLowerCase().includes(q)
+      v.studentNumber.toLowerCase().includes(v) || v.studentName.toLowerCase().includes(q)
     ));
   }
 
   async function deleteViolation(id) {
     if (!confirm('Delete this violation record?')) return;
-    const r = await fetch(`/api/violations/${id}`, { method: 'DELETE' });
+    const r = await fetch(`${API}/api/violations/${id}`, { method: 'DELETE' });
     const d = await r.json();
     if (d.success) { toast('Violation deleted', 'success'); loadViolations(); }
   }
@@ -1130,7 +1134,7 @@
     };
     if (!body.studentNumber || !body.faceId || !body.name) return toast('Student Number, Name, and Face ID are required', 'error');
     try {
-      const r = await fetch('/api/register', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      const r = await fetch(`${API}/api/register`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
       const d = await r.json();
       if (d.success) toast('Student registered successfully!', 'success');
       else toast(d.message, 'error');
@@ -1146,7 +1150,7 @@
       section: document.getElementById('test-reg-section').value.trim()
     };
     try {
-      const r = await fetch('/api/register', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      const r = await fetch(`${API}/api/register`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
       const d = await r.json();
       document.getElementById('test-reg-response').style.display = 'block';
       document.getElementById('test-reg-pre').textContent = JSON.stringify(d, null, 2);
@@ -1167,7 +1171,7 @@
     };
     if (!body.studentNumber || !body.faceId) return toast('Student Number and Face ID are required', 'error');
     try {
-      const r = await fetch('/api/violation', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      const r = await fetch(`${API}/api/violation`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
       const d = await r.json();
       if (d.success) toast('Violation recorded!', 'success');
       else toast(d.message, 'error');
@@ -1182,7 +1186,7 @@
       recordedBy: document.getElementById('test-vio-by').value.trim() || 'ESP32 Device'
     };
     try {
-      const r = await fetch('/api/violation', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
+      const r = await fetch(`${API}/api/violation`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(body) });
       const d = await r.json();
       document.getElementById('test-vio-response').style.display = 'block';
       document.getElementById('test-vio-pre').textContent = JSON.stringify(d, null, 2);
