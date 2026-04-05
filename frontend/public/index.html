@@ -404,6 +404,35 @@
     .mp-vio-left .mv-type{font-size:.87rem;font-weight:600;color:var(--text);}
     .mp-vio-left .mv-date{font-size:.75rem;color:var(--text3);margin-top:2px;}
     .mp-vio-right{display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0;}
+
+    /* ═══ DASHBOARD STATS CARDS ═══ */
+    .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
+    .stats-card{background:var(--white);border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
+    .stats-card-title{font-size:.7rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
+    .stat-row-item{margin-bottom:14px;}
+    .stat-row-item:last-child{margin-bottom:0;}
+    .sri-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+    .sri-label{font-size:.84rem;color:var(--text);}
+    .sri-count{font-size:.84rem;font-weight:700;color:var(--text);}
+    .sri-bar{height:5px;border-radius:20px;background:var(--border);}
+    .sri-fill{height:100%;border-radius:20px;transition:width .6s ease;}
+    .fill-minor  {background:#f59e0b;}
+    .fill-major  {background:#f97316;}
+    .fill-grave  {background:#ef4444;}
+    .fill-pending{background:#f59e0b;}
+    .fill-review {background:#6366f1;}
+    .fill-resolved{background:#22c55e;}
+    /* top violations */
+    .tv-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
+    .tv-item:last-child{border-bottom:none;}
+    .tv-name{font-size:.84rem;color:var(--text);}
+    .tv-count{
+      background:var(--navy);color:white;
+      font-size:.75rem;font-weight:700;
+      width:24px;height:24px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      flex-shrink:0;
+    }
   </style>
 </head>
 <body>
@@ -564,6 +593,56 @@
           </div>
         </div>
       </div>
+
+
+        <!-- STATS ROW -->
+        <div class="stats-row">
+          <!-- By Category -->
+          <div class="stats-card">
+            <div class="stats-card-title">By Category</div>
+            <div id="stat-by-cat">
+              <div class="stat-row-item">
+                <div class="sri-top"><span class="sri-label">Minor</span><span class="sri-count" id="cat-minor-n">0</span></div>
+                <div class="sri-bar"><div class="sri-fill fill-minor" id="cat-minor-b" style="width:0%"></div></div>
+              </div>
+              <div class="stat-row-item">
+                <div class="sri-top"><span class="sri-label">Major</span><span class="sri-count" id="cat-major-n">0</span></div>
+                <div class="sri-bar"><div class="sri-fill fill-major" id="cat-major-b" style="width:0%"></div></div>
+              </div>
+              <div class="stat-row-item">
+                <div class="sri-top"><span class="sri-label">Grave</span><span class="sri-count" id="cat-grave-n">0</span></div>
+                <div class="sri-bar"><div class="sri-fill fill-grave" id="cat-grave-b" style="width:0%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- By Status -->
+          <div class="stats-card">
+            <div class="stats-card-title">By Status</div>
+            <div>
+              <div class="stat-row-item">
+                <div class="sri-top"><span class="sri-label">Pending</span><span class="sri-count" id="sts-pending-n">0</span></div>
+                <div class="sri-bar"><div class="sri-fill fill-pending" id="sts-pending-b" style="width:0%"></div></div>
+              </div>
+              <div class="stat-row-item">
+                <div class="sri-top"><span class="sri-label">Under Review</span><span class="sri-count" id="sts-review-n">0</span></div>
+                <div class="sri-bar"><div class="sri-fill fill-review" id="sts-review-b" style="width:0%"></div></div>
+              </div>
+              <div class="stat-row-item">
+                <div class="sri-top"><span class="sri-label">Resolved</span><span class="sri-count" id="sts-resolved-n">0</span></div>
+                <div class="sri-bar"><div class="sri-fill fill-resolved" id="sts-resolved-b" style="width:0%"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Violations -->
+          <div class="stats-card">
+            <div class="stats-card-title">Top Violations</div>
+            <div id="top-violations-list">
+              <div class="mp-vh-empty">No data yet</div>
+            </div>
+          </div>
+        </div>
 
       <!-- ══ ALL STUDENTS ══ -->
       <div class="page" id="page-students">
@@ -1051,6 +1130,7 @@
     try{
       const r=await fetch('/api/violations'), d=await r.json();
       if(d.success){
+        allViolations=d.data;
         const rec=d.data.slice(0,10);
         $('d-count').textContent=rec.length;
         const tb=$('d-tbody');
@@ -1068,6 +1148,57 @@
         }
       }
     }catch(e){ toast('Cannot connect to server','error'); }
+
+    // render stats
+    renderDashStats();
+  }
+
+  function renderDashStats(){
+    const total = allViolations.length || 1; // avoid divide by zero
+
+    // by category
+    const minor   = allViolations.filter(v=>(v.category||'Minor')==='Minor').length;
+    const major   = allViolations.filter(v=>(v.category||'')==='Major').length;
+    const grave   = allViolations.filter(v=>(v.category||'')==='Grave').length;
+    const catMax  = Math.max(minor, major, grave, 1);
+
+    $('cat-minor-n').textContent = minor;
+    $('cat-major-n').textContent = major;
+    $('cat-grave-n').textContent = grave;
+    $('cat-minor-b').style.width = (minor/catMax*100)+'%';
+    $('cat-major-b').style.width = (major/catMax*100)+'%';
+    $('cat-grave-b').style.width = (grave/catMax*100)+'%';
+
+    // by status
+    const pending  = allViolations.filter(v=>(v.status||'Pending')==='Pending').length;
+    const review   = allViolations.filter(v=>(v.status||'')==='Under Review').length;
+    const resolved = allViolations.filter(v=>(v.status||'')==='Resolved').length;
+    const stsMax   = Math.max(pending, review, resolved, 1);
+
+    $('sts-pending-n').textContent  = pending;
+    $('sts-review-n').textContent   = review;
+    $('sts-resolved-n').textContent = resolved;
+    $('sts-pending-b').style.width  = (pending/stsMax*100)+'%';
+    $('sts-review-b').style.width   = (review/stsMax*100)+'%';
+    $('sts-resolved-b').style.width = (resolved/stsMax*100)+'%';
+
+    // top violations
+    const counts = {};
+    allViolations.forEach(v=>{
+      const t = v.violationType||'Unknown';
+      counts[t] = (counts[t]||0)+1;
+    });
+    const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    const tvList = $('top-violations-list');
+    if(!sorted.length){
+      tvList.innerHTML='<div class="mp-vh-empty">No data yet</div>';
+    } else {
+      tvList.innerHTML = sorted.map(([name,count])=>`
+        <div class="tv-item">
+          <span class="tv-name">${name}</span>
+          <span class="tv-count">${count}</span>
+        </div>`).join('');
+    }
   }
 
   /* ── students ── */
