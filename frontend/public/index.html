@@ -89,10 +89,11 @@
       box-shadow:0 2px 8px rgba(0,0,0,.2);
     }
     .tb-left{display:flex;align-items:center;gap:0;}
-    .tb-logo{color:white;line-height:1.15;margin-right:20px;}
+    .tb-logo{color:white;line-height:1.15;margin-right:24px;flex-shrink:0;}
     .tb-logo .tn{font-size:.9rem;font-weight:700;}
     .tb-logo .ts{font-size:.62rem;opacity:.7;}
-    .tb-title{color:white;font-size:.95rem;font-weight:600;padding-left:20px;border-left:1px solid rgba(255,255,255,.25);}
+    .tb-divider{width:1px;height:32px;background:rgba(255,255,255,.35);margin-right:24px;flex-shrink:0;}
+    .tb-title{color:white;font-size:.95rem;font-weight:600;}
     .tb-right{display:flex;align-items:center;gap:14px;}
     .tb-status{display:flex;align-items:center;gap:6px;font-size:.74rem;color:rgba(255,255,255,.8);}
     .tb-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:blink 2s infinite;}
@@ -110,9 +111,10 @@
       width:36px;height:36px;border-radius:50%;
       background:rgba(255,255,255,0.2);
       border:2px solid rgba(255,255,255,0.4);
-      color:white;font-size:1rem;
+      color:white;font-size:.9rem;font-weight:700;
       display:flex;align-items:center;justify-content:center;
       cursor:pointer;transition:.2s;flex-shrink:0;
+      font-family:'Inter',sans-serif;
     }
     .avatar-btn:hover{background:rgba(255,255,255,0.32);}
     .avatar-dropdown{
@@ -443,8 +445,8 @@
   <div class="bg-overlay"></div>
   <div class="login-card">
     <div class="lc-head">
-      <h1>PATTS College of Aeronautics  </h1>
-      <p>    Student Violation Tracking System</p>
+      <h1>PATTS College of Aeronautics</h1>
+      <p>Student Violation Tracking System</p>
     </div>
     <div class="lc-body">
       <h2>Admin Login</h2>
@@ -486,18 +488,20 @@
   <div class="topbar">
     <div class="tb-left">
       <div class="tb-logo">
-        <div class="tn">PATTS College      </div>
-        <div class="ts">of Aeronautics     </div>
+        <div class="tn">PATTS College</div>
+        <div class="ts">of Aeronautics</div>
       </div>
-      <div class="tb-title">   Student Violation Tracking System</div>
+      <div class="tb-divider"></div>
+      <div class="tb-title">Student Violation Tracking System</div>
     </div>
     <div class="tb-right">
       <div class="tb-status"><div class="tb-dot"></div> System Online</div>
+      <button class="btn-logout" onclick="doLogout()">⬛ Logout</button>
       <div class="avatar-wrap" id="av-wrap">
-        <div class="avatar-btn" onclick="toggleAvatar()">👤</div>
+        <div class="avatar-btn" onclick="toggleAvatar()">A</div>
         <div class="avatar-dropdown" id="av-dropdown">
           <div class="av-head">
-            <div class="av-circle">👤</div>
+            <div class="av-circle">A</div>
             <div class="av-info">
               <div class="av-name">Administrator</div>
               <div class="av-role">PATTS Admin</div>
@@ -720,10 +724,7 @@
                     <option>BS Computer Engineering</option>
                   </select>
                 </div>
-                <div class="fg">
-                  <label>Section <span class="req">*</span></label>
-                  <input class="fi" type="text" id="r-sec" placeholder="e.g. AE-3A"/>
-                </div>
+
                 <div class="fg">
                   <label>Year Level <span class="req">*</span></label>
                   <select class="fi" id="r-year">
@@ -814,11 +815,11 @@
             <table>
               <thead><tr>
                 <th>Student No.</th><th>Name</th><th>Violation</th>
-                <th>Category</th><th>Section</th><th>Status</th>
+                <th>Category</th><th>Status</th>
                 <th>Date & Time</th><th>Actions</th>
               </tr></thead>
               <tbody id="vio-tbody">
-                <tr><td colspan="8"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr>
+                <tr><td colspan="7"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr>
               </tbody>
             </table>
           </div>
@@ -1315,7 +1316,7 @@
     $('vio-count').textContent=list.length;
     const tb=$('vio-tbody');
     if(!list.length){
-      tb.innerHTML='<tr><td colspan="8"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr>';
+      tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr>';
       return;
     }
     tb.innerHTML=list.map(v=>`<tr>
@@ -1323,7 +1324,6 @@
       <td class="td-bold">${v.studentName}</td>
       <td>${v.violationType}</td>
       <td><span class="chip c-${(v.category||'minor').toLowerCase()}">${v.category||'Minor'}</span></td>
-      <td class="td-muted">${v.section||'N/A'}</td>
       <td><span class="chip c-${scls(v.status)}">${v.status||'Pending'}</span></td>
       <td class="td-muted">${fmt(v.timestamp)}</td>
       <td style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
@@ -1383,7 +1383,7 @@
       studentNumber:$('r-sn').value.trim(),
       name:`${fn} ${ln}`.trim(),
       course:$('r-course').value,
-      section:$('r-sec').value.trim(),
+
       year:$('r-year').value,
       email:$('r-email').value.trim(),
       contact:$('r-contact').value.trim(),
@@ -1400,7 +1400,7 @@
   }
 
   function clearRegForm(){
-    ['r-sn','r-fn','r-ln','r-sec','r-email','r-contact','r-fid'].forEach(id=>$(id).value='');
+    ['r-sn','r-fn','r-ln','r-email','r-contact','r-fid'].forEach(id=>$(id).value='');
     $('r-course').value=''; $('r-year').value='';
   }
 
