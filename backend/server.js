@@ -55,6 +55,20 @@ const Student   = mongoose.model('Student', studentSchema);
 const Violation = mongoose.model('Violation', violationSchema);
 
 // ─────────────────────────────────────────────────────────────
+//  AUTO CATEGORY
+// ─────────────────────────────────────────────────────────────
+function getCategory(violationType) {
+  const minor = ['Improper Uniform', 'Haircut/Haircolor', 'Tardiness', 'Unauthorized Phone Use'];
+  const major = ['Prohibited Item', 'Unauthorized Absence', 'Disruptive Behavior'];
+  const grave = ['Academic Dishonesty', 'Vandalism'];
+
+  if (minor.includes(violationType)) return 'Minor';
+  if (major.includes(violationType)) return 'Major';
+  if (grave.includes(violationType)) return 'Grave';
+  return 'Minor'; // default fallback
+}
+
+// ─────────────────────────────────────────────────────────────
 //  STUDENT ROUTES
 // ─────────────────────────────────────────────────────────────
 
@@ -128,7 +142,7 @@ app.get('/api/violations', async (req, res) => {
 
 // POST record violation (called by ESP32 or manual)
 app.post('/api/violation', async (req, res) => {
-  const { studentNumber, faceId, violationType, category, description, recordedBy, status, timestamp } = req.body;
+  const { studentNumber, faceId, violationType, description, recordedBy, status, timestamp } = req.body;
 
   if (!studentNumber || !faceId) {
     return res.status(400).json({ success: false, message: 'studentNumber and faceId are required' });
@@ -151,7 +165,7 @@ app.post('/api/violation', async (req, res) => {
       course:        student.course,
       faceId,
       violationType: violationType || 'General Violation',
-      category:      category      || 'Minor',
+      category:      getCategory(violationType),   // ✅ AUTO CATEGORY
       description:   description   || '',
       recordedBy:    recordedBy    || 'ESP32 Device',
       status:        status        || 'Pending',
@@ -159,7 +173,7 @@ app.post('/api/violation', async (req, res) => {
     });
 
     await newViolation.save();
-    console.log(`🚨 Violation recorded: ${studentNumber} - ${student.name}`);
+    console.log(`🚨 Violation recorded: ${studentNumber} - ${student.name} | Category: ${newViolation.category}`);
     res.json({ success: true, message: 'Violation recorded successfully', data: newViolation });
 
   } catch (err) {
