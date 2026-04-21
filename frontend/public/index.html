@@ -158,7 +158,6 @@
       position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;z-index:100;
       padding:10px 0;
     }
-
     .sb-group{padding:12px 18px 4px;font-size:.68rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
     .nav-item{
       display:flex;align-items:center;gap:10px;
@@ -243,7 +242,6 @@
     .chip{display:inline-flex;align-items:center;padding:3px 12px;border-radius:20px;font-size:.74rem;font-weight:600;}
     .c-minor   {background:#fef9c3;color:#854d0e;}
     .c-major   {background:#ffedd5;color:#9a3412;}
-    .c-grave   {background:#fee2e2;color:#991b1b;}
     .c-pending {background:#fef9c3;color:#854d0e;}
     .c-resolved{background:#dcfce7;color:#166534;}
     .c-review  {background:#e0e7ff;color:#3730a3;}
@@ -296,7 +294,6 @@
     .rl input{display:none;}
     .rl.sel-minor{border-color:#f59e0b;background:#fffbeb;color:#92400e;font-weight:600;}
     .rl.sel-major{border-color:#f97316;background:#fff7ed;color:#9a3412;font-weight:600;}
-    .rl.sel-grave{border-color:#dc2626;background:#fef2f2;color:#991b1b;font-weight:600;}
 
     /* ── Inner tabs ── */
     .itabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:20px;}
@@ -378,7 +375,6 @@
     }
     .modal-close:hover{background:rgba(255,255,255,.3);}
     .modal-body{padding:24px;overflow-y:auto;}
-    /* profile top */
     .mp-top{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
     .mp-avatar{
       width:56px;height:56px;border-radius:50%;
@@ -389,12 +385,10 @@
     .mp-info .mp-name{font-size:1.1rem;font-weight:700;}
     .mp-info .mp-num{font-size:.8rem;color:var(--text2);margin-top:2px;}
     .mp-info .mp-course{font-size:.8rem;color:var(--text2);}
-    /* info grid */
     .mp-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:22px;}
     .mp-field{background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:10px 14px;}
     .mp-field .mf-label{font-size:.7rem;color:var(--text3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px;}
     .mp-field .mf-val{font-size:.87rem;color:var(--text);font-weight:500;}
-    /* violation history */
     .mp-vh-title{font-size:.88rem;font-weight:700;margin-bottom:12px;color:var(--text);}
     .mp-vh-empty{text-align:center;padding:20px;color:var(--text3);font-size:.83rem;}
     .mp-vio-item{
@@ -420,11 +414,9 @@
     .sri-fill{height:100%;border-radius:20px;transition:width .6s ease;}
     .fill-minor  {background:#f59e0b;}
     .fill-major  {background:#f97316;}
-    .fill-grave  {background:#ef4444;}
     .fill-pending{background:#f59e0b;}
     .fill-review {background:#6366f1;}
     .fill-resolved{background:#22c55e;}
-    /* top violations */
     .tv-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
     .tv-item:last-child{border-bottom:none;}
     .tv-name{font-size:.84rem;color:var(--text);}
@@ -451,7 +443,6 @@
     <div class="lc-body">
       <h2>Admin Login</h2>
       <div class="lc-sub">Sign in to access the admin dashboard</div>
-
       <div class="lf">
         <label>Username</label>
         <div class="lf-wrap">
@@ -467,11 +458,9 @@
           <button class="eye" onclick="togglePw()" type="button">👁</button>
         </div>
       </div>
-
       <button class="btn-signin" onclick="doLogin()">
         <span>⬛</span> Sign In
       </button>
-
       <div class="lc-hint">
         <div class="ht">Default Credentials</div>
         Username: <strong>admin</strong><br/>
@@ -484,7 +473,6 @@
 
 <!-- ═══════════ APP ═══════════ -->
 <div id="app">
-  <!-- Topbar -->
   <div class="topbar">
     <div class="tb-left">
       <div class="tb-logo">
@@ -518,14 +506,10 @@
   </div>
 
   <div class="layout">
-    <!-- Sidebar -->
     <div class="sidebar">
-
-
       <div class="nav-item active" id="n-dashboard" onclick="go('dashboard','n-dashboard')">
         <span class="ni">⊞</span> Dashboard
       </div>
-
       <div class="sb-group">Students</div>
       <div class="nav-item" id="n-students" onclick="go('students','n-students')">
         <span class="ni">☰</span> All Students
@@ -533,7 +517,6 @@
       <div class="nav-item" id="n-register" onclick="go('register','n-register')">
         <span class="ni">👤</span> Register Student
       </div>
-
       <div class="sb-group">Violations</div>
       <div class="nav-item" id="n-violations" onclick="go('violations','n-violations')">
         <span class="ni">🔔</span> All Violations
@@ -543,7 +526,6 @@
       </div>
     </div>
 
-    <!-- Main -->
     <div class="main">
 
       <!-- ══ DASHBOARD ══ -->
@@ -554,7 +536,6 @@
             <div class="page-title">Overview</div>
           </div>
         </div>
-
         <div class="stat-row">
           <div class="stat-card">
             <div class="sc-l">
@@ -599,7 +580,7 @@
 
         <!-- STATS ROW -->
         <div class="stats-row">
-          <!-- By Category -->
+          <!-- By Category — ✅ Grave REMOVED -->
           <div class="stats-card">
             <div class="stats-card-title">By Category</div>
             <div id="stat-by-cat">
@@ -610,10 +591,6 @@
               <div class="stat-row-item">
                 <div class="sri-top"><span class="sri-label">Major</span><span class="sri-count" id="cat-major-n">0</span></div>
                 <div class="sri-bar"><div class="sri-fill fill-major" id="cat-major-b" style="width:0%"></div></div>
-              </div>
-              <div class="stat-row-item">
-                <div class="sri-top"><span class="sri-label">Grave</span><span class="sri-count" id="cat-grave-n">0</span></div>
-                <div class="sri-bar"><div class="sri-fill fill-grave" id="cat-grave-b" style="width:0%"></div></div>
               </div>
             </div>
           </div>
@@ -645,7 +622,6 @@
             </div>
           </div>
         </div>
-
       </div><!-- end dashboard -->
 
       <!-- ══ ALL STUDENTS ══ -->
@@ -657,12 +633,10 @@
           </div>
           <button class="btn btn-primary" onclick="go('register','n-register')">👤 Register Student</button>
         </div>
-
         <div class="search-box">
           <span>🔍</span>
           <input type="text" id="stu-search" placeholder="Search by name, student no., section, or course..." oninput="filterStudents()"/>
         </div>
-
         <div class="cc">
           <div class="cc-head">
             <div class="cc-title">☰ Student Records</div>
@@ -690,12 +664,10 @@
             <div class="page-title">Register Student</div>
           </div>
         </div>
-
         <div class="itabs">
           <button class="itab active" onclick="switchTab('t-manual-reg','page-register',this)">Manual Registration</button>
           <button class="itab" onclick="switchTab('t-esp32-reg','page-register',this)">Test ESP32 API</button>
         </div>
-
         <div class="tp active" id="t-manual-reg">
           <div class="cc">
             <div class="cc-head"><div class="cc-title">👤 Student Information</div></div>
@@ -724,7 +696,6 @@
                     <option>BS Computer Engineering</option>
                   </select>
                 </div>
-
                 <div class="fg">
                   <label>Year Level <span class="req">*</span></label>
                   <select class="fi" id="r-year">
@@ -754,7 +725,6 @@
             </div>
           </div>
         </div>
-
         <div class="tp" id="t-esp32-reg">
           <div class="infobox">
             <h4>📡 ESP32 Auto-Registration</h4>
@@ -790,22 +760,22 @@
           </div>
           <button class="btn btn-primary" onclick="go('log','n-log')">✏ Log Violation</button>
         </div>
-
         <div class="filter-row">
           <div class="search-box">
             <span>🔍</span>
             <input type="text" id="vio-search" placeholder="Search by name, student no., violation, section..." oninput="filterViolations()"/>
           </div>
+          <!-- ✅ Grave REMOVED from category filter -->
           <select class="fsel" id="vio-cat" onchange="filterViolations()">
             <option value="">All Categories</option>
-            <option>Minor</option><option>Major</option><option>Grave</option>
+            <option>Minor</option>
+            <option>Major</option>
           </select>
           <select class="fsel" id="vio-sts" onchange="filterViolations()">
             <option value="">All Statuses</option>
             <option>Pending</option><option>Resolved</option><option>Under Review</option>
           </select>
         </div>
-
         <div class="cc">
           <div class="cc-head">
             <div class="cc-title">🔔 Violation Records</div>
@@ -834,29 +804,24 @@
             <div class="page-title">Log Violation</div>
           </div>
         </div>
-
         <div class="itabs">
           <button class="itab active" onclick="switchTab('t-manual-log','page-log',this)">Manual Log</button>
           <button class="itab" onclick="switchTab('t-esp32-log','page-log',this)">Test ESP32 API</button>
         </div>
-
         <div class="tp active" id="t-manual-log">
           <div class="two-col">
-            <!-- LEFT -->
             <div class="cc">
               <div class="cc-head"><div class="cc-title">✏ Violation Information</div></div>
               <div class="cc-body">
                 <div style="display:flex;flex-direction:column;gap:16px">
-
                   <div class="fg">
                     <label>Student Number <span class="req">*</span></label>
                     <input class="fi" type="text" id="l-sn" placeholder="e.g. 2021-00123" oninput="previewStudent()"/>
                     <div class="fhint">Enter the student number to auto-fill student info</div>
                   </div>
-
                   <div class="fg">
                     <label>Violation Type <span class="req">*</span></label>
-                    <select class="fi" id="l-type">
+                    <select class="fi" id="l-type" onchange="autoCat()">
                       <option value="">Select violation type</option>
                       <option>Improper Uniform</option>
                       <option>Tardiness</option>
@@ -865,10 +830,12 @@
                       <option>Academic Dishonesty</option>
                       <option>Vandalism</option>
                       <option>Unauthorized Phone Use</option>
+                      <option>Haircut/Haircolor</option>
+                      <option>Prohibited Item</option>
                       <option>Other</option>
                     </select>
                   </div>
-
+                  <!-- ✅ Grave radio button REMOVED -->
                   <div class="fg">
                     <label>Category <span class="req">*</span></label>
                     <div class="radio-grp">
@@ -878,29 +845,22 @@
                       <label class="rl" id="rl-major" onclick="selCat('Major')">
                         <input type="radio" name="cat" value="Major"/> Major
                       </label>
-                      <label class="rl" id="rl-grave" onclick="selCat('Grave')">
-                        <input type="radio" name="cat" value="Grave"/> Grave
-                      </label>
                     </div>
                   </div>
-
                   <div class="fg">
                     <label>Description <span class="req">*</span></label>
                     <textarea class="fi" id="l-desc" rows="4" placeholder="Describe the violation in detail..." oninput="updCC()" maxlength="500"></textarea>
                     <div class="char-count"><span id="cc-num">0</span>/500</div>
                   </div>
-
                   <div class="fg">
                     <label>Reported By <span class="req">*</span></label>
                     <input class="fi" type="text" id="l-by" placeholder="e.g. Prof. Santos"/>
                   </div>
-
                   <div class="fg">
                     <label>Date & Time <span class="req">*</span></label>
                     <input class="fi" type="datetime-local" id="l-dt"/>
                   </div>
                 </div>
-
                 <div style="display:flex;gap:10px;margin-top:22px">
                   <button class="btn btn-primary" onclick="logViolation()">✏ Log Violation</button>
                   <button class="btn btn-outline" onclick="clearLogForm()">↺ Clear</button>
@@ -908,7 +868,6 @@
               </div>
             </div>
 
-            <!-- RIGHT -->
             <div style="display:flex;flex-direction:column;gap:16px">
               <div class="cc">
                 <div class="cc-head"><div class="cc-title">👤 Student Preview</div></div>
@@ -919,14 +878,13 @@
                   </div>
                 </div>
               </div>
-
+              <!-- ✅ Grave REMOVED from Category Guide -->
               <div class="cc">
                 <div class="cc-head"><div class="cc-title">📋 Category Guide</div></div>
                 <div class="cc-body">
                   <div class="catguide">
-                    <div class="cg-item"><span class="chip c-minor">Minor</span><span>Dress code, tardiness, minor disruptions, Improper Uniform, Haircut/Haircolor</span></div>
-                    <div class="cg-item"><span class="chip c-major">Major</span><span>Unauthorized absences, disruptive behavior, Prohibited Items,</span></div>
-                    <div class="cg-item"><span class="chip c-grave">Grave</span><span>Academic dishonesty, vandalism, bullying</span></div>
+                    <div class="cg-item"><span class="chip c-minor">Minor</span><span>Improper Uniform, Tardiness, Unauthorized Phone Use, Haircut/Haircolor</span></div>
+                    <div class="cg-item"><span class="chip c-major">Major</span><span>Prohibited Item, Unauthorized Absence, Disruptive Behavior, Academic Dishonesty, Vandalism</span></div>
                   </div>
                 </div>
               </div>
@@ -1000,7 +958,6 @@
   let allViolations = [];
   let selectedCat = '';
 
-  /* ── helpers ── */
   function $(id){ return document.getElementById(id); }
   function toast(msg, type='info'){
     const t = $('toast');
@@ -1020,15 +977,12 @@
     const el = $('l-dt'); if(el) el.value = loc;
   }
 
-  /* ── avatar ── */
   function toggleAvatar(){
-    const dd=$('av-dropdown');
-    dd.classList.toggle('open');
+    $('av-dropdown').classList.toggle('open');
   }
   function closeAvatar(){
     $('av-dropdown').classList.remove('open');
   }
-  // close when clicking outside
   document.addEventListener('click', function(e){
     const wrap=$('av-wrap');
     if(wrap && !wrap.contains(e.target)){
@@ -1036,7 +990,6 @@
     }
   });
 
-  /* ── login ── */
   function togglePw(){
     const i=$('lp'); i.type = i.type==='password'?'text':'password';
   }
@@ -1051,7 +1004,6 @@
   }
   $('lp').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
 
-  // Auto-login if already logged in
   if(localStorage.getItem('patts_logged_in')==='true'){
     $('login-page').style.display='none';
     $('app').style.display='flex';
@@ -1065,7 +1017,6 @@
     $('lu').value=''; $('lp').value='';
   }
 
-  /* ── nav ── */
   function go(name, navId){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
@@ -1085,18 +1036,27 @@
     btn.classList.add('active');
   }
 
-  /* ── category ── */
+  /* ✅ autoCat — auto-select Minor or Major when violation type changes */
+  function autoCat(){
+    const type = $('l-type').value;
+    const minor = ['Improper Uniform','Haircut/Haircolor','Tardiness','Unauthorized Phone Use'];
+    const major = ['Prohibited Item','Unauthorized Absence','Disruptive Behavior','Academic Dishonesty','Vandalism'];
+    if(minor.includes(type)) selCat('Minor');
+    else if(major.includes(type)) selCat('Major');
+    else if(type) selCat('Minor');
+  }
+
+  /* ✅ selCat — only Minor and Major */
   function selCat(v){
     selectedCat = v;
-    ['Minor','Major','Grave'].forEach(c=>{
+    ['Minor','Major'].forEach(c=>{
       const el=$('rl-'+c.toLowerCase());
-      el.className='rl';
-      if(c===v) el.className='rl sel-'+c.toLowerCase();
+      if(el){ el.className='rl'; if(c===v) el.className='rl sel-'+c.toLowerCase(); }
     });
   }
+
   function updCC(){ $('cc-num').textContent=$('l-desc').value.length; }
 
-  /* ── student preview ── */
   function previewStudent(){
     const sn=$('l-sn').value.trim();
     const wrap=$('sp-wrap');
@@ -1118,7 +1078,6 @@
     }
   }
 
-  /* ── dashboard ── */
   async function loadDashboard(){
     try{
       const r=await fetch('/api/stats'), d=await r.json();
@@ -1149,28 +1108,20 @@
         }
       }
     }catch(e){ toast('Cannot connect to server','error'); }
-
-    // render stats
     renderDashStats();
   }
 
   function renderDashStats(){
-    const total = allViolations.length || 1; // avoid divide by zero
-
-    // by category
+    /* ✅ Grave removed from stats */
     const minor   = allViolations.filter(v=>(v.category||'Minor')==='Minor').length;
     const major   = allViolations.filter(v=>(v.category||'')==='Major').length;
-    const grave   = allViolations.filter(v=>(v.category||'')==='Grave').length;
-    const catMax  = Math.max(minor, major, grave, 1);
+    const catMax  = Math.max(minor, major, 1);
 
     $('cat-minor-n').textContent = minor;
     $('cat-major-n').textContent = major;
-    $('cat-grave-n').textContent = grave;
     $('cat-minor-b').style.width = (minor/catMax*100)+'%';
     $('cat-major-b').style.width = (major/catMax*100)+'%';
-    $('cat-grave-b').style.width = (grave/catMax*100)+'%';
 
-    // by status
     const pending  = allViolations.filter(v=>(v.status||'Pending')==='Pending').length;
     const review   = allViolations.filter(v=>(v.status||'')==='Under Review').length;
     const resolved = allViolations.filter(v=>(v.status||'')==='Resolved').length;
@@ -1183,7 +1134,6 @@
     $('sts-review-b').style.width   = (review/stsMax*100)+'%';
     $('sts-resolved-b').style.width = (resolved/stsMax*100)+'%';
 
-    // top violations
     const counts = {};
     allViolations.forEach(v=>{
       const t = v.violationType||'Unknown';
@@ -1202,7 +1152,6 @@
     }
   }
 
-  /* ── students ── */
   async function loadStudents(){
     try{
       const r=await fetch('/api/students'), d=await r.json();
@@ -1258,13 +1207,9 @@
   function viewStu(sn){
     const s = allStudents.find(s=>s.studentNumber===sn);
     if(!s) return;
-
-    // initials avatar
     const parts = (s.name||'?').split(' ');
     const initials = parts.length>=2 ? parts[0][0]+parts[parts.length-1][0] : parts[0][0];
     $('mp-avatar').textContent = initials.toUpperCase();
-
-    // fill info
     $('mp-name').textContent    = s.name || '—';
     $('mp-num').textContent     = s.studentNumber || '—';
     $('mp-course').textContent  = s.course || '—';
@@ -1273,11 +1218,8 @@
     $('mp-email').textContent   = s.email || '—';
     $('mp-contact').textContent = s.contact || '—';
     $('mp-enrolled').textContent = s.registeredAt ? new Date(s.registeredAt).toLocaleDateString('en-PH') : '—';
-
-    // violations
     const viols = allViolations.filter(v=>v.studentNumber===sn);
     $('mp-total-vio').textContent = viols.length;
-
     const vlist = $('mp-vio-list');
     if(!viols.length){
       vlist.innerHTML='<div class="mp-vh-empty">No violations recorded</div>';
@@ -1294,7 +1236,6 @@
           </div>
         </div>`).join('');
     }
-
     $('profile-modal').classList.add('open');
   }
 
@@ -1304,7 +1245,6 @@
     }
   }
 
-  /* ── violations ── */
   async function loadViolations(){
     try{
       const r=await fetch('/api/violations'), d=await r.json();
@@ -1328,9 +1268,9 @@
       <td class="td-muted">${fmt(v.timestamp)}</td>
       <td style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <select class="fsel" style="padding:5px 8px;font-size:.75rem;border-radius:6px;" onchange="updateStatus('${v.id||v._id}',this.value)">
-          <option value="Pending"   ${(v.status||'Pending')==='Pending'   ?'selected':''}>Pending</option>
-          <option value="Resolved"  ${(v.status||'')==='Resolved'         ?'selected':''}>Resolved</option>
-          <option value="Under Review" ${(v.status||'')==='Under Review'  ?'selected':''}>Under Review</option>
+          <option value="Pending"      ${(v.status||'Pending')==='Pending'     ?'selected':''}>Pending</option>
+          <option value="Resolved"     ${(v.status||'')==='Resolved'           ?'selected':''}>Resolved</option>
+          <option value="Under Review" ${(v.status||'')==='Under Review'       ?'selected':''}>Under Review</option>
         </select>
         <span class="td-link" style="color:#dc2626;" onclick="delVio('${v.id||v._id}')">Delete</span>
       </td>
@@ -1359,7 +1299,6 @@
       const d=await r.json();
       if(d.success){
         toast(`Status updated to: ${status}`,'success');
-        // update local array so filter still works without full reload
         const v=allViolations.find(v=>(v.id||v._id)===id||(v._id&&v._id.toString()===id));
         if(v) v.status=status;
         loadDashboard();
@@ -1376,14 +1315,12 @@
     }catch(e){ toast('Server error','error'); }
   }
 
-  /* ── register ── */
   async function registerManual(){
     const fn=$('r-fn').value.trim(), ln=$('r-ln').value.trim();
     const body={
       studentNumber:$('r-sn').value.trim(),
       name:`${fn} ${ln}`.trim(),
       course:$('r-course').value,
-
       year:$('r-year').value,
       email:$('r-email').value.trim(),
       contact:$('r-contact').value.trim(),
@@ -1404,7 +1341,6 @@
     $('r-course').value=''; $('r-year').value='';
   }
 
-  /* ── log violation ── */
   async function logViolation(){
     const sn=$('l-sn').value.trim();
     const type=$('l-type').value;
@@ -1435,13 +1371,12 @@
   function clearLogForm(){
     ['l-sn','l-type','l-desc','l-by'].forEach(id=>$(id).value='');
     selectedCat='';
-    ['minor','major','grave'].forEach(c=>$('rl-'+c).className='rl');
+    ['minor','major'].forEach(c=>{ const el=$('rl-'+c); if(el) el.className='rl'; });
     $('cc-num').textContent='0';
     $('sp-wrap').innerHTML='<div class="sp-empty"><div class="spe-icon">👤</div><p>Enter a student number to preview student info</p></div>';
     setNow();
   }
 
-  /* ── test ESP32 ── */
   async function testRegAPI(){
     const body={studentNumber:$('te-sn').value.trim(),faceId:$('te-fi').value.trim(),name:$('te-name').value.trim(),course:$('te-course').value.trim(),section:$('te-sec').value.trim()};
     try{
