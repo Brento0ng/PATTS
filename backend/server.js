@@ -44,7 +44,7 @@ const violationSchema = new mongoose.Schema({
   course:        { type: String, default: 'N/A' },
   faceId:        { type: String, required: true },
   violationType: { type: String, default: 'General Violation' },
-  category:      { type: String, default: 'Minor' },
+  category:      { type: String, enum: ['Minor', 'Major'], default: 'Minor' },
   description:   { type: String, default: '' },
   recordedBy:    { type: String, default: 'ESP32 Device' },
   status:        { type: String, default: 'Pending' },
@@ -59,12 +59,10 @@ const Violation = mongoose.model('Violation', violationSchema);
 // ─────────────────────────────────────────────────────────────
 function getCategory(violationType) {
   const minor = ['Improper Uniform', 'Haircut/Haircolor', 'Tardiness', 'Unauthorized Phone Use'];
-  const major = ['Prohibited Item', 'Unauthorized Absence', 'Disruptive Behavior'];
-  const grave = ['Academic Dishonesty', 'Vandalism'];
+  const major = ['Prohibited Item', 'Unauthorized Absence', 'Disruptive Behavior', 'Academic Dishonesty', 'Vandalism'];
 
   if (minor.includes(violationType)) return 'Minor';
   if (major.includes(violationType)) return 'Major';
-  if (grave.includes(violationType)) return 'Grave';
   return 'Minor'; // default fallback
 }
 
