@@ -17,36 +17,28 @@
       --text3:  #9ca3af;
       --border: #e5e7eb;
       --sw:     220px;
+      --green:  #16a34a;
+      --orange: #ea580c;
     }
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
     /* ═══ LOGIN ═══ */
     #login-page{
-      min-height:100vh;
-      display:flex;flex-direction:column;align-items:center;justify-content:center;
-      position:relative;overflow:hidden;
-      background:#1a2f7a;
+      min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      position:relative;overflow:hidden;background:#1a2f7a;
     }
     #login-page .bg-img{
       position:absolute;inset:0;z-index:0;
       background-image:url('https://lh3.googleusercontent.com/p/AF1QipPw7BmDpwGEuVWbSJEz_oZ9KkHVUL5qONqtqU0=s1360-w1360-h1020');
-      background-size:cover;background-position:center;background-repeat:no-repeat;
+      background-size:cover;background-position:center;
     }
     #login-page .bg-overlay{
       position:absolute;inset:0;z-index:1;
       background:linear-gradient(135deg,rgba(20,42,130,0.80) 0%,rgba(35,70,200,0.75) 50%,rgba(20,42,130,0.80) 100%);
     }
-    .login-card{
-      background:var(--white);border-radius:14px;
-      width:440px;overflow:hidden;
-      box-shadow:0 24px 64px rgba(0,0,0,0.35);
-      position:relative;z-index:2;
-    }
-    .lc-head{
-      background:var(--navy);
-      padding:26px 32px;text-align:center;
-    }
+    .login-card{background:var(--white);border-radius:14px;width:440px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.35);position:relative;z-index:2;}
+    .lc-head{background:var(--navy);padding:26px 32px;text-align:center;}
     .lc-head h1{color:white;font-size:1.2rem;font-weight:700;}
     .lc-head p{color:rgba(255,255,255,.65);font-size:.8rem;margin-top:4px;}
     .lc-body{padding:30px 32px;}
@@ -56,25 +48,12 @@
     .lf label{display:block;font-size:.82rem;font-weight:500;margin-bottom:6px;}
     .lf-wrap{position:relative;}
     .lf-wrap .li{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:.88rem;}
-    .lf-wrap input{
-      width:100%;padding:11px 14px 11px 36px;
-      border:1px solid var(--border);border-radius:8px;
-      font-family:'Inter',sans-serif;font-size:.9rem;color:var(--text);
-      background:var(--white);outline:none;transition:.2s;
-    }
+    .lf-wrap input{width:100%;padding:11px 14px 11px 36px;border:1px solid var(--border);border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;color:var(--text);background:var(--white);outline:none;transition:.2s;}
     .lf-wrap input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(30,58,138,.1);}
     .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);}
-    .btn-signin{
-      width:100%;padding:12px;margin-top:6px;
-      background:var(--navy);color:white;border:none;border-radius:8px;
-      font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;
-      cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;
-    }
+    .btn-signin{width:100%;padding:12px;margin-top:6px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;}
     .btn-signin:hover{background:var(--navy2);box-shadow:0 4px 16px rgba(30,58,138,.4);}
-    .lc-hint{
-      background:#f8faff;border:1px solid var(--border);border-radius:8px;
-      padding:12px 16px;margin-top:18px;font-size:.78rem;color:var(--text2);
-    }
+    .lc-hint{background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-top:18px;font-size:.78rem;color:var(--text2);}
     .lc-hint .ht{font-weight:600;color:var(--text2);margin-bottom:4px;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;}
     .login-footer{color:rgba(255,255,255,.55);font-size:.74rem;margin-top:18px;position:relative;z-index:2;}
 
@@ -82,12 +61,7 @@
     #app{display:none;min-height:100vh;flex-direction:column;}
 
     /* ── Topbar ── */
-    .topbar{
-      background:var(--navy);height:56px;
-      display:flex;align-items:center;justify-content:space-between;
-      padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:200;
-      box-shadow:0 2px 8px rgba(0,0,0,.2);
-    }
+    .topbar{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.2);}
     .tb-left{display:flex;align-items:center;gap:0;}
     .tb-logo{color:white;line-height:1.15;margin-right:24px;flex-shrink:0;}
     .tb-logo .tn{font-size:.9rem;font-weight:700;}
@@ -98,52 +72,19 @@
     .tb-status{display:flex;align-items:center;gap:6px;font-size:.74rem;color:rgba(255,255,255,.8);}
     .tb-dot{width:7px;height:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 6px #22c55e;animation:blink 2s infinite;}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-    .btn-logout{
-      display:flex;align-items:center;gap:7px;
-      background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
-      color:white;padding:7px 16px;border-radius:7px;
-      font-family:'Inter',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;transition:.2s;
-    }
+    .btn-logout{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:white;padding:7px 16px;border-radius:7px;font-family:'Inter',sans-serif;font-size:.82rem;font-weight:500;cursor:pointer;transition:.2s;}
     .btn-logout:hover{background:rgba(255,255,255,.25);}
-    /* ── Avatar ── */
     .avatar-wrap{position:relative;}
-    .avatar-btn{
-      width:36px;height:36px;border-radius:50%;
-      background:rgba(255,255,255,0.2);
-      border:2px solid rgba(255,255,255,0.4);
-      color:white;font-size:.9rem;font-weight:700;
-      display:flex;align-items:center;justify-content:center;
-      cursor:pointer;transition:.2s;flex-shrink:0;
-      font-family:'Inter',sans-serif;
-    }
+    .avatar-btn{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.4);color:white;font-size:.9rem;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:.2s;flex-shrink:0;font-family:'Inter',sans-serif;}
     .avatar-btn:hover{background:rgba(255,255,255,0.32);}
-    .avatar-dropdown{
-      display:none;position:absolute;top:46px;right:0;
-      background:var(--white);border:1px solid var(--border);
-      border-radius:10px;min-width:200px;
-      box-shadow:0 8px 24px rgba(0,0,0,0.15);z-index:999;
-      overflow:hidden;
-    }
+    .avatar-dropdown{display:none;position:absolute;top:46px;right:0;background:var(--white);border:1px solid var(--border);border-radius:10px;min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,0.15);z-index:999;overflow:hidden;}
     .avatar-dropdown.open{display:block;}
-    .av-head{
-      background:var(--navy);padding:14px 16px;
-      display:flex;align-items:center;gap:10px;
-    }
-    .av-head .av-circle{
-      width:38px;height:38px;border-radius:50%;
-      background:rgba(255,255,255,0.2);
-      border:2px solid rgba(255,255,255,0.4);
-      display:flex;align-items:center;justify-content:center;
-      font-size:1.1rem;color:white;flex-shrink:0;
-    }
+    .av-head{background:var(--navy);padding:14px 16px;display:flex;align-items:center;gap:10px;}
+    .av-head .av-circle{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,0.2);border:2px solid rgba(255,255,255,0.4);display:flex;align-items:center;justify-content:center;font-size:1.1rem;color:white;flex-shrink:0;}
     .av-head .av-info .av-name{color:white;font-size:.88rem;font-weight:600;}
     .av-head .av-info .av-role{color:rgba(255,255,255,.65);font-size:.73rem;}
     .av-divider{height:1px;background:var(--border);}
-    .av-item{
-      display:flex;align-items:center;gap:10px;
-      padding:11px 16px;cursor:pointer;
-      font-size:.84rem;color:var(--text2);transition:.15s;
-    }
+    .av-item{display:flex;align-items:center;gap:10px;padding:11px 16px;cursor:pointer;font-size:.84rem;color:var(--text2);transition:.15s;}
     .av-item:hover{background:#f5f8ff;color:var(--navy);}
     .av-item.danger{color:#dc2626;}
     .av-item.danger:hover{background:#fef2f2;color:#dc2626;}
@@ -152,19 +93,9 @@
     .layout{display:flex;margin-top:56px;min-height:calc(100vh - 56px);}
 
     /* ── Sidebar ── */
-    .sidebar{
-      width:var(--sw);background:var(--white);
-      border-right:1px solid var(--border);
-      position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;z-index:100;
-      padding:10px 0;
-    }
+    .sidebar{width:var(--sw);background:var(--white);border-right:1px solid var(--border);position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;z-index:100;padding:10px 0;}
     .sb-group{padding:12px 18px 4px;font-size:.68rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
-    .nav-item{
-      display:flex;align-items:center;gap:10px;
-      padding:10px 18px;cursor:pointer;
-      color:var(--text2);font-size:.875rem;font-weight:400;
-      transition:.15s;border-left:3px solid transparent;user-select:none;
-    }
+    .nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;color:var(--text2);font-size:.875rem;font-weight:400;transition:.15s;border-left:3px solid transparent;user-select:none;}
     .nav-item:hover{background:#f0f4ff;color:var(--navy);}
     .nav-item.active{background:#eff6ff;color:var(--navy);border-left-color:var(--navy);font-weight:600;}
     .nav-item .ni{font-size:.95rem;width:18px;text-align:center;flex-shrink:0;}
@@ -172,25 +103,18 @@
 
     /* ── Main ── */
     .main{margin-left:var(--sw);flex:1;padding:28px;min-width:0;}
-
-    /* ── Pages ── */
     .page{display:none;}
     .page.active{display:block;}
 
     /* ── Page header ── */
     .ph{margin-bottom:22px;display:flex;align-items:flex-start;justify-content:space-between;}
-    .ph-l{}
     .breadcrumb{font-size:.73rem;color:var(--text3);margin-bottom:3px;}
     .breadcrumb span{color:var(--navy);font-weight:500;}
     .page-title{font-size:1.55rem;font-weight:700;color:var(--text);}
 
     /* ── Stat cards ── */
     .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px;}
-    .stat-card{
-      background:var(--navy);border-radius:10px;
-      padding:20px 22px;display:flex;align-items:center;justify-content:space-between;
-      box-shadow:0 4px 14px rgba(30,58,138,.22);
-    }
+    .stat-card{background:var(--navy);border-radius:10px;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 14px rgba(30,58,138,.22);}
     .sc-l .sc-num{color:white;font-size:2rem;font-weight:700;line-height:1;}
     .sc-l .sc-lbl{color:rgba(255,255,255,.7);font-size:.77rem;margin-top:5px;}
     .sc-icon{width:48px;height:48px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
@@ -204,30 +128,18 @@
     .cc-flush{padding:0;}
 
     /* ── Search / Filter ── */
-    .search-box{
-      background:var(--white);border:1px solid var(--border);border-radius:8px;
-      padding:10px 16px;display:flex;align-items:center;gap:10px;margin-bottom:18px;
-    }
+    .search-box{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px;margin-bottom:18px;}
     .search-box span{color:var(--text3);}
     .search-box input{border:none;outline:none;font-family:'Inter',sans-serif;font-size:.87rem;color:var(--text);width:100%;background:transparent;}
     .search-box input::placeholder{color:var(--text3);}
     .filter-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px;}
     .filter-row .search-box{flex:1;margin-bottom:0;min-width:220px;}
-    .fsel{
-      background:var(--white);border:1px solid var(--border);border-radius:8px;
-      padding:10px 14px;font-family:'Inter',sans-serif;font-size:.84rem;color:var(--text2);
-      outline:none;cursor:pointer;
-    }
+    .fsel{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Inter',sans-serif;font-size:.84rem;color:var(--text2);outline:none;cursor:pointer;}
     .fsel:focus{border-color:var(--navy);}
 
     /* ── Table ── */
     table{width:100%;border-collapse:collapse;}
-    thead th{
-      padding:11px 16px;text-align:left;
-      font-size:.71rem;font-weight:700;color:var(--text2);
-      text-transform:uppercase;letter-spacing:.8px;
-      border-bottom:2px solid var(--border);background:#f9fafb;
-    }
+    thead th{padding:11px 16px;text-align:left;font-size:.71rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;border-bottom:2px solid var(--border);background:#f9fafb;}
     tbody tr{border-bottom:1px solid var(--border);transition:.12s;}
     tbody tr:last-child{border-bottom:none;}
     tbody tr:hover{background:#f5f8ff;}
@@ -248,14 +160,14 @@
     .c-blue    {background:#dbeafe;color:#1e40af;}
     .c-green0  {background:#dcfce7;color:#166534;}
     .c-green1  {background:#fef9c3;color:#854d0e;}
+    /* enrollment chips */
+    .c-enroll-pending {background:#fef9c3;color:#854d0e;}
+    .c-enroll-paid    {background:#dbeafe;color:#1e40af;}
+    .c-enroll-done    {background:#dcfce7;color:#166534;}
+    .c-enroll-cancelled{background:#fee2e2;color:#991b1b;}
 
     /* ── Buttons ── */
-    .btn{
-      display:inline-flex;align-items:center;gap:7px;
-      padding:9px 20px;border-radius:8px;border:none;
-      cursor:pointer;font-family:'Inter',sans-serif;
-      font-size:.85rem;font-weight:600;transition:.2s;
-    }
+    .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:8px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;transition:.2s;}
     .btn-primary{background:var(--navy);color:white;}
     .btn-primary:hover{background:var(--navy2);box-shadow:0 3px 10px rgba(30,58,138,.3);}
     .btn-outline{background:var(--white);color:var(--navy);border:1px solid var(--border);}
@@ -264,6 +176,8 @@
     .btn-ghost:hover{background:rgba(255,255,255,.25);}
     .btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;}
     .btn-danger:hover{background:#fee2e2;}
+    .btn-success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}
+    .btn-success:hover{background:#bbf7d0;}
     .btn-sm{padding:6px 14px;font-size:.78rem;border-radius:6px;}
 
     /* ── Form ── */
@@ -272,24 +186,16 @@
     .fg{display:flex;flex-direction:column;gap:7px;}
     .fg label{font-size:.82rem;font-weight:600;color:var(--text);}
     .fg label .req{color:#dc2626;margin-left:2px;}
-    .fi{
-      background:var(--white);border:1px solid var(--border);border-radius:8px;
-      padding:11px 14px;font-family:'Inter',sans-serif;font-size:.9rem;color:var(--text);
-      outline:none;transition:.2s;width:100%;
-    }
+    .fi{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:11px 14px;font-family:'Inter',sans-serif;font-size:.9rem;color:var(--text);outline:none;transition:.2s;width:100%;}
     .fi:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(30,58,138,.1);}
     .fi::placeholder{color:var(--text3);}
     textarea.fi{resize:vertical;}
     .fhint{font-size:.74rem;color:var(--text3);margin-top:2px;}
     .char-count{text-align:right;font-size:.72rem;color:var(--text3);margin-top:2px;}
 
-    /* ── Radio category ── */
+    /* ── Radio ── */
     .radio-grp{display:flex;gap:10px;flex-wrap:wrap;}
-    .rl{
-      display:flex;align-items:center;gap:7px;cursor:pointer;
-      font-size:.88rem;color:var(--text2);
-      padding:8px 16px;border:1px solid var(--border);border-radius:8px;transition:.15s;
-    }
+    .rl{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.88rem;color:var(--text2);padding:8px 16px;border:1px solid var(--border);border-radius:8px;transition:.15s;}
     .rl:hover{border-color:var(--navy);background:#f0f4ff;}
     .rl input{display:none;}
     .rl.sel-minor{border-color:#f59e0b;background:#fffbeb;color:#92400e;font-weight:600;}
@@ -297,12 +203,7 @@
 
     /* ── Inner tabs ── */
     .itabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:20px;}
-    .itab{
-      padding:9px 22px;border:none;background:transparent;
-      color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;
-      font-size:.85rem;font-weight:500;
-      border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s;
-    }
+    .itab{padding:9px 22px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s;}
     .itab:hover{color:var(--navy);}
     .itab.active{color:var(--navy);border-bottom-color:var(--navy);font-weight:700;}
     .tp{display:none;}
@@ -335,53 +236,24 @@
     .empty p{font-size:.85rem;}
 
     /* ── Toast ── */
-    #toast{
-      position:fixed;bottom:24px;right:24px;
-      padding:12px 20px;border-radius:8px;font-size:.87rem;font-weight:500;
-      z-index:9999;opacity:0;transform:translateY(14px);
-      transition:.3s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.15);
-    }
+    #toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:8px;font-size:.87rem;font-weight:500;z-index:9999;opacity:0;transform:translateY(14px);transition:.3s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.15);}
     #toast.show{opacity:1;transform:translateY(0);}
     #toast.success{background:#16a34a;color:white;}
     #toast.error{background:#dc2626;color:white;}
     #toast.info{background:var(--navy);color:white;}
 
     /* ═══ STUDENT PROFILE MODAL ═══ */
-    .modal-overlay{
-      display:none;position:fixed;inset:0;z-index:1000;
-      background:rgba(0,0,0,0.45);
-      align-items:center;justify-content:center;
-    }
+    .modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.45);align-items:center;justify-content:center;}
     .modal-overlay.open{display:flex;}
-    .modal{
-      background:var(--white);border-radius:14px;
-      width:520px;max-width:95vw;max-height:90vh;
-      overflow:hidden;display:flex;flex-direction:column;
-      box-shadow:0 20px 60px rgba(0,0,0,0.3);
-      animation:modalIn .25s ease;
-    }
+    .modal{background:var(--white);border-radius:14px;width:520px;max-width:95vw;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:modalIn .25s ease;}
     @keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    .modal-head{
-      background:var(--navy);padding:16px 20px;
-      display:flex;align-items:center;justify-content:space-between;
-      flex-shrink:0;
-    }
+    .modal-head{background:var(--navy);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
     .modal-head h3{color:white;font-size:.95rem;font-weight:600;}
-    .modal-close{
-      background:rgba(255,255,255,.15);border:none;color:white;
-      width:28px;height:28px;border-radius:50%;cursor:pointer;
-      font-size:1rem;display:flex;align-items:center;justify-content:center;
-      transition:.2s;
-    }
+    .modal-close{background:rgba(255,255,255,.15);border:none;color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:.2s;}
     .modal-close:hover{background:rgba(255,255,255,.3);}
     .modal-body{padding:24px;overflow-y:auto;}
     .mp-top{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
-    .mp-avatar{
-      width:56px;height:56px;border-radius:50%;
-      background:var(--navy);color:white;
-      display:flex;align-items:center;justify-content:center;
-      font-size:1.2rem;font-weight:700;flex-shrink:0;
-    }
+    .mp-avatar{width:56px;height:56px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:700;flex-shrink:0;}
     .mp-info .mp-name{font-size:1.1rem;font-weight:700;}
     .mp-info .mp-num{font-size:.8rem;color:var(--text2);margin-top:2px;}
     .mp-info .mp-course{font-size:.8rem;color:var(--text2);}
@@ -391,17 +263,13 @@
     .mp-field .mf-val{font-size:.87rem;color:var(--text);font-weight:500;}
     .mp-vh-title{font-size:.88rem;font-weight:700;margin-bottom:12px;color:var(--text);}
     .mp-vh-empty{text-align:center;padding:20px;color:var(--text3);font-size:.83rem;}
-    .mp-vio-item{
-      border:1px solid var(--border);border-radius:8px;
-      padding:12px 14px;margin-bottom:10px;
-      display:flex;align-items:flex-start;justify-content:space-between;gap:12px;
-    }
+    .mp-vio-item{border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
     .mp-vio-item:last-child{margin-bottom:0;}
     .mp-vio-left .mv-type{font-size:.87rem;font-weight:600;color:var(--text);}
     .mp-vio-left .mv-date{font-size:.75rem;color:var(--text3);margin-top:2px;}
     .mp-vio-right{display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0;}
 
-    /* ═══ DASHBOARD STATS CARDS ═══ */
+    /* ═══ DASHBOARD STATS ═══ */
     .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
     .stats-card{background:var(--white);border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
     .stats-card-title{font-size:.7rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
@@ -412,21 +280,41 @@
     .sri-count{font-size:.84rem;font-weight:700;color:var(--text);}
     .sri-bar{height:5px;border-radius:20px;background:var(--border);}
     .sri-fill{height:100%;border-radius:20px;transition:width .6s ease;}
-    .fill-minor  {background:#f59e0b;}
-    .fill-major  {background:#f97316;}
+    .fill-minor{background:#f59e0b;}
+    .fill-major{background:#f97316;}
     .fill-pending{background:#f59e0b;}
-    .fill-review {background:#6366f1;}
+    .fill-review{background:#6366f1;}
     .fill-resolved{background:#22c55e;}
     .tv-item{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);}
     .tv-item:last-child{border-bottom:none;}
     .tv-name{font-size:.84rem;color:var(--text);}
-    .tv-count{
-      background:var(--navy);color:white;
-      font-size:.75rem;font-weight:700;
-      width:24px;height:24px;border-radius:50%;
-      display:flex;align-items:center;justify-content:center;
-      flex-shrink:0;
-    }
+    .tv-count{background:var(--navy);color:white;font-size:.75rem;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+
+    /* ═══ ENROLLMENT PAGE SPECIFIC ═══ */
+    .enroll-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
+    .enroll-stat{background:var(--white);border-radius:10px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;}
+    .enroll-stat .es-num{font-size:1.6rem;font-weight:700;line-height:1;}
+    .enroll-stat .es-lbl{font-size:.73rem;color:var(--text2);margin-top:3px;}
+    .enroll-stat .es-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+    .es-orange .es-num{color:#ea580c;}
+    .es-orange .es-icon{background:#fff7ed;}
+    .es-blue .es-num{color:#1e40af;}
+    .es-blue .es-icon{background:#dbeafe;}
+    .es-green .es-num{color:#166534;}
+    .es-green .es-icon{background:#dcfce7;}
+    .es-red .es-num{color:#991b1b;}
+    .es-red .es-icon{background:#fee2e2;}
+
+    /* payment confirm button animation */
+    .btn-pay{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:6px;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:.2s;}
+    .btn-pay:hover{background:#bbf7d0;transform:scale(1.03);}
+    .btn-pay:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+    .btn-cancel-enroll{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:6px;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:.2s;}
+    .btn-cancel-enroll:hover{background:#fee2e2;}
+
+    /* polling badge */
+    .polling-badge{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;color:var(--text3);}
+    .poll-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b;animation:blink 1.2s infinite;}
   </style>
 </head>
 <body>
@@ -445,10 +333,7 @@
       <div class="lc-sub">Sign in to access the admin dashboard</div>
       <div class="lf">
         <label>Username</label>
-        <div class="lf-wrap">
-          <span class="li">👤</span>
-          <input type="text" id="lu" placeholder="Enter username"/>
-        </div>
+        <div class="lf-wrap"><span class="li">👤</span><input type="text" id="lu" placeholder="Enter username"/></div>
       </div>
       <div class="lf">
         <label>Password</label>
@@ -458,13 +343,10 @@
           <button class="eye" onclick="togglePw()" type="button">👁</button>
         </div>
       </div>
-      <button class="btn-signin" onclick="doLogin()">
-        <span>⬛</span> Sign In
-      </button>
+      <button class="btn-signin" onclick="doLogin()"><span>⬛</span> Sign In</button>
       <div class="lc-hint">
         <div class="ht">Default Credentials</div>
-        Username: <strong>admin</strong><br/>
-        Password: <strong>patts2024</strong>
+        Username: <strong>admin</strong><br/>Password: <strong>patts2024</strong>
       </div>
     </div>
   </div>
@@ -475,10 +357,7 @@
 <div id="app">
   <div class="topbar">
     <div class="tb-left">
-      <div class="tb-logo">
-        <div class="tn">PATTS College</div>
-        <div class="ts">of Aeronautics</div>
-      </div>
+      <div class="tb-logo"><div class="tn">PATTS College</div><div class="ts">of Aeronautics</div></div>
       <div class="tb-divider"></div>
       <div class="tb-title">Student Violation Tracking System</div>
     </div>
@@ -490,10 +369,7 @@
         <div class="avatar-dropdown" id="av-dropdown">
           <div class="av-head">
             <div class="av-circle">A</div>
-            <div class="av-info">
-              <div class="av-name">Administrator</div>
-              <div class="av-role">PATTS Admin</div>
-            </div>
+            <div class="av-info"><div class="av-name">Administrator</div><div class="av-role">PATTS Admin</div></div>
           </div>
           <div class="av-divider"></div>
           <div class="av-item" onclick="closeAvatar()">👤 &nbsp;Profile</div>
@@ -524,6 +400,10 @@
       <div class="nav-item" id="n-log" onclick="go('log','n-log')">
         <span class="ni">✏</span> Log Violation
       </div>
+      <div class="sb-group">Enrollment</div>
+      <div class="nav-item" id="n-enrollment" onclick="go('enrollment','n-enrollment')">
+        <span class="ni">🎓</span> Enrollments
+      </div>
     </div>
 
     <div class="main">
@@ -538,28 +418,18 @@
         </div>
         <div class="stat-row">
           <div class="stat-card">
-            <div class="sc-l">
-              <div class="sc-num" id="s-students">—</div>
-              <div class="sc-lbl">Total Students Registered</div>
-            </div>
+            <div class="sc-l"><div class="sc-num" id="s-students">—</div><div class="sc-lbl">Total Students Registered</div></div>
             <div class="sc-icon">🎓</div>
           </div>
           <div class="stat-card">
-            <div class="sc-l">
-              <div class="sc-num" id="s-violations">—</div>
-              <div class="sc-lbl">Total Violations</div>
-            </div>
+            <div class="sc-l"><div class="sc-num" id="s-violations">—</div><div class="sc-lbl">Total Violations</div></div>
             <div class="sc-icon">🔔</div>
           </div>
           <div class="stat-card">
-            <div class="sc-l">
-              <div class="sc-num" id="s-today">—</div>
-              <div class="sc-lbl">Today's Violations</div>
-            </div>
+            <div class="sc-l"><div class="sc-num" id="s-today">—</div><div class="sc-lbl">Today's Violations</div></div>
             <div class="sc-icon">📅</div>
           </div>
         </div>
-
         <div class="cc">
           <div class="cc-head">
             <div class="cc-title">☰ Recent Violations</div>
@@ -567,23 +437,15 @@
           </div>
           <div class="cc-flush">
             <table>
-              <thead><tr>
-                <th>Student No.</th><th>Name</th><th>Violation</th>
-                <th>Category</th><th>Status</th><th>Date & Time</th>
-              </tr></thead>
-              <tbody id="d-tbody">
-                <tr><td colspan="6"><div class="empty"><div class="ei">📋</div><p>No violations recorded yet</p></div></td></tr>
-              </tbody>
+              <thead><tr><th>Student No.</th><th>Name</th><th>Violation</th><th>Category</th><th>Status</th><th>Date & Time</th></tr></thead>
+              <tbody id="d-tbody"><tr><td colspan="6"><div class="empty"><div class="ei">📋</div><p>No violations recorded yet</p></div></td></tr></tbody>
             </table>
           </div>
         </div>
-
-        <!-- STATS ROW -->
         <div class="stats-row">
-          <!-- By Category — ✅ Grave REMOVED -->
           <div class="stats-card">
             <div class="stats-card-title">By Category</div>
-            <div id="stat-by-cat">
+            <div>
               <div class="stat-row-item">
                 <div class="sri-top"><span class="sri-label">Minor</span><span class="sri-count" id="cat-minor-n">0</span></div>
                 <div class="sri-bar"><div class="sri-fill fill-minor" id="cat-minor-b" style="width:0%"></div></div>
@@ -594,8 +456,6 @@
               </div>
             </div>
           </div>
-
-          <!-- By Status -->
           <div class="stats-card">
             <div class="stats-card-title">By Status</div>
             <div>
@@ -613,44 +473,26 @@
               </div>
             </div>
           </div>
-
-          <!-- Top Violations -->
           <div class="stats-card">
             <div class="stats-card-title">Top Violations</div>
-            <div id="top-violations-list">
-              <div class="mp-vh-empty">No data yet</div>
-            </div>
+            <div id="top-violations-list"><div class="mp-vh-empty">No data yet</div></div>
           </div>
         </div>
-      </div><!-- end dashboard -->
+      </div>
 
       <!-- ══ ALL STUDENTS ══ -->
       <div class="page" id="page-students">
         <div class="ph">
-          <div class="ph-l">
-            <div class="breadcrumb"><span>Students</span></div>
-            <div class="page-title">All Students</div>
-          </div>
+          <div class="ph-l"><div class="breadcrumb"><span>Students</span></div><div class="page-title">All Students</div></div>
           <button class="btn btn-primary" onclick="go('register','n-register')">👤 Register Student</button>
         </div>
-        <div class="search-box">
-          <span>🔍</span>
-          <input type="text" id="stu-search" placeholder="Search by name, student no., section, or course..." oninput="filterStudents()"/>
-        </div>
+        <div class="search-box"><span>🔍</span><input type="text" id="stu-search" placeholder="Search by name, student no., section, or course..." oninput="filterStudents()"/></div>
         <div class="cc">
-          <div class="cc-head">
-            <div class="cc-title">☰ Student Records</div>
-            <span class="cc-badge" id="stu-count">0</span>
-          </div>
+          <div class="cc-head"><div class="cc-title">☰ Student Records</div><span class="cc-badge" id="stu-count">0</span></div>
           <div class="cc-flush">
             <table>
-              <thead><tr>
-                <th>Student No.</th><th>Name</th><th>Course</th>
-                <th>Year</th><th>Violations</th><th>Actions</th>
-              </tr></thead>
-              <tbody id="stu-tbody">
-                <tr><td colspan="6"><div class="empty"><div class="ei">👤</div><p>No students registered yet</p></div></td></tr>
-              </tbody>
+              <thead><tr><th>Student No.</th><th>Name</th><th>Course</th><th>Year</th><th>Violations</th><th>Actions</th></tr></thead>
+              <tbody id="stu-tbody"><tr><td colspan="6"><div class="empty"><div class="ei">👤</div><p>No students registered yet</p></div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -659,10 +501,7 @@
       <!-- ══ REGISTER ══ -->
       <div class="page" id="page-register">
         <div class="ph">
-          <div class="ph-l">
-            <div class="breadcrumb">Students / <span>Register</span></div>
-            <div class="page-title">Register Student</div>
-          </div>
+          <div class="ph-l"><div class="breadcrumb">Students / <span>Register</span></div><div class="page-title">Register Student</div></div>
         </div>
         <div class="itabs">
           <button class="itab active" onclick="switchTab('t-manual-reg','page-register',this)">Manual Registration</button>
@@ -673,18 +512,9 @@
             <div class="cc-head"><div class="cc-title">👤 Student Information</div></div>
             <div class="cc-body">
               <div class="form-grid" style="max-width:680px">
-                <div class="fg fg-full">
-                  <label>Student Number <span class="req">*</span></label>
-                  <input class="fi" type="text" id="r-sn" placeholder="e.g. 2024-00001"/>
-                </div>
-                <div class="fg">
-                  <label>First Name <span class="req">*</span></label>
-                  <input class="fi" type="text" id="r-fn" placeholder="Enter first name"/>
-                </div>
-                <div class="fg">
-                  <label>Last Name <span class="req">*</span></label>
-                  <input class="fi" type="text" id="r-ln" placeholder="Enter last name"/>
-                </div>
+                <div class="fg fg-full"><label>Student Number <span class="req">*</span></label><input class="fi" type="text" id="r-sn" placeholder="e.g. 2024-00001"/></div>
+                <div class="fg"><label>First Name <span class="req">*</span></label><input class="fi" type="text" id="r-fn" placeholder="Enter first name"/></div>
+                <div class="fg"><label>Last Name <span class="req">*</span></label><input class="fi" type="text" id="r-ln" placeholder="Enter last name"/></div>
                 <div class="fg">
                   <label>Course <span class="req">*</span></label>
                   <select class="fi" id="r-course">
@@ -693,7 +523,7 @@
                     <option>BS Avionics Technology</option>
                     <option>BS Air Transportation</option>
                     <option>BS Industrial Engineering</option>
-                    <option>BS Aircraft Maintenance Technonology</option>
+                    <option>BS Aircraft Maintenance Technology</option>
                     <option>BS Tourism Management</option>
                     <option>BS Airline Business Administration</option>
                     <option>Grade 11</option>
@@ -709,14 +539,8 @@
                     <option>Senior High School</option>
                   </select>
                 </div>
-                <div class="fg">
-                  <label>Email Address <span class="req">*</span></label>
-                  <input class="fi" type="email" id="r-email" placeholder="student@patts.edu.ph"/>
-                </div>
-                <div class="fg">
-                  <label>Contact Number <span class="req">*</span></label>
-                  <input class="fi" type="text" id="r-contact" placeholder="09XXXXXXXXX"/>
-                </div>
+                <div class="fg"><label>Email Address <span class="req">*</span></label><input class="fi" type="email" id="r-email" placeholder="student@patts.edu.ph"/></div>
+                <div class="fg"><label>Contact Number <span class="req">*</span></label><input class="fi" type="text" id="r-contact" placeholder="09XXXXXXXXX"/></div>
                 <div class="fg fg-full">
                   <label>Face ID (from HuskyLens) <span class="req">*</span></label>
                   <input class="fi" type="text" id="r-fid" placeholder="e.g. 1"/>
@@ -733,8 +557,7 @@
         <div class="tp" id="t-esp32-reg">
           <div class="infobox">
             <h4>📡 ESP32 Auto-Registration</h4>
-            <p>ESP32 sends POST to <code>http://YOUR_IP:3000/api/register</code><br/>
-            Fields: <code>studentNumber</code>, <code>faceId</code>, <code>name</code>, <code>course</code>, <code>section</code></p>
+            <p>ESP32 sends POST to <code>/api/register</code><br/>Fields: <code>studentNumber</code>, <code>faceId</code>, <code>name</code>, <code>course</code>, <code>section</code></p>
           </div>
           <div class="cc">
             <div class="cc-head"><div class="cc-title">📡 Simulate ESP32 Request</div></div>
@@ -759,22 +582,14 @@
       <!-- ══ ALL VIOLATIONS ══ -->
       <div class="page" id="page-violations">
         <div class="ph">
-          <div class="ph-l">
-            <div class="breadcrumb"><span>Violations</span></div>
-            <div class="page-title">All Violations</div>
-          </div>
+          <div class="ph-l"><div class="breadcrumb"><span>Violations</span></div><div class="page-title">All Violations</div></div>
           <button class="btn btn-primary" onclick="go('log','n-log')">✏ Log Violation</button>
         </div>
         <div class="filter-row">
-          <div class="search-box">
-            <span>🔍</span>
-            <input type="text" id="vio-search" placeholder="Search by name, student no., violation, section..." oninput="filterViolations()"/>
-          </div>
-          <!-- ✅ Grave REMOVED from category filter -->
+          <div class="search-box"><span>🔍</span><input type="text" id="vio-search" placeholder="Search by name, student no., violation..." oninput="filterViolations()"/></div>
           <select class="fsel" id="vio-cat" onchange="filterViolations()">
             <option value="">All Categories</option>
-            <option>Minor</option>
-            <option>Major</option>
+            <option>Minor</option><option>Major</option>
           </select>
           <select class="fsel" id="vio-sts" onchange="filterViolations()">
             <option value="">All Statuses</option>
@@ -782,20 +597,11 @@
           </select>
         </div>
         <div class="cc">
-          <div class="cc-head">
-            <div class="cc-title">🔔 Violation Records</div>
-            <span class="cc-badge" id="vio-count">0</span>
-          </div>
+          <div class="cc-head"><div class="cc-title">🔔 Violation Records</div><span class="cc-badge" id="vio-count">0</span></div>
           <div class="cc-flush">
             <table>
-              <thead><tr>
-                <th>Student No.</th><th>Name</th><th>Violation</th>
-                <th>Category</th><th>Status</th>
-                <th>Date & Time</th><th>Actions</th>
-              </tr></thead>
-              <tbody id="vio-tbody">
-                <tr><td colspan="7"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr>
-              </tbody>
+              <thead><tr><th>Student No.</th><th>Name</th><th>Violation</th><th>Category</th><th>Status</th><th>Date & Time</th><th>Actions</th></tr></thead>
+              <tbody id="vio-tbody"><tr><td colspan="7"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr></tbody>
             </table>
           </div>
         </div>
@@ -804,10 +610,7 @@
       <!-- ══ LOG VIOLATION ══ -->
       <div class="page" id="page-log">
         <div class="ph">
-          <div class="ph-l">
-            <div class="breadcrumb"><span>Log Violation</span></div>
-            <div class="page-title">Log Violation</div>
-          </div>
+          <div class="ph-l"><div class="breadcrumb"><span>Log Violation</span></div><div class="page-title">Log Violation</div></div>
         </div>
         <div class="itabs">
           <button class="itab active" onclick="switchTab('t-manual-log','page-log',this)">Manual Log</button>
@@ -840,16 +643,11 @@
                       <option>Other</option>
                     </select>
                   </div>
-                  <!-- ✅ Grave radio button REMOVED -->
                   <div class="fg">
                     <label>Category <span class="req">*</span></label>
                     <div class="radio-grp">
-                      <label class="rl" id="rl-minor" onclick="selCat('Minor')">
-                        <input type="radio" name="cat" value="Minor"/> Minor
-                      </label>
-                      <label class="rl" id="rl-major" onclick="selCat('Major')">
-                        <input type="radio" name="cat" value="Major"/> Major
-                      </label>
+                      <label class="rl" id="rl-minor" onclick="selCat('Minor')"><input type="radio" name="cat" value="Minor"/> Minor</label>
+                      <label class="rl" id="rl-major" onclick="selCat('Major')"><input type="radio" name="cat" value="Major"/> Major</label>
                     </div>
                   </div>
                   <div class="fg">
@@ -857,14 +655,8 @@
                     <textarea class="fi" id="l-desc" rows="4" placeholder="Describe the violation in detail..." oninput="updCC()" maxlength="500"></textarea>
                     <div class="char-count"><span id="cc-num">0</span>/500</div>
                   </div>
-                  <div class="fg">
-                    <label>Reported By <span class="req">*</span></label>
-                    <input class="fi" type="text" id="l-by" placeholder="e.g. Prof. Santos"/>
-                  </div>
-                  <div class="fg">
-                    <label>Date & Time <span class="req">*</span></label>
-                    <input class="fi" type="datetime-local" id="l-dt"/>
-                  </div>
+                  <div class="fg"><label>Reported By <span class="req">*</span></label><input class="fi" type="text" id="l-by" placeholder="e.g. Prof. Santos"/></div>
+                  <div class="fg"><label>Date & Time <span class="req">*</span></label><input class="fi" type="datetime-local" id="l-dt"/></div>
                 </div>
                 <div style="display:flex;gap:10px;margin-top:22px">
                   <button class="btn btn-primary" onclick="logViolation()">✏ Log Violation</button>
@@ -872,18 +664,11 @@
                 </div>
               </div>
             </div>
-
             <div style="display:flex;flex-direction:column;gap:16px">
               <div class="cc">
                 <div class="cc-head"><div class="cc-title">👤 Student Preview</div></div>
-                <div id="sp-wrap">
-                  <div class="sp-empty">
-                    <div class="spe-icon">👤</div>
-                    <p>Enter a student number to preview student info</p>
-                  </div>
-                </div>
+                <div id="sp-wrap"><div class="sp-empty"><div class="spe-icon">👤</div><p>Enter a student number to preview student info</p></div></div>
               </div>
-              <!-- ✅ Grave REMOVED from Category Guide -->
               <div class="cc">
                 <div class="cc-head"><div class="cc-title">📋 Category Guide</div></div>
                 <div class="cc-body">
@@ -896,12 +681,10 @@
             </div>
           </div>
         </div>
-
         <div class="tp" id="t-esp32-log">
           <div class="infobox">
             <h4>📡 ESP32 Auto-Violation Recording</h4>
-            <p>ESP32 sends POST to <code>http://YOUR_IP:3000/api/violation</code><br/>
-            Fields: <code>studentNumber</code>, <code>faceId</code>, <code>violationType</code>, <code>recordedBy</code></p>
+            <p>ESP32 sends POST to <code>/api/violation</code><br/>Fields: <code>studentNumber</code>, <code>faceId</code>, <code>violationType</code>, <code>recordedBy</code></p>
           </div>
           <div class="cc">
             <div class="cc-head"><div class="cc-title">📡 Simulate ESP32 Violation</div></div>
@@ -909,7 +692,7 @@
               <div class="form-grid" style="max-width:580px">
                 <div class="fg"><label>Student Number</label><input class="fi" id="tl-sn" placeholder="2021-00001"/></div>
                 <div class="fg"><label>Face ID</label><input class="fi" id="tl-fi" placeholder="1"/></div>
-                <div class="fg"><label>Violation Type</label><input class="fi" id="tl-type" placeholder="Dress Code"/></div>
+                <div class="fg"><label>Violation Type</label><input class="fi" id="tl-type" placeholder="Improper Uniform"/></div>
                 <div class="fg"><label>Recorded By</label><input class="fi" id="tl-by" placeholder="ESP32 Device"/></div>
               </div>
               <button class="btn btn-primary" style="margin-top:16px" onclick="testLogAPI()">Send POST /api/violation</button>
@@ -918,6 +701,94 @@
                 <pre id="tl-pre" style="background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:14px;font-family:monospace;font-size:.78rem;color:#1e3a8a;overflow-x:auto;white-space:pre-wrap;"></pre>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ ENROLLMENT PAGE ══ -->
+      <div class="page" id="page-enrollment">
+        <div class="ph">
+          <div class="ph-l">
+            <div class="breadcrumb"><span>Enrollment</span></div>
+            <div class="page-title">Enrollment Management</div>
+          </div>
+          <button class="btn btn-outline" onclick="loadEnrollments()">↺ Refresh</button>
+        </div>
+
+        <!-- Enrollment stat cards -->
+        <div class="enroll-stat-row">
+          <div class="enroll-stat es-orange">
+            <div><div class="es-num" id="en-pending-n">—</div><div class="es-lbl">Awaiting Payment</div></div>
+            <div class="es-icon">⏳</div>
+          </div>
+          <div class="enroll-stat es-blue">
+            <div><div class="es-num" id="en-paid-n">—</div><div class="es-lbl">Payment Confirmed</div></div>
+            <div class="es-icon">💳</div>
+          </div>
+          <div class="enroll-stat es-green">
+            <div><div class="es-num" id="en-done-n">—</div><div class="es-lbl">Fully Enrolled</div></div>
+            <div class="es-icon">✅</div>
+          </div>
+          <div class="enroll-stat es-red">
+            <div><div class="es-num" id="en-cancel-n">—</div><div class="es-lbl">Cancelled</div></div>
+            <div class="es-icon">❌</div>
+          </div>
+        </div>
+
+        <!-- Info box explaining flow -->
+        <div class="infobox">
+          <h4>📡 How Enrollment Works</h4>
+          <p>
+            1. Guard presses <strong>Enroll button</strong> on ESP32 device<br/>
+            2. Student scans ID barcode → HuskyLens verifies face<br/>
+            3. ESP32 sends enrollment request → status becomes <strong>Awaiting Payment</strong><br/>
+            4. Admin clicks <strong>Mark as Paid</strong> below → ESP32 detects it and confirms enrollment<br/>
+            5. Status updates to <strong>Fully Enrolled</strong>
+          </p>
+        </div>
+
+        <!-- Filter row -->
+        <div class="filter-row">
+          <div class="search-box">
+            <span>🔍</span>
+            <input type="text" id="en-search" placeholder="Search by student number or name..." oninput="filterEnrollments()"/>
+          </div>
+          <select class="fsel" id="en-filter" onchange="filterEnrollments()">
+            <option value="">All Statuses</option>
+            <option value="pending">Awaiting Payment</option>
+            <option value="paid">Payment Confirmed</option>
+            <option value="enrolled">Fully Enrolled</option>
+            <option value="cancelled">Cancelled</option>
+          </select>
+        </div>
+
+        <div class="cc">
+          <div class="cc-head">
+            <div class="cc-title">🎓 Enrollment Records</div>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div class="polling-badge" id="poll-badge" style="display:none;">
+                <div class="poll-dot"></div> Auto-refreshing
+              </div>
+              <span class="cc-badge" id="en-count">0</span>
+            </div>
+          </div>
+          <div class="cc-flush">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student No.</th>
+                  <th>Name</th>
+                  <th>Face ID</th>
+                  <th>Status</th>
+                  <th>Requested At</th>
+                  <th>Enrolled At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="en-tbody">
+                <tr><td colspan="7"><div class="empty"><div class="ei">🎓</div><p>No enrollment requests yet</p></div></td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -954,50 +825,56 @@
       </div>
     </div>
   </div>
-</div><!-- /app -->
+</div>
 
 <div id="toast"></div>
 
 <script>
-  let allStudents = [];
+  let allStudents   = [];
   let allViolations = [];
-  let selectedCat = '';
+  let allEnrollments = [];
+  let selectedCat   = '';
+  let enrollPollInterval = null;
 
   function $(id){ return document.getElementById(id); }
   function toast(msg, type='info'){
-    const t = $('toast');
-    t.textContent = msg; t.className = 'show '+type;
-    setTimeout(()=>t.className='', 3500);
+    const t=$('toast'); t.textContent=msg; t.className='show '+type;
+    setTimeout(()=>t.className='',3500);
   }
-  function fmt(iso){ return new Date(iso).toLocaleString('en-PH',{dateStyle:'medium',timeStyle:'short'}); }
+  function fmt(iso){ return iso ? new Date(iso).toLocaleString('en-PH',{dateStyle:'medium',timeStyle:'short'}) : '—'; }
   function scls(s){
     if(!s) return 'pending';
     if(s==='Resolved') return 'resolved';
     if(s==='Under Review') return 'review';
     return 'pending';
   }
+  function enrollChipClass(status){
+    if(status==='paid')     return 'c-enroll-paid';
+    if(status==='enrolled') return 'c-enroll-done';
+    if(status==='cancelled')return 'c-enroll-cancelled';
+    return 'c-enroll-pending';
+  }
+  function enrollChipLabel(status){
+    if(status==='paid')     return 'Payment Confirmed';
+    if(status==='enrolled') return 'Fully Enrolled';
+    if(status==='cancelled')return 'Cancelled';
+    return 'Awaiting Payment';
+  }
   function setNow(){
-    const now = new Date();
-    const loc = new Date(now - now.getTimezoneOffset()*60000).toISOString().slice(0,16);
-    const el = $('l-dt'); if(el) el.value = loc;
+    const now=new Date();
+    const loc=new Date(now-now.getTimezoneOffset()*60000).toISOString().slice(0,16);
+    const el=$('l-dt'); if(el) el.value=loc;
   }
 
-  function toggleAvatar(){
-    $('av-dropdown').classList.toggle('open');
-  }
-  function closeAvatar(){
-    $('av-dropdown').classList.remove('open');
-  }
-  document.addEventListener('click', function(e){
-    const wrap=$('av-wrap');
-    if(wrap && !wrap.contains(e.target)){
-      $('av-dropdown').classList.remove('open');
-    }
+  /* ── avatar ── */
+  function toggleAvatar(){ $('av-dropdown').classList.toggle('open'); }
+  function closeAvatar()  { $('av-dropdown').classList.remove('open'); }
+  document.addEventListener('click',function(e){
+    const w=$('av-wrap'); if(w&&!w.contains(e.target)) $('av-dropdown').classList.remove('open');
   });
 
-  function togglePw(){
-    const i=$('lp'); i.type = i.type==='password'?'text':'password';
-  }
+  /* ── login ── */
+  function togglePw(){ const i=$('lp'); i.type=i.type==='password'?'text':'password'; }
   function doLogin(){
     const u=$('lu').value.trim(), p=$('lp').value.trim();
     if(u==='admin'&&p==='patts2024'){
@@ -1005,70 +882,66 @@
       $('login-page').style.display='none';
       $('app').style.display='flex';
       loadDashboard();
-    } else { toast('Invalid username or password','error'); }
+    } else toast('Invalid username or password','error');
   }
-  $('lp').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
-
+  $('lp').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
   if(localStorage.getItem('patts_logged_in')==='true'){
     $('login-page').style.display='none';
     $('app').style.display='flex';
     loadDashboard();
   }
-
   function doLogout(){
     localStorage.removeItem('patts_logged_in');
+    stopEnrollPolling();
     $('app').style.display='none';
     $('login-page').style.display='flex';
     $('lu').value=''; $('lp').value='';
   }
 
+  /* ── nav ── */
   function go(name, navId){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
     $('page-'+name).classList.add('active');
     if(navId) $(navId).classList.add('active');
-    if(name==='dashboard') loadDashboard();
-    if(name==='students')  loadStudents();
+    if(name==='dashboard')  loadDashboard();
+    if(name==='students')   loadStudents();
     if(name==='violations') loadViolations();
-    if(name==='log') setNow();
+    if(name==='enrollment') { loadEnrollments(); startEnrollPolling(); }
+    if(name==='log')        setNow();
+    // stop polling when leaving enrollment page
+    if(name!=='enrollment') stopEnrollPolling();
   }
 
-  function switchTab(tabId, pageId, btn){
-    const pg = $(pageId);
+  function switchTab(tabId,pageId,btn){
+    const pg=$(pageId);
     pg.querySelectorAll('.tp').forEach(t=>t.classList.remove('active'));
     pg.querySelectorAll('.itab').forEach(t=>t.classList.remove('active'));
-    $(tabId).classList.add('active');
-    btn.classList.add('active');
+    $(tabId).classList.add('active'); btn.classList.add('active');
   }
 
-  /* ✅ autoCat — auto-select Minor or Major when violation type changes */
+  /* ── category ── */
   function autoCat(){
-    const type = $('l-type').value;
-    const minor = ['Improper Uniform','Haircut/Haircolor','Tardiness','Unauthorized Phone Use'];
-    const major = ['Prohibited Item','Unauthorized Absence','Disruptive Behavior','Academic Dishonesty','Vandalism'];
+    const type=$('l-type').value;
+    const minor=['Improper Uniform','Haircut/Haircolor','Tardiness','Unauthorized Phone Use'];
+    const major=['Prohibited Item','Unauthorized Absence','Disruptive Behavior','Academic Dishonesty','Vandalism'];
     if(minor.includes(type)) selCat('Minor');
     else if(major.includes(type)) selCat('Major');
     else if(type) selCat('Minor');
   }
-
-  /* ✅ selCat — only Minor and Major */
   function selCat(v){
-    selectedCat = v;
+    selectedCat=v;
     ['Minor','Major'].forEach(c=>{
       const el=$('rl-'+c.toLowerCase());
       if(el){ el.className='rl'; if(c===v) el.className='rl sel-'+c.toLowerCase(); }
     });
   }
-
   function updCC(){ $('cc-num').textContent=$('l-desc').value.length; }
 
   function previewStudent(){
     const sn=$('l-sn').value.trim();
     const wrap=$('sp-wrap');
-    if(!sn){
-      wrap.innerHTML='<div class="sp-empty"><div class="spe-icon">👤</div><p>Enter a student number to preview student info</p></div>';
-      return;
-    }
+    if(!sn){ wrap.innerHTML='<div class="sp-empty"><div class="spe-icon">👤</div><p>Enter a student number to preview student info</p></div>'; return; }
     const f=allStudents.find(s=>s.studentNumber===sn);
     if(f){
       wrap.innerHTML=`<div class="sp-filled">
@@ -1083,17 +956,14 @@
     }
   }
 
+  /* ── dashboard ── */
   async function loadDashboard(){
     try{
-      const r=await fetch('/api/stats'), d=await r.json();
-      if(d.success){
-        $('s-students').textContent  = d.data.totalStudents;
-        $('s-violations').textContent= d.data.totalViolations;
-        $('s-today').textContent     = d.data.todayViolations;
-      }
+      const r=await fetch('/api/stats'),d=await r.json();
+      if(d.success){ $('s-students').textContent=d.data.totalStudents; $('s-violations').textContent=d.data.totalViolations; $('s-today').textContent=d.data.todayViolations; }
     }catch(e){}
     try{
-      const r=await fetch('/api/violations'), d=await r.json();
+      const r=await fetch('/api/violations'),d=await r.json();
       if(d.success){
         allViolations=d.data;
         const rec=d.data.slice(0,10);
@@ -1117,60 +987,35 @@
   }
 
   function renderDashStats(){
-    /* ✅ Grave removed from stats */
-    const minor   = allViolations.filter(v=>(v.category||'Minor')==='Minor').length;
-    const major   = allViolations.filter(v=>(v.category||'')==='Major').length;
-    const catMax  = Math.max(minor, major, 1);
-
-    $('cat-minor-n').textContent = minor;
-    $('cat-major-n').textContent = major;
-    $('cat-minor-b').style.width = (minor/catMax*100)+'%';
-    $('cat-major-b').style.width = (major/catMax*100)+'%';
-
-    const pending  = allViolations.filter(v=>(v.status||'Pending')==='Pending').length;
-    const review   = allViolations.filter(v=>(v.status||'')==='Under Review').length;
-    const resolved = allViolations.filter(v=>(v.status||'')==='Resolved').length;
-    const stsMax   = Math.max(pending, review, resolved, 1);
-
-    $('sts-pending-n').textContent  = pending;
-    $('sts-review-n').textContent   = review;
-    $('sts-resolved-n').textContent = resolved;
-    $('sts-pending-b').style.width  = (pending/stsMax*100)+'%';
-    $('sts-review-b').style.width   = (review/stsMax*100)+'%';
-    $('sts-resolved-b').style.width = (resolved/stsMax*100)+'%';
-
-    const counts = {};
-    allViolations.forEach(v=>{
-      const t = v.violationType||'Unknown';
-      counts[t] = (counts[t]||0)+1;
-    });
-    const sorted = Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
-    const tvList = $('top-violations-list');
-    if(!sorted.length){
-      tvList.innerHTML='<div class="mp-vh-empty">No data yet</div>';
-    } else {
-      tvList.innerHTML = sorted.map(([name,count])=>`
-        <div class="tv-item">
-          <span class="tv-name">${name}</span>
-          <span class="tv-count">${count}</span>
-        </div>`).join('');
-    }
+    const minor=allViolations.filter(v=>(v.category||'Minor')==='Minor').length;
+    const major=allViolations.filter(v=>(v.category||'')==='Major').length;
+    const catMax=Math.max(minor,major,1);
+    $('cat-minor-n').textContent=minor; $('cat-major-n').textContent=major;
+    $('cat-minor-b').style.width=(minor/catMax*100)+'%'; $('cat-major-b').style.width=(major/catMax*100)+'%';
+    const pending=allViolations.filter(v=>(v.status||'Pending')==='Pending').length;
+    const review=allViolations.filter(v=>(v.status||'')==='Under Review').length;
+    const resolved=allViolations.filter(v=>(v.status||'')==='Resolved').length;
+    const stsMax=Math.max(pending,review,resolved,1);
+    $('sts-pending-n').textContent=pending; $('sts-review-n').textContent=review; $('sts-resolved-n').textContent=resolved;
+    $('sts-pending-b').style.width=(pending/stsMax*100)+'%'; $('sts-review-b').style.width=(review/stsMax*100)+'%'; $('sts-resolved-b').style.width=(resolved/stsMax*100)+'%';
+    const counts={};
+    allViolations.forEach(v=>{ const t=v.violationType||'Unknown'; counts[t]=(counts[t]||0)+1; });
+    const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
+    const tvList=$('top-violations-list');
+    tvList.innerHTML=sorted.length ? sorted.map(([name,count])=>`<div class="tv-item"><span class="tv-name">${name}</span><span class="tv-count">${count}</span></div>`).join('') : '<div class="mp-vh-empty">No data yet</div>';
   }
 
+  /* ── students ── */
   async function loadStudents(){
     try{
-      const r=await fetch('/api/students'), d=await r.json();
+      const r=await fetch('/api/students'),d=await r.json();
       if(d.success){ allStudents=d.data; renderStudents(allStudents); }
     }catch(e){ toast('Cannot connect to server','error'); }
   }
-
   function renderStudents(list){
     $('stu-count').textContent=list.length;
     const tb=$('stu-tbody');
-    if(!list.length){
-      tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="ei">👤</div><p>No students registered yet</p></div></td></tr>';
-      return;
-    }
+    if(!list.length){ tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="ei">👤</div><p>No students registered yet</p></div></td></tr>'; return; }
     tb.innerHTML=list.map(s=>{
       const vc=allViolations.filter(v=>v.studentNumber===s.studentNumber).length;
       const cc=vc===0?'c-green0':'c-green1';
@@ -1188,8 +1033,7 @@
       </tr>`;
     }).join('');
   }
-
-  async function delStu(id, name){
+  async function delStu(id,name){
     if(!confirm(`Delete student: ${name}?\n\nThis will permanently remove the student record.`)) return;
     try{
       const r=await fetch(`/api/students/${id}`,{method:'DELETE'});
@@ -1198,7 +1042,6 @@
       else toast(d.message||'Error deleting student','error');
     }catch(e){ toast('Server error','error'); }
   }
-
   function filterStudents(){
     const q=$('stu-search').value.toLowerCase();
     renderStudents(allStudents.filter(s=>
@@ -1208,62 +1051,44 @@
       (s.section||'').toLowerCase().includes(q)
     ));
   }
-
   function viewStu(sn){
-    const s = allStudents.find(s=>s.studentNumber===sn);
-    if(!s) return;
-    const parts = (s.name||'?').split(' ');
-    const initials = parts.length>=2 ? parts[0][0]+parts[parts.length-1][0] : parts[0][0];
-    $('mp-avatar').textContent = initials.toUpperCase();
-    $('mp-name').textContent    = s.name || '—';
-    $('mp-num').textContent     = s.studentNumber || '—';
-    $('mp-course').textContent  = s.course || '—';
-    $('mp-section').textContent = s.section || '—';
-    $('mp-year').textContent    = s.year || '—';
-    $('mp-email').textContent   = s.email || '—';
-    $('mp-contact').textContent = s.contact || '—';
-    $('mp-enrolled').textContent = s.registeredAt ? new Date(s.registeredAt).toLocaleDateString('en-PH') : '—';
-    const viols = allViolations.filter(v=>v.studentNumber===sn);
-    $('mp-total-vio').textContent = viols.length;
-    const vlist = $('mp-vio-list');
-    if(!viols.length){
-      vlist.innerHTML='<div class="mp-vh-empty">No violations recorded</div>';
-    } else {
-      vlist.innerHTML = viols.map(v=>`
-        <div class="mp-vio-item">
-          <div class="mp-vio-left">
-            <div class="mv-type">${v.violationType}</div>
-            <div class="mv-date">${fmt(v.timestamp)}</div>
-          </div>
-          <div class="mp-vio-right">
-            <span class="chip c-${(v.category||'minor').toLowerCase()}">${v.category||'Minor'}</span>
-            <span class="chip c-${scls(v.status)}">${v.status||'Pending'}</span>
-          </div>
-        </div>`).join('');
-    }
+    const s=allStudents.find(s=>s.studentNumber===sn); if(!s) return;
+    const parts=(s.name||'?').split(' ');
+    const initials=parts.length>=2?parts[0][0]+parts[parts.length-1][0]:parts[0][0];
+    $('mp-avatar').textContent=initials.toUpperCase();
+    $('mp-name').textContent=s.name||'—'; $('mp-num').textContent=s.studentNumber||'—';
+    $('mp-course').textContent=s.course||'—'; $('mp-section').textContent=s.section||'—';
+    $('mp-year').textContent=s.year||'—'; $('mp-email').textContent=s.email||'—';
+    $('mp-contact').textContent=s.contact||'—';
+    $('mp-enrolled').textContent=s.registeredAt?new Date(s.registeredAt).toLocaleDateString('en-PH'):'—';
+    const viols=allViolations.filter(v=>v.studentNumber===sn);
+    $('mp-total-vio').textContent=viols.length;
+    const vlist=$('mp-vio-list');
+    vlist.innerHTML=viols.length ? viols.map(v=>`
+      <div class="mp-vio-item">
+        <div class="mp-vio-left"><div class="mv-type">${v.violationType}</div><div class="mv-date">${fmt(v.timestamp)}</div></div>
+        <div class="mp-vio-right">
+          <span class="chip c-${(v.category||'minor').toLowerCase()}">${v.category||'Minor'}</span>
+          <span class="chip c-${scls(v.status)}">${v.status||'Pending'}</span>
+        </div>
+      </div>`).join('') : '<div class="mp-vh-empty">No violations recorded</div>';
     $('profile-modal').classList.add('open');
   }
-
   function closeProfileModal(e){
-    if(!e || e.target===$('profile-modal')){
-      $('profile-modal').classList.remove('open');
-    }
+    if(!e||e.target===$('profile-modal')) $('profile-modal').classList.remove('open');
   }
 
+  /* ── violations ── */
   async function loadViolations(){
     try{
-      const r=await fetch('/api/violations'), d=await r.json();
+      const r=await fetch('/api/violations'),d=await r.json();
       if(d.success){ allViolations=d.data; renderViolations(allViolations); }
     }catch(e){ toast('Cannot connect to server','error'); }
   }
-
   function renderViolations(list){
     $('vio-count').textContent=list.length;
     const tb=$('vio-tbody');
-    if(!list.length){
-      tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr>';
-      return;
-    }
+    if(!list.length){ tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr>'; return; }
     tb.innerHTML=list.map(v=>`<tr>
       <td class="td-num">${v.studentNumber}</td>
       <td class="td-bold">${v.studentName}</td>
@@ -1273,44 +1098,32 @@
       <td class="td-muted">${fmt(v.timestamp)}</td>
       <td style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <select class="fsel" style="padding:5px 8px;font-size:.75rem;border-radius:6px;" onchange="updateStatus('${v.id||v._id}',this.value)">
-          <option value="Pending"      ${(v.status||'Pending')==='Pending'     ?'selected':''}>Pending</option>
-          <option value="Resolved"     ${(v.status||'')==='Resolved'           ?'selected':''}>Resolved</option>
-          <option value="Under Review" ${(v.status||'')==='Under Review'       ?'selected':''}>Under Review</option>
+          <option value="Pending"      ${(v.status||'Pending')==='Pending'?'selected':''}>Pending</option>
+          <option value="Resolved"     ${(v.status||'')==='Resolved'?'selected':''}>Resolved</option>
+          <option value="Under Review" ${(v.status||'')==='Under Review'?'selected':''}>Under Review</option>
         </select>
         <span class="td-link" style="color:#dc2626;" onclick="delVio('${v.id||v._id}')">Delete</span>
       </td>
     </tr>`).join('');
   }
-
   function filterViolations(){
     const q=$('vio-search').value.toLowerCase();
-    const cat=$('vio-cat').value;
-    const sts=$('vio-sts').value;
+    const cat=$('vio-cat').value; const sts=$('vio-sts').value;
     renderViolations(allViolations.filter(v=>{
-      const mq=!q||v.studentNumber.toLowerCase().includes(q)||(v.studentName||'').toLowerCase().includes(q)||(v.violationType||'').toLowerCase().includes(q)||(v.section||'').toLowerCase().includes(q);
+      const mq=!q||v.studentNumber.toLowerCase().includes(q)||(v.studentName||'').toLowerCase().includes(q)||(v.violationType||'').toLowerCase().includes(q);
       const mc=!cat||(v.category||'Minor')===cat;
       const ms=!sts||(v.status||'Pending')===sts;
       return mq&&mc&&ms;
     }));
   }
-
-  async function updateStatus(id, status){
+  async function updateStatus(id,status){
     try{
-      const r=await fetch(`/api/violations/${id}/status`,{
-        method:'PATCH',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({status})
-      });
+      const r=await fetch(`/api/violations/${id}/status`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
       const d=await r.json();
-      if(d.success){
-        toast(`Status updated to: ${status}`,'success');
-        const v=allViolations.find(v=>(v.id||v._id)===id||(v._id&&v._id.toString()===id));
-        if(v) v.status=status;
-        loadDashboard();
-      } else toast(d.message||'Error updating status','error');
+      if(d.success){ toast(`Status updated to: ${status}`,'success'); const v=allViolations.find(v=>(v.id||v._id)===id); if(v) v.status=status; loadDashboard(); }
+      else toast(d.message||'Error','error');
     }catch(e){ toast('Server error','error'); }
   }
-
   async function delVio(id){
     if(!confirm('Delete this violation record?')) return;
     try{
@@ -1320,19 +1133,11 @@
     }catch(e){ toast('Server error','error'); }
   }
 
+  /* ── register ── */
   async function registerManual(){
-    const fn=$('r-fn').value.trim(), ln=$('r-ln').value.trim();
-    const body={
-      studentNumber:$('r-sn').value.trim(),
-      name:`${fn} ${ln}`.trim(),
-      course:$('r-course').value,
-      year:$('r-year').value,
-      email:$('r-email').value.trim(),
-      contact:$('r-contact').value.trim(),
-      faceId:$('r-fid').value.trim()
-    };
-    if(!body.studentNumber||!body.name.trim()||!body.faceId)
-      return toast('Student Number, Name, and Face ID are required','error');
+    const fn=$('r-fn').value.trim(),ln=$('r-ln').value.trim();
+    const body={studentNumber:$('r-sn').value.trim(),name:`${fn} ${ln}`.trim(),course:$('r-course').value,year:$('r-year').value,email:$('r-email').value.trim(),contact:$('r-contact').value.trim(),faceId:$('r-fid').value.trim()};
+    if(!body.studentNumber||!body.name.trim()||!body.faceId) return toast('Student Number, Name, and Face ID are required','error');
     try{
       const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d=await r.json();
@@ -1340,31 +1145,17 @@
       else toast(d.message||'Error','error');
     }catch(e){ toast('Server error','error'); }
   }
-
   function clearRegForm(){
     ['r-sn','r-fn','r-ln','r-email','r-contact','r-fid'].forEach(id=>$(id).value='');
     $('r-course').value=''; $('r-year').value='';
   }
 
+  /* ── log violation ── */
   async function logViolation(){
-    const sn=$('l-sn').value.trim();
-    const type=$('l-type').value;
-    const desc=$('l-desc').value.trim();
-    const by=$('l-by').value.trim();
-    const dt=$('l-dt').value;
-    if(!sn||!type||!selectedCat||!by)
-      return toast('Please fill in all required fields','error');
+    const sn=$('l-sn').value.trim(),type=$('l-type').value,desc=$('l-desc').value.trim(),by=$('l-by').value.trim(),dt=$('l-dt').value;
+    if(!sn||!type||!selectedCat||!by) return toast('Please fill in all required fields','error');
     const stu=allStudents.find(s=>s.studentNumber===sn);
-    const body={
-      studentNumber:sn,
-      faceId:stu?stu.faceId:'0',
-      violationType:type,
-      category:selectedCat,
-      description:desc,
-      recordedBy:by,
-      timestamp:dt?new Date(dt).toISOString():new Date().toISOString(),
-      status:'Pending'
-    };
+    const body={studentNumber:sn,faceId:stu?stu.faceId:'0',violationType:type,category:selectedCat,description:desc,recordedBy:by,timestamp:dt?new Date(dt).toISOString():new Date().toISOString(),status:'Pending'};
     try{
       const r=await fetch('/api/violation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d=await r.json();
@@ -1372,7 +1163,6 @@
       else toast(d.message||'Error','error');
     }catch(e){ toast('Server error','error'); }
   }
-
   function clearLogForm(){
     ['l-sn','l-type','l-desc','l-by'].forEach(id=>$(id).value='');
     selectedCat='';
@@ -1382,26 +1172,150 @@
     setNow();
   }
 
+  /* ── test ESP32 ── */
   async function testRegAPI(){
     const body={studentNumber:$('te-sn').value.trim(),faceId:$('te-fi').value.trim(),name:$('te-name').value.trim(),course:$('te-course').value.trim(),section:$('te-sec').value.trim()};
     try{
       const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d=await r.json();
-      $('te-res').style.display='block';
-      $('te-pre').textContent=JSON.stringify(d,null,2);
-      toast(d.success?'Success!':d.message, d.success?'success':'error');
-    }catch(e){$('te-res').style.display='block';$('te-pre').textContent='Error: '+e.message;}
+      $('te-res').style.display='block'; $('te-pre').textContent=JSON.stringify(d,null,2);
+      toast(d.success?'Success!':d.message,d.success?'success':'error');
+    }catch(e){ $('te-res').style.display='block'; $('te-pre').textContent='Error: '+e.message; }
   }
-
   async function testLogAPI(){
     const body={studentNumber:$('tl-sn').value.trim(),faceId:$('tl-fi').value.trim(),violationType:$('tl-type').value.trim()||'General',recordedBy:$('tl-by').value.trim()||'ESP32 Device'};
     try{
       const r=await fetch('/api/violation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d=await r.json();
-      $('tl-res').style.display='block';
-      $('tl-pre').textContent=JSON.stringify(d,null,2);
-      toast(d.success?'Success!':d.message, d.success?'success':'error');
-    }catch(e){$('tl-res').style.display='block';$('tl-pre').textContent='Error: '+e.message;}
+      $('tl-res').style.display='block'; $('tl-pre').textContent=JSON.stringify(d,null,2);
+      toast(d.success?'Success!':d.message,d.success?'success':'error');
+    }catch(e){ $('tl-res').style.display='block'; $('tl-pre').textContent='Error: '+e.message; }
+  }
+
+  /* ══════════════════════════════════════════
+     ENROLLMENT FUNCTIONS
+  ══════════════════════════════════════════ */
+
+  // Load all enrollments from server
+  async function loadEnrollments(){
+    try{
+      const r=await fetch('/api/enrollment/all');
+      const d=await r.json();
+      if(d.success){
+        allEnrollments=d.data;
+        renderEnrollments(allEnrollments);
+        updateEnrollStats(allEnrollments);
+      }
+    }catch(e){ toast('Cannot load enrollments','error'); }
+  }
+
+  // Render enrollment table
+  function renderEnrollments(list){
+    $('en-count').textContent=list.length;
+    const tb=$('en-tbody');
+    if(!list.length){
+      tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="ei">🎓</div><p>No enrollment requests yet</p></div></td></tr>';
+      return;
+    }
+    tb.innerHTML=list.map(e=>{
+      const id=e.id||e._id;
+      const isPending=e.status==='pending'||!e.status;
+      const isEnrolled=e.status==='enrolled';
+      const isCancelled=e.status==='cancelled';
+      return `<tr>
+        <td class="td-num">${e.studentNumber}</td>
+        <td class="td-bold">${e.studentName||'—'}</td>
+        <td class="td-muted">${e.faceId||'—'}</td>
+        <td><span class="chip ${enrollChipClass(e.status)}">${enrollChipLabel(e.status)}</span></td>
+        <td class="td-muted">${fmt(e.requestedAt||e.createdAt)}</td>
+        <td class="td-muted">${e.enrolledAt?fmt(e.enrolledAt):'—'}</td>
+        <td style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+          ${isPending ? `
+            <button class="btn-pay" onclick="markAsPaid('${id}','${e.studentNumber}')" title="Mark payment as received">
+              💳 Mark as Paid
+            </button>
+            <button class="btn-cancel-enroll" onclick="cancelEnrollment('${id}','${e.studentNumber}')" title="Cancel this enrollment">
+              ✕ Cancel
+            </button>
+          ` : ''}
+          ${isEnrolled ? `<span style="color:#166534;font-size:.82rem;font-weight:600;">✅ Done</span>` : ''}
+          ${isCancelled ? `<span style="color:#dc2626;font-size:.82rem;font-weight:600;">❌ Cancelled</span>` : ''}
+        </td>
+      </tr>`;
+    }).join('');
+  }
+
+  // Update stat counters
+  function updateEnrollStats(list){
+    $('en-pending-n').textContent = list.filter(e=>e.status==='pending'||!e.status).length;
+    $('en-paid-n').textContent    = list.filter(e=>e.status==='paid').length;
+    $('en-done-n').textContent    = list.filter(e=>e.status==='enrolled').length;
+    $('en-cancel-n').textContent  = list.filter(e=>e.status==='cancelled').length;
+  }
+
+  // Filter enrollments
+  function filterEnrollments(){
+    const q=$('en-search').value.toLowerCase();
+    const f=$('en-filter').value;
+    renderEnrollments(allEnrollments.filter(e=>{
+      const mq=!q||e.studentNumber.toLowerCase().includes(q)||(e.studentName||'').toLowerCase().includes(q);
+      const mf=!f||(f==='pending'?(e.status==='pending'||!e.status):e.status===f);
+      return mq&&mf;
+    }));
+  }
+
+  // Admin marks payment as done
+  // ESP32 is polling GET /api/enrollment/payment-status/:studentNumber
+  // Once we set paid=true here, the ESP32 will detect it on next poll
+  async function markAsPaid(id, studentNumber){
+    if(!confirm(`Confirm payment received for student: ${studentNumber}?\n\nThe ESP32 will detect this and complete the enrollment automatically.`)) return;
+    try{
+      const r=await fetch(`/api/enrollment/mark-paid/${id}`,{
+        method:'PATCH',
+        headers:{'Content-Type':'application/json'}
+      });
+      const d=await r.json();
+      if(d.success){
+        toast(`Payment confirmed for ${studentNumber}! ESP32 will enroll automatically.`,'success');
+        loadEnrollments();
+      } else {
+        toast(d.message||'Error marking payment','error');
+      }
+    }catch(e){ toast('Server error','error'); }
+  }
+
+  // Cancel enrollment
+  async function cancelEnrollment(id, studentNumber){
+    if(!confirm(`Cancel enrollment for student: ${studentNumber}?`)) return;
+    try{
+      const r=await fetch(`/api/enrollment/cancel/${id}`,{
+        method:'PATCH',
+        headers:{'Content-Type':'application/json'}
+      });
+      const d=await r.json();
+      if(d.success){
+        toast(`Enrollment cancelled for ${studentNumber}`,'info');
+        loadEnrollments();
+      } else {
+        toast(d.message||'Error cancelling','error');
+      }
+    }catch(e){ toast('Server error','error'); }
+  }
+
+  // Auto-refresh enrollment page every 5 seconds
+  // so admin sees new requests from ESP32 without manually refreshing
+  function startEnrollPolling(){
+    stopEnrollPolling();
+    const badge=$('poll-badge');
+    if(badge) badge.style.display='flex';
+    enrollPollInterval=setInterval(()=>{
+      loadEnrollments();
+    }, 5000);
+  }
+  function stopEnrollPolling(){
+    if(enrollPollInterval){ clearInterval(enrollPollInterval); enrollPollInterval=null; }
+    const badge=$('poll-badge');
+    if(badge) badge.style.display='none';
   }
 </script>
 </body>
