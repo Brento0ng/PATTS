@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PATTS — Student Violation Tracking System</title>
+  <title>PATTS — Student Violation & Enrollment System</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -326,7 +326,7 @@
   <div class="login-card">
     <div class="lc-head">
       <h1>PATTS College of Aeronautics</h1>
-      <p>Student Violation Tracking System</p>
+      <p>Student Violation & Enrollment System</p>
     </div>
     <div class="lc-body">
       <h2>Admin Login</h2>
@@ -359,7 +359,7 @@
     <div class="tb-left">
       <div class="tb-logo"><div class="tn">PATTS College</div><div class="ts">of Aeronautics</div></div>
       <div class="tb-divider"></div>
-      <div class="tb-title">Student Violation Tracking System</div>
+      <div class="tb-title">Student Violation & Enrollment System</div>
     </div>
     <div class="tb-right">
       <div class="tb-status"><div class="tb-dot"></div> System Online</div>
@@ -882,6 +882,7 @@
       $('login-page').style.display='none';
       $('app').style.display='flex';
       loadDashboard();
+      startDashboardAutoRefresh();
     } else toast('Invalid username or password','error');
   }
   $('lp').addEventListener('keydown',e=>{ if(e.key==='Enter') doLogin(); });
@@ -889,9 +890,12 @@
     $('login-page').style.display='none';
     $('app').style.display='flex';
     loadDashboard();
+    startDashboardAutoRefresh();
   }
   function doLogout(){
     localStorage.removeItem('patts_logged_in');
+    stopDashboardAutoRefresh();
+    stopViolationsAutoRefresh();
     stopEnrollPolling();
     $('app').style.display='none';
     $('login-page').style.display='flex';
@@ -899,18 +903,29 @@
   }
 
   /* ── nav ── */
+  let violationsInterval = null;
+  function startViolationsAutoRefresh(){
+    stopViolationsAutoRefresh();
+    violationsInterval = setInterval(()=>{ loadViolations(); }, 10000);
+  }
+  function stopViolationsAutoRefresh(){
+    if(violationsInterval){ clearInterval(violationsInterval); violationsInterval=null; }
+  }
+
   function go(name, navId){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
     $('page-'+name).classList.add('active');
     if(navId) $(navId).classList.add('active');
-    if(name==='dashboard')  loadDashboard();
-    if(name==='students')   loadStudents();
-    if(name==='violations') loadViolations();
+    // stop all auto-refreshes first
+    stopDashboardAutoRefresh();
+    stopViolationsAutoRefresh();
+    stopEnrollPolling();
+    if(name==='dashboard')  { loadDashboard();   startDashboardAutoRefresh(); }
+    if(name==='students')   { loadStudents(); }
+    if(name==='violations') { loadViolations();  startViolationsAutoRefresh(); }
     if(name==='enrollment') { loadEnrollments(); startEnrollPolling(); }
-    if(name==='log')        setNow();
-    // stop polling when leaving enrollment page
-    if(name!=='enrollment') stopEnrollPolling();
+    if(name==='log')        { setNow(); }
   }
 
   function switchTab(tabId,pageId,btn){
@@ -957,6 +972,16 @@
   }
 
   /* ── dashboard ── */
+  let dashboardInterval = null;
+
+  function startDashboardAutoRefresh(){
+    stopDashboardAutoRefresh();
+    dashboardInterval = setInterval(()=>{ loadDashboard(); }, 10000); // refresh every 10s
+  }
+  function stopDashboardAutoRefresh(){
+    if(dashboardInterval){ clearInterval(dashboardInterval); dashboardInterval=null; }
+  }
+
   async function loadDashboard(){
     try{
       const r=await fetch('/api/stats'),d=await r.json();
@@ -966,7 +991,8 @@
       const r=await fetch('/api/violations'),d=await r.json();
       if(d.success){
         allViolations=d.data;
-        const rec=d.data.slice(0,10);
+        // Fix 4: only show 5 recent violations
+        const rec=d.data.slice(0,5);
         $('d-count').textContent=rec.length;
         const tb=$('d-tbody');
         if(!rec.length){
@@ -981,37 +1007,41 @@
             <td class="td-muted">${fmt(v.timestamp)}</td>
           </tr>`).join('');
         }
+        renderDashStats();
       }
     }catch(e){ toast('Cannot connect to server','error'); }
-    renderDashStats();
   }
 
   function renderDashStats(){
-    const minor=allViolations.filter(v=>(v.category||'Minor')==='Minor').length;
-    const major=allViolations.filter(v=>(v.category||'')==='Major').length;
-    const catMax=Math.max(minor,major,1);
-    $('cat-minor-n').textContent=minor; $('cat-major-n').textContent=major;
-    $('cat-minor-b').style.width=(minor/catMax*100)+'%'; $('cat-major-b').style.width=(major/catMax*100)+'%';
-    const pending=allViolations.filter(v=>(v.status||'Pending')==='Pending').length;
-    const review=allViolations.filter(v=>(v.status||'')==='Under Review').length;
-    const resolved=allViolations.filter(v=>(v.status||'')==='Resolved').length;
-    const stsMax=Math.max(pending,review,resolved,1);
-    $('sts-pending-n').textContent=pending; $('sts-review-n').textContent=review; $('sts-resolved-n').textContent=resolved;
-    $('sts-pending-b').style.width=(pending/stsMax*100)+'%'; $('sts-review-b').style.width=(review/stsMax*100)+'%'; $('sts-resolved-b').style.width=(resolved/stsMax*100)+'%';
+    // By category
+    const minor  = allViolations.filter(v=>(v.category||'Minor')==='Minor').length;
+    const major  = allViolations.filter(v=>(v.category||'')==='Major').length;
+    const catMax = Math.max(minor, major, 1);
+    $('cat-minor-n').textContent = minor;
+    $('cat-major-n').textContent = major;
+    $('cat-minor-b').style.width = minor>0 ? Math.max((minor/catMax*100),4).toFixed(1)+'%' : '0%';
+    $('cat-major-b').style.width = major>0 ? Math.max((major/catMax*100),4).toFixed(1)+'%' : '0%';
+
+    // By status
+    const pending  = allViolations.filter(v=>(v.status||'Pending')==='Pending').length;
+    const review   = allViolations.filter(v=>(v.status||'')==='Under Review').length;
+    const resolved = allViolations.filter(v=>(v.status||'')==='Resolved').length;
+    const stsMax   = Math.max(pending, review, resolved, 1);
+    $('sts-pending-n').textContent  = pending;
+    $('sts-review-n').textContent   = review;
+    $('sts-resolved-n').textContent = resolved;
+    $('sts-pending-b').style.width  = pending>0  ? Math.max((pending/stsMax*100),4).toFixed(1)+'%'  : '0%';
+    $('sts-review-b').style.width   = review>0   ? Math.max((review/stsMax*100),4).toFixed(1)+'%'   : '0%';
+    $('sts-resolved-b').style.width = resolved>0 ? Math.max((resolved/stsMax*100),4).toFixed(1)+'%' : '0%';
+
+    // Top violations
     const counts={};
     allViolations.forEach(v=>{ const t=v.violationType||'Unknown'; counts[t]=(counts[t]||0)+1; });
     const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
-    const tvList=$('top-violations-list');
-    tvList.innerHTML=sorted.length ? sorted.map(([name,count])=>`<div class="tv-item"><span class="tv-name">${name}</span><span class="tv-count">${count}</span></div>`).join('') : '<div class="mp-vh-empty">No data yet</div>';
-  }
+    $('top-violations-list').innerHTML = sorted.length
+      ? sorted.map(([name,count])=>`<div class="tv-item"><span class="tv-name">${name}</span><span class="tv-count">${count}</span></div>`).join('')
+      : '<div class="mp-vh-empty">No data yet</div>';
 
-  /* ── students ── */
-  async function loadStudents(){
-    try{
-      const r=await fetch('/api/students'),d=await r.json();
-      if(d.success){ allStudents=d.data; renderStudents(allStudents); }
-    }catch(e){ toast('Cannot connect to server','error'); }
-  }
   function renderStudents(list){
     $('stu-count').textContent=list.length;
     const tb=$('stu-tbody');
@@ -1220,6 +1250,7 @@
     tb.innerHTML=list.map(e=>{
       const id=e.id||e._id;
       const isPending=e.status==='pending'||!e.status;
+      const isPaid=e.status==='paid';
       const isEnrolled=e.status==='enrolled';
       const isCancelled=e.status==='cancelled';
       return `<tr>
@@ -1231,15 +1262,13 @@
         <td class="td-muted">${e.enrolledAt?fmt(e.enrolledAt):'—'}</td>
         <td style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
           ${isPending ? `
-            <button class="btn-pay" onclick="markAsPaid('${id}','${e.studentNumber}')" title="Mark payment as received">
-              💳 Mark as Paid
-            </button>
-            <button class="btn-cancel-enroll" onclick="cancelEnrollment('${id}','${e.studentNumber}')" title="Cancel this enrollment">
-              ✕ Cancel
-            </button>
+            <button class="btn-pay" onclick="markAsPaid('${id}','${e.studentNumber}')">💳 Mark as Paid</button>
+            <button class="btn-cancel-enroll" onclick="cancelEnrollment('${id}','${e.studentNumber}')">✕ Cancel</button>
           ` : ''}
+          ${isPaid ? `<span style="color:#1e40af;font-size:.82rem;font-weight:600;">💳 Paid</span>` : ''}
           ${isEnrolled ? `<span style="color:#166534;font-size:.82rem;font-weight:600;">✅ Done</span>` : ''}
           ${isCancelled ? `<span style="color:#dc2626;font-size:.82rem;font-weight:600;">❌ Cancelled</span>` : ''}
+          <span class="td-link" style="color:#dc2626;margin-left:4px;" onclick="delEnrollment('${id}','${e.studentNumber}')">Delete</span>
         </td>
       </tr>`;
     }).join('');
@@ -1264,41 +1293,56 @@
     }));
   }
 
-  // Admin marks payment as done
-  // ESP32 is polling GET /api/enrollment/payment-status/:studentNumber
-  // Once we set paid=true here, the ESP32 will detect it on next poll
   async function markAsPaid(id, studentNumber){
-    if(!confirm(`Confirm payment received for student: ${studentNumber}?\n\nThe ESP32 will detect this and complete the enrollment automatically.`)) return;
+    // Fix 5: Always fetch fresh violations before checking
+    try {
+      const vr = await fetch('/api/violations');
+      const vd = await vr.json();
+      if(vd.success) allViolations = vd.data;
+    } catch(e) {}
+
+    const unresolved = allViolations.filter(v=>
+      v.studentNumber === studentNumber &&
+      (v.status||'Pending') !== 'Resolved'
+    );
+    if(unresolved.length > 0){
+      const types = unresolved.map(v=>v.violationType).join(', ');
+      toast(`❌ Cannot enroll — ${studentNumber} has ${unresolved.length} unresolved violation(s): ${types}. Resolve all first.`, 'error');
+      return;
+    }
+    if(!confirm(`Confirm payment received for student: ${studentNumber}?\n\nThe ESP32 will detect this and complete enrollment automatically.`)) return;
     try{
-      const r=await fetch(`/api/enrollment/mark-paid/${id}`,{
-        method:'PATCH',
-        headers:{'Content-Type':'application/json'}
-      });
+      const r=await fetch(`/api/enrollment/mark-paid/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'}});
       const d=await r.json();
       if(d.success){
         toast(`Payment confirmed for ${studentNumber}! ESP32 will enroll automatically.`,'success');
         loadEnrollments();
-      } else {
-        toast(d.message||'Error marking payment','error');
-      }
+      } else toast(d.message||'Error marking payment','error');
     }catch(e){ toast('Server error','error'); }
   }
 
-  // Cancel enrollment
   async function cancelEnrollment(id, studentNumber){
     if(!confirm(`Cancel enrollment for student: ${studentNumber}?`)) return;
     try{
-      const r=await fetch(`/api/enrollment/cancel/${id}`,{
-        method:'PATCH',
-        headers:{'Content-Type':'application/json'}
-      });
+      const r=await fetch(`/api/enrollment/cancel/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'}});
       const d=await r.json();
       if(d.success){
         toast(`Enrollment cancelled for ${studentNumber}`,'info');
         loadEnrollments();
-      } else {
-        toast(d.message||'Error cancelling','error');
-      }
+      } else toast(d.message||'Error cancelling','error');
+    }catch(e){ toast('Server error','error'); }
+  }
+
+  // Fix 2: Delete enrollment record permanently
+  async function delEnrollment(id, studentNumber){
+    if(!confirm(`Delete enrollment record for student: ${studentNumber}?\n\nThis will permanently remove the record.`)) return;
+    try{
+      const r=await fetch(`/api/enrollment/${id}`,{method:'DELETE'});
+      const d=await r.json();
+      if(d.success){
+        toast(`Enrollment record deleted`,'success');
+        loadEnrollments();
+      } else toast(d.message||'Error deleting','error');
     }catch(e){ toast('Server error','error'); }
   }
 
