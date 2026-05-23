@@ -101,6 +101,18 @@ app.get('/api/students', async (req, res) => {
   }
 });
 
+// GET violation status for a student (used by ESP32 enrollment check)
+// Returns unresolvedCount so ESP32 can block enrollment if violations exist
+app.get('/api/students/:studentNumber/violations', async (req, res) => {
+  try {
+    const total      = await Violation.countDocuments({ studentNumber: req.params.studentNumber });
+    const unresolved = await Violation.countDocuments({ studentNumber: req.params.studentNumber, status: { $ne: 'Resolved' } });
+    res.json({ success: true, total, unresolvedCount: unresolved, canEnroll: unresolved === 0 });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 // GET single student by studentNumber (used by ESP32 keypad mode)
 app.get('/api/students/:studentNumber', async (req, res) => {
   try {
@@ -292,26 +304,26 @@ app.post('/api/enrollment/request', async (req, res) => {
   }
 
   try {
-    // Check if student exists
+    // Try to find student in MongoDB to get their name
+    // But do NOT block enrollment if student isn't in MongoDB yet —
+    // ESP32 already verified the face locally so identity is confirmed
     const student = await Student.findOne({ studentNumber });
-    if (!student) {
-      return res.status(404).json({ success: false, message: 'Student not found. Register first.' });
-    }
+    const resolvedName = studentName || (student ? student.name : 'Unknown');
 
-    // Check if there's already a pending enrollment for this student
+    // Check if there's already a pending/paid enrollment for this student
     const existing = await Enrollment.findOne({
       studentNumber,
       status: { $in: ['pending', 'paid'] }
     });
     if (existing) {
-      // Return the existing one so ESP32 can poll its payment status
+      // Return the existing one so ESP32 can continue polling payment status
       console.log(`⚠️  Enrollment already pending for: ${studentNumber}`);
       return res.json({ success: true, message: 'Enrollment already pending', data: existing });
     }
 
     const newEnrollment = new Enrollment({
       studentNumber,
-      studentName: studentName || student.name || 'Unknown',
+      studentName: resolvedName,
       faceId,
       status:      'pending',
       paid:        false,
@@ -363,6 +375,18 @@ app.patch('/api/enrollment/mark-paid/:id', async (req, res) => {
       return res.status(400).json({ success: false, message: 'Enrollment was cancelled' });
     }
 
+    // Fix 5: Block payment if student has unresolved violations
+    const unresolvedCount = await Violation.countDocuments({
+      studentNumber: enrollment.studentNumber,
+      status: { $ne: 'Resolved' }
+    });
+    if (unresolvedCount > 0) {
+      return res.status(400).json({
+        success: false,
+        message: `Cannot process payment. Student has ${unresolvedCount} unresolved violation(s). Resolve all violations first.`
+      });
+    }
+
     enrollment.paid   = true;
     enrollment.status = 'paid';
     enrollment.paidAt = new Date();
@@ -407,6 +431,28 @@ app.post('/api/enrollment/confirm', async (req, res) => {
     console.log(`✅ ENROLLED: ${studentNumber} - ${enrollment.studentName}`);
     res.json({ success: true, message: 'Student successfully enrolled!', data: enrollment });
 
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE enrollment record (called by website admin)
+app.delete('/api/enrollment/:id', async (req, res) => {
+  try {
+    await Enrollment.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'Enrollment record deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+// DELETE enrollment record permanently
+app.delete('/api/enrollment/:id', async (req, res) => {
+  try {
+    const deleted = await Enrollment.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ success: false, message: 'Enrollment not found' });
+    console.log(`🗑️  Enrollment deleted: ${deleted.studentNumber}`);
+    res.json({ success: true, message: 'Enrollment record deleted' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -466,5 +512,6 @@ app.listen(PORT, '0.0.0.0', () => {
   console.log(`  GET    /api/enrollment/payment-status/:sn   - ESP32: poll payment`);
   console.log(`  PATCH  /api/enrollment/mark-paid/:id        - Admin: confirm payment`);
   console.log(`  POST   /api/enrollment/confirm              - ESP32: confirm enrollment`);
-  console.log(`  PATCH  /api/enrollment/cancel/:id           - Admin: cancel enrollment\n`);
+  console.log(`  PATCH  /api/enrollment/cancel/:id           - Admin: cancel enrollment`);
+  console.log(`  DELETE /api/enrollment/:id                  - Admin: delete enrollment record\n`);
 });
