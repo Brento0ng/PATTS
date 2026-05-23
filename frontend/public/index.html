@@ -1041,6 +1041,7 @@
     $('top-violations-list').innerHTML = sorted.length
       ? sorted.map(([name,count])=>`<div class="tv-item"><span class="tv-name">${name}</span><span class="tv-count">${count}</span></div>`).join('')
       : '<div class="mp-vh-empty">No data yet</div>';
+  }
 
   function renderStudents(list){
     $('stu-count').textContent=list.length;
