@@ -277,6 +277,8 @@ app.post('/api/register', async (req, res) => {
   const { studentNumber, name, faceId, section, course, year, email, contact } = req.body;
   if (!studentNumber || !faceId)
     return res.status(400).json({ success: false, message: 'studentNumber and faceId are required' });
+  if (!email || !email.includes('@'))
+    return res.status(400).json({ success: false, message: 'A valid email address is required for violation notifications' });
   try {
     const existing = await Student.findOne({ studentNumber });
     if (existing) return res.status(409).json({ success: false, message: 'Student already registered' });
