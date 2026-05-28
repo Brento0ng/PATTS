@@ -17,23 +17,22 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://pattsadmin:pattsad
 //    EMAIL_PASS = your Gmail App Password (not your regular password)
 //  To get App Password: Google Account → Security → 2FA → App Passwords
 // ─────────────────────────────────────────────────────────────
-const MAILJET_API_KEY    = process.env.MAILJET_API_KEY    || '';
-const MAILJET_SECRET_KEY = process.env.MAILJET_SECRET_KEY || '';
-const EMAIL_FROM_NAME    = process.env.EMAIL_FROM_NAME    || 'PATTS Violations';
-const EMAIL_FROM_ADDRESS = process.env.EMAIL_FROM_ADDRESS || 'brent.lawrence08@gmail.com';
+// Email is sent via Vercel serverless function — no outbound restrictions
+const VERCEL_EMAIL_URL = process.env.VERCEL_EMAIL_URL || '';
+const PATTS_SECRET     = process.env.PATTS_SECRET     || '';
 
-if (MAILJET_API_KEY && MAILJET_SECRET_KEY) {
-  console.log('✅ Email service ready via Mailjet');
+if (VERCEL_EMAIL_URL) {
+  console.log('✅ Email service ready via Vercel:', VERCEL_EMAIL_URL);
 } else {
-  console.warn('⚠️  MAILJET_API_KEY or MAILJET_SECRET_KEY not set — email notifications disabled');
+  console.warn('⚠️  VERCEL_EMAIL_URL not set — email notifications disabled');
 }
 
 // ─────────────────────────────────────────────────────────────
 //  SEND VIOLATION EMAIL
 // ─────────────────────────────────────────────────────────────
 async function sendViolationEmail(student, violation) {
-  if (!MAILJET_API_KEY || !MAILJET_SECRET_KEY) {
-    console.log('📧 Email skipped — no Mailjet API keys');
+  if (!VERCEL_EMAIL_URL) {
+    console.log('📧 Email skipped — no Vercel email URL set');
     return;
   }
   if (!student.email || !student.email.includes('@')) {
@@ -147,8 +146,36 @@ async function sendViolationEmail(student, violation) {
 </html>`;
 
   try {
-    const credentials = Buffer.from(`${MAILJET_API_KEY}:${MAILJET_SECRET_KEY}`).toString('base64');
-    const response = await fetch('https://api.mailjet.com/v3.1/send', {
+    // Call Vercel serverless function to send email
+    // Vercel has no outbound restrictions unlike Render free tier
+    const response = await fetch(VERCEL_EMAIL_URL, {
+      method:  'POST',
+      headers: {
+        'Content-Type':    'application/json',
+        'x-patts-secret':  PATTS_SECRET
+      },
+      body: JSON.stringify({
+        studentEmail:   student.email,
+        studentName:    student.name,
+        studentNumber:  student.studentNumber,
+        violationType:  violation.violationType,
+        category:       violation.category,
+        recordedBy:     violation.recordedBy,
+        timestamp:      violation.timestamp,
+        description:    violation.description,
+        course:         student.course
+      })
+    });
+    const result = await response.json();
+    if (result.success) {
+      console.log(`📧 Email sent to ${student.email} for ${student.studentNumber}`);
+    } else {
+      console.error(`❌ Email failed for ${student.email}:`, result.message);
+    }
+  } catch (err) {
+    console.error(`❌ Email failed for ${student.email}:`, err.message);
+    // Don't throw — email failure should never block violation recording
+  }
       method:  'POST',
       headers: {
         'Authorization': `Basic ${credentials}`,
@@ -543,5 +570,5 @@ app.get('*', (req, res) => {
 // ─────────────────────────────────────────────────────────────
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🚀 Server running at http://localhost:${PORT}`);
-  console.log(`📧 Auto-email on violation: ${MAILJET_API_KEY ? 'ENABLED via Mailjet' : 'DISABLED (set MAILJET_API_KEY + MAILJET_SECRET_KEY)'}`);
+  console.log(`📧 Auto-email on violation: ${VERCEL_EMAIL_URL ? 'ENABLED via Vercel' : 'DISABLED (set VERCEL_EMAIL_URL)'}`);
 });
