@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
-// Email via Resend REST API (no extra package needed — uses built-in fetch)
+// Email via Mailjet REST API (no extra package needed — uses built-in fetch)
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,21 +17,23 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://pattsadmin:pattsad
 //    EMAIL_PASS = your Gmail App Password (not your regular password)
 //  To get App Password: Google Account → Security → 2FA → App Passwords
 // ─────────────────────────────────────────────────────────────
-const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
-const EMAIL_FROM    = process.env.EMAIL_FROM    || 'PATTS Violations <onboarding@resend.dev>';
+const MAILJET_API_KEY    = process.env.MAILJET_API_KEY    || '';
+const MAILJET_SECRET_KEY = process.env.MAILJET_SECRET_KEY || '';
+const EMAIL_FROM_NAME    = process.env.EMAIL_FROM_NAME    || 'PATTS Violations';
+const EMAIL_FROM_ADDRESS = process.env.EMAIL_FROM_ADDRESS || 'brent.lawrence08@gmail.com';
 
-if (RESEND_API_KEY) {
-  console.log('✅ Email service ready via Resend API');
+if (MAILJET_API_KEY && MAILJET_SECRET_KEY) {
+  console.log('✅ Email service ready via Mailjet');
 } else {
-  console.warn('⚠️  RESEND_API_KEY not set — email notifications disabled');
+  console.warn('⚠️  MAILJET_API_KEY or MAILJET_SECRET_KEY not set — email notifications disabled');
 }
 
 // ─────────────────────────────────────────────────────────────
 //  SEND VIOLATION EMAIL
 // ─────────────────────────────────────────────────────────────
 async function sendViolationEmail(student, violation) {
-  if (!RESEND_API_KEY) {
-    console.log('📧 Email skipped — no Resend API key');
+  if (!MAILJET_API_KEY || !MAILJET_SECRET_KEY) {
+    console.log('📧 Email skipped — no Mailjet API keys');
     return;
   }
   if (!student.email || !student.email.includes('@')) {
@@ -145,24 +147,33 @@ async function sendViolationEmail(student, violation) {
 </html>`;
 
   try {
-    const response = await fetch('https://api.resend.com/emails', {
+    const credentials = Buffer.from(`${MAILJET_API_KEY}:${MAILJET_SECRET_KEY}`).toString('base64');
+    const response = await fetch('https://api.mailjet.com/v3.1/send', {
       method:  'POST',
       headers: {
-        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Authorization': `Basic ${credentials}`,
         'Content-Type':  'application/json'
       },
       body: JSON.stringify({
-        from:    EMAIL_FROM,
-        to:      [student.email],
-        subject: `[PATTS] Violation Notice — ${violation.violationType} (${violation.category})`,
-        html
+        Messages: [{
+          From: {
+            Email: EMAIL_FROM_ADDRESS,
+            Name:  EMAIL_FROM_NAME
+          },
+          To: [{
+            Email: student.email,
+            Name:  student.name
+          }],
+          Subject: `[PATTS] Violation Notice — ${violation.violationType} (${violation.category})`,
+          HTMLPart: html
+        }]
       })
     });
     const result = await response.json();
     if (response.ok) {
       console.log(`📧 Email sent to ${student.email} for ${student.studentNumber}`);
     } else {
-      console.error(`❌ Email failed for ${student.email}:`, result.message || JSON.stringify(result));
+      console.error(`❌ Email failed for ${student.email}:`, JSON.stringify(result));
     }
   } catch (err) {
     console.error(`❌ Email failed for ${student.email}:`, err.message);
@@ -532,5 +543,5 @@ app.get('*', (req, res) => {
 // ─────────────────────────────────────────────────────────────
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🚀 Server running at http://localhost:${PORT}`);
-  console.log(`📧 Auto-email on violation: ${RESEND_API_KEY ? 'ENABLED via Resend API' : 'DISABLED (set RESEND_API_KEY)'}`);
+  console.log(`📧 Auto-email on violation: ${MAILJET_API_KEY ? 'ENABLED via Mailjet' : 'DISABLED (set MAILJET_API_KEY + MAILJET_SECRET_KEY)'}`);
 });
