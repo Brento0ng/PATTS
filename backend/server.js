@@ -176,36 +176,6 @@ async function sendViolationEmail(student, violation) {
     console.error(`❌ Email failed for ${student.email}:`, err.message);
     // Don't throw — email failure should never block violation recording
   }
-      method:  'POST',
-      headers: {
-        'Authorization': `Basic ${credentials}`,
-        'Content-Type':  'application/json'
-      },
-      body: JSON.stringify({
-        Messages: [{
-          From: {
-            Email: EMAIL_FROM_ADDRESS,
-            Name:  EMAIL_FROM_NAME
-          },
-          To: [{
-            Email: student.email,
-            Name:  student.name
-          }],
-          Subject: `[PATTS] Violation Notice — ${violation.violationType} (${violation.category})`,
-          HTMLPart: html
-        }]
-      })
-    });
-    const result = await response.json();
-    if (response.ok) {
-      console.log(`📧 Email sent to ${student.email} for ${student.studentNumber}`);
-    } else {
-      console.error(`❌ Email failed for ${student.email}:`, JSON.stringify(result));
-    }
-  } catch (err) {
-    console.error(`❌ Email failed for ${student.email}:`, err.message);
-    // Don't throw — email failure should never block violation recording
-  }
 }
 
 // ─────────────────────────────────────────────────────────────
