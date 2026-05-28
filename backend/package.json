@@ -7,10 +7,11 @@
     "start": "node server.js",
     "dev": "npx nodemon server.js"
   },
-  "dependencies": {
-    "body-parser": "^1.20.2",
-    "cors": "^2.8.5",
+"dependencies": {
     "express": "^4.18.2",
-    "mongoose": "^8.0.0"
-  }
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2",
+    "mongoose": "^8.0.0",
+    "nodemailer": "^6.9.0"
+}
 }
