@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PATTS — Student Violation & Enrollment System</title>
+  <title>PATTS — Student Violation System</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -160,12 +160,6 @@
     .c-blue    {background:#dbeafe;color:#1e40af;}
     .c-green0  {background:#dcfce7;color:#166534;}
     .c-green1  {background:#fef9c3;color:#854d0e;}
-    /* enrollment chips */
-    .c-enroll-pending {background:#fef9c3;color:#854d0e;}
-    .c-enroll-paid    {background:#dbeafe;color:#1e40af;}
-    .c-enroll-done    {background:#dcfce7;color:#166534;}
-    .c-enroll-cancelled{background:#fee2e2;color:#991b1b;}
-
     /* ── Buttons ── */
     .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:8px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;transition:.2s;}
     .btn-primary{background:var(--navy);color:white;}
@@ -290,31 +284,7 @@
     .tv-name{font-size:.84rem;color:var(--text);}
     .tv-count{background:var(--navy);color:white;font-size:.75rem;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 
-    /* ═══ ENROLLMENT PAGE SPECIFIC ═══ */
-    .enroll-stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px;}
-    .enroll-stat{background:var(--white);border-radius:10px;padding:16px 18px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between;}
-    .enroll-stat .es-num{font-size:1.6rem;font-weight:700;line-height:1;}
-    .enroll-stat .es-lbl{font-size:.73rem;color:var(--text2);margin-top:3px;}
-    .enroll-stat .es-icon{width:40px;height:40px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
-    .es-orange .es-num{color:#ea580c;}
-    .es-orange .es-icon{background:#fff7ed;}
-    .es-blue .es-num{color:#1e40af;}
-    .es-blue .es-icon{background:#dbeafe;}
-    .es-green .es-num{color:#166534;}
-    .es-green .es-icon{background:#dcfce7;}
-    .es-red .es-num{color:#991b1b;}
-    .es-red .es-icon{background:#fee2e2;}
 
-    /* payment confirm button animation */
-    .btn-pay{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:6px;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:.2s;}
-    .btn-pay:hover{background:#bbf7d0;transform:scale(1.03);}
-    .btn-pay:disabled{opacity:.5;cursor:not-allowed;transform:none;}
-    .btn-cancel-enroll{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:6px;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:600;cursor:pointer;transition:.2s;}
-    .btn-cancel-enroll:hover{background:#fee2e2;}
-
-    /* polling badge */
-    .polling-badge{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;color:var(--text3);}
-    .poll-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b;animation:blink 1.2s infinite;}
   </style>
 </head>
 <body>
@@ -326,7 +296,7 @@
   <div class="login-card">
     <div class="lc-head">
       <h1>PATTS College of Aeronautics</h1>
-      <p>Student Violation & Enrollment System</p>
+      <p>Student Violation Monitoring System</p>
     </div>
     <div class="lc-body">
       <h2>Admin Login</h2>
@@ -359,7 +329,7 @@
     <div class="tb-left">
       <div class="tb-logo"><div class="tn">PATTS College</div><div class="ts">of Aeronautics</div></div>
       <div class="tb-divider"></div>
-      <div class="tb-title">Student Violation & Enrollment System</div>
+      <div class="tb-title">Student Violation System</div>
     </div>
     <div class="tb-right">
       <div class="tb-status"><div class="tb-dot"></div> System Online</div>
@@ -400,10 +370,7 @@
       <div class="nav-item" id="n-log" onclick="go('log','n-log')">
         <span class="ni">✏</span> Log Violation
       </div>
-      <div class="sb-group">Enrollment</div>
-      <div class="nav-item" id="n-enrollment" onclick="go('enrollment','n-enrollment')">
-        <span class="ni">🎓</span> Enrollments
-      </div>
+
     </div>
 
     <div class="main">
@@ -600,7 +567,7 @@
           <div class="cc-head"><div class="cc-title">🔔 Violation Records</div><span class="cc-badge" id="vio-count">0</span></div>
           <div class="cc-flush">
             <table>
-              <thead><tr><th>Student No.</th><th>Name</th><th>Violation</th><th>Category</th><th>Status</th><th>Date & Time</th><th>Actions</th></tr></thead>
+              <thead><tr><th>Student No.</th><th>Name</th><th>Violation</th><th>Category</th><th>Status</th><th>Email</th><th>Date & Time</th><th>Actions</th></tr></thead>
               <tbody id="vio-tbody"><tr><td colspan="7"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr></tbody>
             </table>
           </div>
@@ -619,13 +586,23 @@
         <div class="tp active" id="t-manual-log">
           <div class="two-col">
             <div class="cc">
-              <div class="cc-head"><div class="cc-title">✏ Violation Information</div></div>
+              <div class="cc-head">
+                <div class="cc-title">✏ Violation Information</div>
+                <!-- Scan Mode Toggle -->
+                <button id="scan-mode-btn" class="btn-ghost btn-sm" onclick="toggleScanMode()" style="font-size:.75rem;padding:5px 12px;">
+                  🔴 Scan Mode: OFF
+                </button>
+              </div>
               <div class="cc-body">
+                <!-- Scan Mode Info Banner -->
+                <div id="scan-mode-banner" style="display:none;background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid var(--navy);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:.81rem;color:var(--text2);">
+                  🔵 <strong>Scan Mode ON</strong> — Plug your X2-1100 USB barcode scanner into this computer. Click the Student Number field below, then scan a barcode. It will auto-fill and load the student info instantly.
+                </div>
                 <div style="display:flex;flex-direction:column;gap:16px">
                   <div class="fg">
                     <label>Student Number <span class="req">*</span></label>
-                    <input class="fi" type="text" id="l-sn" placeholder="e.g. 2021-00123" oninput="previewStudent()"/>
-                    <div class="fhint">Enter the student number to auto-fill student info</div>
+                    <input class="fi" type="text" id="l-sn" placeholder="e.g. 2021-00123 or scan barcode here" oninput="previewStudent()" onkeydown="handleBarcodeInput(event)"/>
+                    <div class="fhint" id="l-sn-hint">Enter student number or plug in USB barcode scanner and scan here</div>
                   </div>
                   <div class="fg">
                     <label>Violation Type <span class="req">*</span></label>
@@ -705,94 +682,6 @@
         </div>
       </div>
 
-      <!-- ══ ENROLLMENT PAGE ══ -->
-      <div class="page" id="page-enrollment">
-        <div class="ph">
-          <div class="ph-l">
-            <div class="breadcrumb"><span>Enrollment</span></div>
-            <div class="page-title">Enrollment Management</div>
-          </div>
-          <button class="btn btn-outline" onclick="loadEnrollments()">↺ Refresh</button>
-        </div>
-
-        <!-- Enrollment stat cards -->
-        <div class="enroll-stat-row">
-          <div class="enroll-stat es-orange">
-            <div><div class="es-num" id="en-pending-n">—</div><div class="es-lbl">Awaiting Payment</div></div>
-            <div class="es-icon">⏳</div>
-          </div>
-          <div class="enroll-stat es-blue">
-            <div><div class="es-num" id="en-paid-n">—</div><div class="es-lbl">Payment Confirmed</div></div>
-            <div class="es-icon">💳</div>
-          </div>
-          <div class="enroll-stat es-green">
-            <div><div class="es-num" id="en-done-n">—</div><div class="es-lbl">Fully Enrolled</div></div>
-            <div class="es-icon">✅</div>
-          </div>
-          <div class="enroll-stat es-red">
-            <div><div class="es-num" id="en-cancel-n">—</div><div class="es-lbl">Cancelled</div></div>
-            <div class="es-icon">❌</div>
-          </div>
-        </div>
-
-        <!-- Info box explaining flow -->
-        <div class="infobox">
-          <h4>📡 How Enrollment Works</h4>
-          <p>
-            1. Guard presses <strong>Enroll button</strong> on ESP32 device<br/>
-            2. Student scans ID barcode → HuskyLens verifies face<br/>
-            3. ESP32 sends enrollment request → status becomes <strong>Awaiting Payment</strong><br/>
-            4. Admin clicks <strong>Mark as Paid</strong> below → ESP32 detects it and confirms enrollment<br/>
-            5. Status updates to <strong>Fully Enrolled</strong>
-          </p>
-        </div>
-
-        <!-- Filter row -->
-        <div class="filter-row">
-          <div class="search-box">
-            <span>🔍</span>
-            <input type="text" id="en-search" placeholder="Search by student number or name..." oninput="filterEnrollments()"/>
-          </div>
-          <select class="fsel" id="en-filter" onchange="filterEnrollments()">
-            <option value="">All Statuses</option>
-            <option value="pending">Awaiting Payment</option>
-            <option value="paid">Payment Confirmed</option>
-            <option value="enrolled">Fully Enrolled</option>
-            <option value="cancelled">Cancelled</option>
-          </select>
-        </div>
-
-        <div class="cc">
-          <div class="cc-head">
-            <div class="cc-title">🎓 Enrollment Records</div>
-            <div style="display:flex;align-items:center;gap:12px;">
-              <div class="polling-badge" id="poll-badge" style="display:none;">
-                <div class="poll-dot"></div> Auto-refreshing
-              </div>
-              <span class="cc-badge" id="en-count">0</span>
-            </div>
-          </div>
-          <div class="cc-flush">
-            <table>
-              <thead>
-                <tr>
-                  <th>Student No.</th>
-                  <th>Name</th>
-                  <th>Face ID</th>
-                  <th>Status</th>
-                  <th>Requested At</th>
-                  <th>Enrolled At</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody id="en-tbody">
-                <tr><td colspan="7"><div class="empty"><div class="ei">🎓</div><p>No enrollment requests yet</p></div></td></tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
     </div><!-- /main -->
   </div><!-- /layout -->
 
@@ -817,7 +706,7 @@
           <div class="mp-field"><div class="mf-label">Year Level</div><div class="mf-val" id="mp-year">—</div></div>
           <div class="mp-field"><div class="mf-label">Email</div><div class="mf-val" id="mp-email">—</div></div>
           <div class="mp-field"><div class="mf-label">Contact</div><div class="mf-val" id="mp-contact">—</div></div>
-          <div class="mp-field"><div class="mf-label">Enrolled</div><div class="mf-val" id="mp-enrolled">—</div></div>
+          
           <div class="mp-field"><div class="mf-label">Total Violations</div><div class="mf-val" id="mp-total-vio">—</div></div>
         </div>
         <div class="mp-vh-title">Violation History</div>
@@ -832,9 +721,7 @@
 <script>
   let allStudents   = [];
   let allViolations = [];
-  let allEnrollments = [];
   let selectedCat   = '';
-  let enrollPollInterval = null;
 
   function $(id){ return document.getElementById(id); }
   function toast(msg, type='info'){
@@ -848,18 +735,7 @@
     if(s==='Under Review') return 'review';
     return 'pending';
   }
-  function enrollChipClass(status){
-    if(status==='paid')     return 'c-enroll-paid';
-    if(status==='enrolled') return 'c-enroll-done';
-    if(status==='cancelled')return 'c-enroll-cancelled';
-    return 'c-enroll-pending';
-  }
-  function enrollChipLabel(status){
-    if(status==='paid')     return 'Payment Confirmed';
-    if(status==='enrolled') return 'Fully Enrolled';
-    if(status==='cancelled')return 'Cancelled';
-    return 'Awaiting Payment';
-  }
+
   function setNow(){
     const now=new Date();
     const loc=new Date(now-now.getTimezoneOffset()*60000).toISOString().slice(0,16);
@@ -896,7 +772,6 @@
     localStorage.removeItem('patts_logged_in');
     stopDashboardAutoRefresh();
     stopViolationsAutoRefresh();
-    stopEnrollPolling();
     $('app').style.display='none';
     $('login-page').style.display='flex';
     $('lu').value=''; $('lp').value='';
@@ -920,11 +795,9 @@
     // stop all auto-refreshes first
     stopDashboardAutoRefresh();
     stopViolationsAutoRefresh();
-    stopEnrollPolling();
     if(name==='dashboard')  { loadDashboard();   startDashboardAutoRefresh(); }
     if(name==='students')   { loadStudents(); }
     if(name==='violations') { loadViolations();  startViolationsAutoRefresh(); }
-    if(name==='enrollment') { loadEnrollments(); startEnrollPolling(); }
     if(name==='log')        { setNow(); }
   }
 
@@ -1091,7 +964,6 @@
     $('mp-course').textContent=s.course||'—'; $('mp-section').textContent=s.section||'—';
     $('mp-year').textContent=s.year||'—'; $('mp-email').textContent=s.email||'—';
     $('mp-contact').textContent=s.contact||'—';
-    $('mp-enrolled').textContent=s.registeredAt?new Date(s.registeredAt).toLocaleDateString('en-PH'):'—';
     const viols=allViolations.filter(v=>v.studentNumber===sn);
     $('mp-total-vio').textContent=viols.length;
     const vlist=$('mp-vio-list');
@@ -1126,6 +998,11 @@
       <td>${v.violationType}</td>
       <td><span class="chip c-${(v.category||'minor').toLowerCase()}">${v.category||'Minor'}</span></td>
       <td><span class="chip c-${scls(v.status)}">${v.status||'Pending'}</span></td>
+      <td>
+        ${v.emailSent
+          ? '<span style="color:#16a34a;font-size:.8rem;font-weight:600;">✅ Sent</span>'
+          : '<span style="color:#9ca3af;font-size:.8rem;">— Not sent</span>'}
+      </td>
       <td class="td-muted">${fmt(v.timestamp)}</td>
       <td style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <select class="fsel" style="padding:5px 8px;font-size:.75rem;border-radius:6px;" onchange="updateStatus('${v.id||v._id}',this.value)">
@@ -1133,6 +1010,7 @@
           <option value="Resolved"     ${(v.status||'')==='Resolved'?'selected':''}>Resolved</option>
           <option value="Under Review" ${(v.status||'')==='Under Review'?'selected':''}>Under Review</option>
         </select>
+        <span class="td-link" style="color:#1e40af;" onclick="resendEmail('${v.id||v._id}','${v.studentNumber}')">📧 Resend</span>
         <span class="td-link" style="color:#dc2626;" onclick="delVio('${v.id||v._id}')">Delete</span>
       </td>
     </tr>`).join('');
@@ -1223,145 +1101,17 @@
     }catch(e){ $('tl-res').style.display='block'; $('tl-pre').textContent='Error: '+e.message; }
   }
 
-  /* ══════════════════════════════════════════
-     ENROLLMENT FUNCTIONS
-  ══════════════════════════════════════════ */
 
-  // Load all enrollments from server
-  async function loadEnrollments(){
-    try{
-      const r=await fetch('/api/enrollment/all');
-      const d=await r.json();
-      if(d.success){
-        allEnrollments=d.data;
-        renderEnrollments(allEnrollments);
-        updateEnrollStats(allEnrollments);
-      }
-    }catch(e){ toast('Cannot load enrollments','error'); }
-  }
-
-  // Render enrollment table
-  function renderEnrollments(list){
-    $('en-count').textContent=list.length;
-    const tb=$('en-tbody');
-    if(!list.length){
-      tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="ei">🎓</div><p>No enrollment requests yet</p></div></td></tr>';
-      return;
-    }
-    tb.innerHTML=list.map(e=>{
-      const id=e.id||e._id;
-      const isPending=e.status==='pending'||!e.status;
-      const isPaid=e.status==='paid';
-      const isEnrolled=e.status==='enrolled';
-      const isCancelled=e.status==='cancelled';
-      return `<tr>
-        <td class="td-num">${e.studentNumber}</td>
-        <td class="td-bold">${e.studentName||'—'}</td>
-        <td class="td-muted">${e.faceId||'—'}</td>
-        <td><span class="chip ${enrollChipClass(e.status)}">${enrollChipLabel(e.status)}</span></td>
-        <td class="td-muted">${fmt(e.requestedAt||e.createdAt)}</td>
-        <td class="td-muted">${e.enrolledAt?fmt(e.enrolledAt):'—'}</td>
-        <td style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-          ${isPending ? `
-            <button class="btn-pay" onclick="markAsPaid('${id}','${e.studentNumber}')">💳 Mark as Paid</button>
-            <button class="btn-cancel-enroll" onclick="cancelEnrollment('${id}','${e.studentNumber}')">✕ Cancel</button>
-          ` : ''}
-          ${isPaid ? `<span style="color:#1e40af;font-size:.82rem;font-weight:600;">💳 Paid</span>` : ''}
-          ${isEnrolled ? `<span style="color:#166534;font-size:.82rem;font-weight:600;">✅ Done</span>` : ''}
-          ${isCancelled ? `<span style="color:#dc2626;font-size:.82rem;font-weight:600;">❌ Cancelled</span>` : ''}
-          <span class="td-link" style="color:#dc2626;margin-left:4px;" onclick="delEnrollment('${id}','${e.studentNumber}')">Delete</span>
-        </td>
-      </tr>`;
-    }).join('');
-  }
-
-  // Update stat counters
-  function updateEnrollStats(list){
-    $('en-pending-n').textContent = list.filter(e=>e.status==='pending'||!e.status).length;
-    $('en-paid-n').textContent    = list.filter(e=>e.status==='paid').length;
-    $('en-done-n').textContent    = list.filter(e=>e.status==='enrolled').length;
-    $('en-cancel-n').textContent  = list.filter(e=>e.status==='cancelled').length;
-  }
-
-  // Filter enrollments
-  function filterEnrollments(){
-    const q=$('en-search').value.toLowerCase();
-    const f=$('en-filter').value;
-    renderEnrollments(allEnrollments.filter(e=>{
-      const mq=!q||e.studentNumber.toLowerCase().includes(q)||(e.studentName||'').toLowerCase().includes(q);
-      const mf=!f||(f==='pending'?(e.status==='pending'||!e.status):e.status===f);
-      return mq&&mf;
-    }));
-  }
-
-  async function markAsPaid(id, studentNumber){
-    // Fix 5: Always fetch fresh violations before checking
+  async function resendEmail(id, studentNumber) {
+    if(!confirm(`Resend violation email to student: ${studentNumber}?`)) return;
     try {
-      const vr = await fetch('/api/violations');
-      const vd = await vr.json();
-      if(vd.success) allViolations = vd.data;
-    } catch(e) {}
-
-    const unresolved = allViolations.filter(v=>
-      v.studentNumber === studentNumber &&
-      (v.status||'Pending') !== 'Resolved'
-    );
-    if(unresolved.length > 0){
-      const types = unresolved.map(v=>v.violationType).join(', ');
-      toast(`❌ Cannot enroll — ${studentNumber} has ${unresolved.length} unresolved violation(s): ${types}. Resolve all first.`, 'error');
-      return;
-    }
-    if(!confirm(`Confirm payment received for student: ${studentNumber}?\n\nThe ESP32 will detect this and complete enrollment automatically.`)) return;
-    try{
-      const r=await fetch(`/api/enrollment/mark-paid/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'}});
-      const d=await r.json();
-      if(d.success){
-        toast(`Payment confirmed for ${studentNumber}! ESP32 will enroll automatically.`,'success');
-        loadEnrollments();
-      } else toast(d.message||'Error marking payment','error');
-    }catch(e){ toast('Server error','error'); }
+      const r = await fetch(`/api/violations/${id}/resend-email`, { method: 'PATCH' });
+      const d = await r.json();
+      if(d.success) { toast(`✅ Email resent to ${studentNumber}`, 'success'); loadViolations(); }
+      else toast(d.message || 'Could not resend email', 'error');
+    } catch(e) { toast('Server error', 'error'); }
   }
 
-  async function cancelEnrollment(id, studentNumber){
-    if(!confirm(`Cancel enrollment for student: ${studentNumber}?`)) return;
-    try{
-      const r=await fetch(`/api/enrollment/cancel/${id}`,{method:'PATCH',headers:{'Content-Type':'application/json'}});
-      const d=await r.json();
-      if(d.success){
-        toast(`Enrollment cancelled for ${studentNumber}`,'info');
-        loadEnrollments();
-      } else toast(d.message||'Error cancelling','error');
-    }catch(e){ toast('Server error','error'); }
-  }
-
-  // Fix 2: Delete enrollment record permanently
-  async function delEnrollment(id, studentNumber){
-    if(!confirm(`Delete enrollment record for student: ${studentNumber}?\n\nThis will permanently remove the record.`)) return;
-    try{
-      const r=await fetch(`/api/enrollment/${id}`,{method:'DELETE'});
-      const d=await r.json();
-      if(d.success){
-        toast(`Enrollment record deleted`,'success');
-        loadEnrollments();
-      } else toast(d.message||'Error deleting','error');
-    }catch(e){ toast('Server error','error'); }
-  }
-
-  // Auto-refresh enrollment page every 5 seconds
-  // so admin sees new requests from ESP32 without manually refreshing
-  function startEnrollPolling(){
-    stopEnrollPolling();
-    const badge=$('poll-badge');
-    if(badge) badge.style.display='flex';
-    enrollPollInterval=setInterval(()=>{
-      loadEnrollments();
-    }, 5000);
-  }
-  function stopEnrollPolling(){
-    if(enrollPollInterval){ clearInterval(enrollPollInterval); enrollPollInterval=null; }
-    const badge=$('poll-badge');
-    if(badge) badge.style.display='none';
-  }
 </script>
 </body>
 </html>
