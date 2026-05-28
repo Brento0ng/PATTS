@@ -928,6 +928,8 @@
       if(d.success){ allStudents=d.data; renderStudents(allStudents); }
     }catch(e){ toast('Cannot load students','error'); }
   }
+
+  function renderStudents(list){
     $('stu-count').textContent=list.length;
     const tb=$('stu-tbody');
     if(!list.length){ tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="ei">👤</div><p>No students registered yet</p></div></td></tr>'; return; }
