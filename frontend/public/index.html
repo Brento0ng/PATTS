@@ -506,7 +506,7 @@
                     <option>Senior High School</option>
                   </select>
                 </div>
-                <div class="fg"><label>Email Address <span class="req">*</span></label><input class="fi" type="email" id="r-email" placeholder="student@patts.edu.ph"/></div>
+                <div class="fg"><label>Email Address <span class="req">*</span></label><input class="fi" type="email" id="r-email" placeholder="student@patts.edu.ph"/><div class="fhint">⚠ Required — violation notifications will be sent to this email automatically</div></div>
                 <div class="fg"><label>Contact Number <span class="req">*</span></label><input class="fi" type="text" id="r-contact" placeholder="09XXXXXXXXX"/></div>
                 <div class="fg fg-full">
                   <label>Face ID (from HuskyLens) <span class="req">*</span></label>
@@ -856,6 +856,11 @@
   }
 
   async function loadDashboard(){
+    // Always load students so allStudents array is populated for previews/modals
+    try{
+      const rs=await fetch('/api/students'), ds=await rs.json();
+      if(ds.success) allStudents=ds.data;
+    }catch(e){}
     try{
       const r=await fetch('/api/stats'),d=await r.json();
       if(d.success){ $('s-students').textContent=d.data.totalStudents; $('s-violations').textContent=d.data.totalViolations; $('s-today').textContent=d.data.todayViolations; }
@@ -916,7 +921,13 @@
       : '<div class="mp-vh-empty">No data yet</div>';
   }
 
-  function renderStudents(list){
+  /* ── students ── */
+  async function loadStudents(){
+    try{
+      const r=await fetch('/api/students'), d=await r.json();
+      if(d.success){ allStudents=d.data; renderStudents(allStudents); }
+    }catch(e){ toast('Cannot load students','error'); }
+  }
     $('stu-count').textContent=list.length;
     const tb=$('stu-tbody');
     if(!list.length){ tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="ei">👤</div><p>No students registered yet</p></div></td></tr>'; return; }
@@ -1047,6 +1058,7 @@
     const fn=$('r-fn').value.trim(),ln=$('r-ln').value.trim();
     const body={studentNumber:$('r-sn').value.trim(),name:`${fn} ${ln}`.trim(),course:$('r-course').value,year:$('r-year').value,email:$('r-email').value.trim(),contact:$('r-contact').value.trim(),faceId:$('r-fid').value.trim()};
     if(!body.studentNumber||!body.name.trim()||!body.faceId) return toast('Student Number, Name, and Face ID are required','error');
+    if(!body.email||!body.email.includes('@')) return toast('A valid email address is required — student will not receive violation notifications without it','error');
     try{
       const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d=await r.json();
