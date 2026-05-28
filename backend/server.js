@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
-const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,29 +17,23 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://pattsadmin:pattsad
 //    EMAIL_PASS = your Gmail App Password (not your regular password)
 //  To get App Password: Google Account → Security → 2FA → App Passwords
 // ─────────────────────────────────────────────────────────────
-const EMAIL_USER = process.env.EMAIL_USER || '';
-const EMAIL_PASS = process.env.EMAIL_PASS || '';
+const RESEND_API_KEY   = process.env.RESEND_API_KEY  || '';
+const EMAIL_FROM       = process.env.EMAIL_FROM      || 'PATTS Violations <onboarding@resend.dev>';
 
-let transporter = null;
-if (EMAIL_USER && EMAIL_PASS) {
-  transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: { user: EMAIL_USER, pass: EMAIL_PASS }
-  });
-  transporter.verify((err) => {
-    if (err) console.error('❌ Email setup failed:', err.message);
-    else     console.log('✅ Email service ready:', EMAIL_USER);
-  });
+let resend = null;
+if (RESEND_API_KEY) {
+  resend = new Resend(RESEND_API_KEY);
+  console.log('✅ Email service ready via Resend');
 } else {
-  console.warn('⚠️  EMAIL_USER or EMAIL_PASS not set — email notifications disabled');
+  console.warn('⚠️  RESEND_API_KEY not set — email notifications disabled');
 }
 
 // ─────────────────────────────────────────────────────────────
 //  SEND VIOLATION EMAIL
 // ─────────────────────────────────────────────────────────────
 async function sendViolationEmail(student, violation) {
-  if (!transporter) {
-    console.log('📧 Email skipped — no email config');
+  if (!resend) {
+    console.log('📧 Email skipped — no Resend API key');
     return;
   }
   if (!student.email || !student.email.includes('@')) {
@@ -153,8 +147,8 @@ async function sendViolationEmail(student, violation) {
 </html>`;
 
   try {
-    await transporter.sendMail({
-      from:    `"PATTS Violations" <${EMAIL_USER}>`,
+    await resend.emails.send({
+      from:    EMAIL_FROM,
       to:      student.email,
       subject: `[PATTS] Violation Notice — ${violation.violationType} (${violation.category})`,
       html
@@ -528,5 +522,5 @@ app.get('*', (req, res) => {
 // ─────────────────────────────────────────────────────────────
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🚀 Server running at http://localhost:${PORT}`);
-  console.log(`📧 Auto-email on violation: ${transporter ? 'ENABLED (' + EMAIL_USER + ')' : 'DISABLED (set EMAIL_USER + EMAIL_PASS)'}`);
+  console.log(`📧 Auto-email on violation: ${resend ? 'ENABLED via Resend' : 'DISABLED (set RESEND_API_KEY)'}`  );
 });
