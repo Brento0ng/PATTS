@@ -3,7 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
-const { Resend } = require('resend');
+// Email via Resend REST API (no extra package needed — uses built-in fetch)
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,13 +17,11 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://pattsadmin:pattsad
 //    EMAIL_PASS = your Gmail App Password (not your regular password)
 //  To get App Password: Google Account → Security → 2FA → App Passwords
 // ─────────────────────────────────────────────────────────────
-const RESEND_API_KEY   = process.env.RESEND_API_KEY  || '';
-const EMAIL_FROM       = process.env.EMAIL_FROM      || 'PATTS Violations <onboarding@resend.dev>';
+const RESEND_API_KEY = process.env.RESEND_API_KEY || '';
+const EMAIL_FROM    = process.env.EMAIL_FROM    || 'PATTS Violations <onboarding@resend.dev>';
 
-let resend = null;
 if (RESEND_API_KEY) {
-  resend = new Resend(RESEND_API_KEY);
-  console.log('✅ Email service ready via Resend');
+  console.log('✅ Email service ready via Resend API');
 } else {
   console.warn('⚠️  RESEND_API_KEY not set — email notifications disabled');
 }
@@ -32,7 +30,7 @@ if (RESEND_API_KEY) {
 //  SEND VIOLATION EMAIL
 // ─────────────────────────────────────────────────────────────
 async function sendViolationEmail(student, violation) {
-  if (!resend) {
+  if (!RESEND_API_KEY) {
     console.log('📧 Email skipped — no Resend API key');
     return;
   }
@@ -147,13 +145,25 @@ async function sendViolationEmail(student, violation) {
 </html>`;
 
   try {
-    await resend.emails.send({
-      from:    EMAIL_FROM,
-      to:      student.email,
-      subject: `[PATTS] Violation Notice — ${violation.violationType} (${violation.category})`,
-      html
+    const response = await fetch('https://api.resend.com/emails', {
+      method:  'POST',
+      headers: {
+        'Authorization': `Bearer ${RESEND_API_KEY}`,
+        'Content-Type':  'application/json'
+      },
+      body: JSON.stringify({
+        from:    EMAIL_FROM,
+        to:      [student.email],
+        subject: `[PATTS] Violation Notice — ${violation.violationType} (${violation.category})`,
+        html
+      })
     });
-    console.log(`📧 Email sent to ${student.email} for ${student.studentNumber}`);
+    const result = await response.json();
+    if (response.ok) {
+      console.log(`📧 Email sent to ${student.email} for ${student.studentNumber}`);
+    } else {
+      console.error(`❌ Email failed for ${student.email}:`, result.message || JSON.stringify(result));
+    }
   } catch (err) {
     console.error(`❌ Email failed for ${student.email}:`, err.message);
     // Don't throw — email failure should never block violation recording
@@ -522,5 +532,5 @@ app.get('*', (req, res) => {
 // ─────────────────────────────────────────────────────────────
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`\n🚀 Server running at http://localhost:${PORT}`);
-  console.log(`📧 Auto-email on violation: ${resend ? 'ENABLED via Resend' : 'DISABLED (set RESEND_API_KEY)'}`  );
+  console.log(`📧 Auto-email on violation: ${RESEND_API_KEY ? 'ENABLED via Resend API' : 'DISABLED (set RESEND_API_KEY)'}`);
 });
