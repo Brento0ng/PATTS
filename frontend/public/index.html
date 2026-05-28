@@ -719,9 +719,11 @@
 <div id="toast"></div>
 
 <script>
-  let allStudents   = [];
-  let allViolations = [];
-  let selectedCat   = '';
+  let allStudents        = [];
+  let allViolations      = [];
+  let selectedCat        = '';
+  let dashboardInterval  = null;
+  let violationsInterval = null;
 
   function $(id){ return document.getElementById(id); }
   function toast(msg, type='info'){
@@ -778,7 +780,6 @@
   }
 
   /* ── nav ── */
-  let violationsInterval = null;
   function startViolationsAutoRefresh(){
     stopViolationsAutoRefresh();
     violationsInterval = setInterval(()=>{ loadViolations(); }, 10000);
@@ -845,8 +846,6 @@
   }
 
   /* ── dashboard ── */
-  let dashboardInterval = null;
-
   function startDashboardAutoRefresh(){
     stopDashboardAutoRefresh();
     dashboardInterval = setInterval(()=>{ loadDashboard(); }, 10000); // refresh every 10s
