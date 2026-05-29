@@ -315,6 +315,35 @@ app.delete('/api/students/:id', async (req, res) => {
 // ─────────────────────────────────────────────────────────────
 //  VIOLATION ROUTES
 // ─────────────────────────────────────────────────────────────
+
+// POST No-ID violation — student refused to show ID
+// Records without student lookup or face verification
+// studentNumber = "NOID-[millis]", faceId = "0"
+app.post('/api/violation/noid', async (req, res) => {
+  const { studentNumber, faceId, violationType, description, recordedBy } = req.body;
+  try {
+    const newViolation = new Violation({
+      studentNumber: studentNumber || 'UNKNOWN',
+      studentName:   'Unknown — No ID Presented',
+      section:       'N/A',
+      course:        'N/A',
+      faceId:        faceId || '0',
+      violationType: violationType || 'No ID Presented',
+      category:      getCategory(violationType),
+      description:   description  || 'Student did not present valid ID',
+      recordedBy:    recordedBy   || 'PATTS Guard System',
+      status:        'Pending',
+      emailSent:     false,
+      timestamp:     new Date()
+    });
+    await newViolation.save();
+    console.log(`🚨 No-ID Violation: ${studentNumber} | ${violationType}`);
+    res.json({ success: true, message: 'No-ID violation recorded', data: newViolation });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 app.get('/api/violations', async (req, res) => {
   try {
     const violations = await Violation.find().sort({ timestamp: -1 });
