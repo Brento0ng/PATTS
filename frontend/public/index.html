@@ -7,36 +7,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --navy:   #1e3a8a;
-      --navy2:  #2d4fa3;
-      --navy3:  #1a3275;
-      --bg:     #f1f4f9;
-      --white:  #ffffff;
-      --text:   #111827;
-      --text2:  #6b7280;
-      --text3:  #9ca3af;
-      --border: #e5e7eb;
-      --sw:     220px;
-      --green:  #16a34a;
-      --orange: #ea580c;
+      --navy:#1e3a8a;--navy2:#2d4fa3;--navy3:#1a3275;--bg:#f1f4f9;--white:#ffffff;
+      --text:#111827;--text2:#6b7280;--text3:#9ca3af;--border:#e5e7eb;--sw:220px;
+      --green:#16a34a;--orange:#ea580c;
     }
     *{margin:0;padding:0;box-sizing:border-box;}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-
-    /* ═══ LOGIN ═══ */
-    #login-page{
-      min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
-      position:relative;overflow:hidden;background:#1a2f7a;
-    }
-    #login-page .bg-img{
-      position:absolute;inset:0;z-index:0;
-      background-image:url('https://lh3.googleusercontent.com/p/AF1QipPw7BmDpwGEuVWbSJEz_oZ9KkHVUL5qONqtqU0=s1360-w1360-h1020');
-      background-size:cover;background-position:center;
-    }
-    #login-page .bg-overlay{
-      position:absolute;inset:0;z-index:1;
-      background:linear-gradient(135deg,rgba(20,42,130,0.80) 0%,rgba(35,70,200,0.75) 50%,rgba(20,42,130,0.80) 100%);
-    }
+    #login-page{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;background:#1a2f7a;}
+    #login-page .bg-img{position:absolute;inset:0;z-index:0;background-image:url('https://lh3.googleusercontent.com/p/AF1QipPw7BmDpwGEuVWbSJEz_oZ9KkHVUL5qONqtqU0=s1360-w1360-h1020');background-size:cover;background-position:center;}
+    #login-page .bg-overlay{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(20,42,130,0.80) 0%,rgba(35,70,200,0.75) 50%,rgba(20,42,130,0.80) 100%);}
     .login-card{background:var(--white);border-radius:14px;width:440px;overflow:hidden;box-shadow:0 24px 64px rgba(0,0,0,0.35);position:relative;z-index:2;}
     .lc-head{background:var(--navy);padding:26px 32px;text-align:center;}
     .lc-head h1{color:white;font-size:1.2rem;font-weight:700;}
@@ -52,15 +31,11 @@
     .lf-wrap input:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(30,58,138,.1);}
     .eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);}
     .btn-signin{width:100%;padding:12px;margin-top:6px;background:var(--navy);color:white;border:none;border-radius:8px;font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;}
-    .btn-signin:hover{background:var(--navy2);box-shadow:0 4px 16px rgba(30,58,138,.4);}
+    .btn-signin:hover{background:var(--navy2);}
     .lc-hint{background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin-top:18px;font-size:.78rem;color:var(--text2);}
     .lc-hint .ht{font-weight:600;color:var(--text2);margin-bottom:4px;font-size:.75rem;text-transform:uppercase;letter-spacing:.5px;}
     .login-footer{color:rgba(255,255,255,.55);font-size:.74rem;margin-top:18px;position:relative;z-index:2;}
-
-    /* ═══ APP ═══ */
     #app{display:none;min-height:100vh;flex-direction:column;}
-
-    /* ── Topbar ── */
     .topbar{background:var(--navy);height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:fixed;top:0;left:0;right:0;z-index:200;box-shadow:0 2px 8px rgba(0,0,0,.2);}
     .tb-left{display:flex;align-items:center;gap:0;}
     .tb-logo{color:white;line-height:1.15;margin-right:24px;flex-shrink:0;}
@@ -88,46 +63,31 @@
     .av-item:hover{background:#f5f8ff;color:var(--navy);}
     .av-item.danger{color:#dc2626;}
     .av-item.danger:hover{background:#fef2f2;color:#dc2626;}
-
-    /* ── Layout ── */
     .layout{display:flex;margin-top:56px;min-height:calc(100vh - 56px);}
-
-    /* ── Sidebar ── */
     .sidebar{width:var(--sw);background:var(--white);border-right:1px solid var(--border);position:fixed;top:56px;left:0;bottom:0;overflow-y:auto;z-index:100;padding:10px 0;}
     .sb-group{padding:12px 18px 4px;font-size:.68rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
     .nav-item{display:flex;align-items:center;gap:10px;padding:10px 18px;cursor:pointer;color:var(--text2);font-size:.875rem;font-weight:400;transition:.15s;border-left:3px solid transparent;user-select:none;}
     .nav-item:hover{background:#f0f4ff;color:var(--navy);}
     .nav-item.active{background:#eff6ff;color:var(--navy);border-left-color:var(--navy);font-weight:600;}
     .nav-item .ni{font-size:.95rem;width:18px;text-align:center;flex-shrink:0;}
-    .sb-div{height:1px;background:var(--border);margin:4px 0;}
-
-    /* ── Main ── */
     .main{margin-left:var(--sw);flex:1;padding:28px;min-width:0;}
     .page{display:none;}
     .page.active{display:block;}
-
-    /* ── Page header ── */
     .ph{margin-bottom:22px;display:flex;align-items:flex-start;justify-content:space-between;}
     .breadcrumb{font-size:.73rem;color:var(--text3);margin-bottom:3px;}
     .breadcrumb span{color:var(--navy);font-weight:500;}
     .page-title{font-size:1.55rem;font-weight:700;color:var(--text);}
-
-    /* ── Stat cards ── */
     .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:22px;}
     .stat-card{background:var(--navy);border-radius:10px;padding:20px 22px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 14px rgba(30,58,138,.22);}
     .sc-l .sc-num{color:white;font-size:2rem;font-weight:700;line-height:1;}
     .sc-l .sc-lbl{color:rgba(255,255,255,.7);font-size:.77rem;margin-top:5px;}
     .sc-icon{width:48px;height:48px;background:rgba(255,255,255,.15);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
-
-    /* ── Content card ── */
     .cc{background:var(--white);border-radius:10px;overflow:hidden;margin-bottom:20px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
     .cc-head{background:var(--navy);padding:13px 20px;display:flex;align-items:center;justify-content:space-between;}
     .cc-title{color:white;font-size:.88rem;font-weight:600;display:flex;align-items:center;gap:8px;}
     .cc-badge{background:rgba(255,255,255,.2);color:white;padding:2px 10px;border-radius:20px;font-size:.74rem;font-weight:600;}
     .cc-body{padding:20px;}
     .cc-flush{padding:0;}
-
-    /* ── Search / Filter ── */
     .search-box{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 16px;display:flex;align-items:center;gap:10px;margin-bottom:18px;}
     .search-box span{color:var(--text3);}
     .search-box input{border:none;outline:none;font-family:'Inter',sans-serif;font-size:.87rem;color:var(--text);width:100%;background:transparent;}
@@ -136,8 +96,6 @@
     .filter-row .search-box{flex:1;margin-bottom:0;min-width:220px;}
     .fsel{background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Inter',sans-serif;font-size:.84rem;color:var(--text2);outline:none;cursor:pointer;}
     .fsel:focus{border-color:var(--navy);}
-
-    /* ── Table ── */
     table{width:100%;border-collapse:collapse;}
     thead th{padding:11px 16px;text-align:left;font-size:.71rem;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.8px;border-bottom:2px solid var(--border);background:#f9fafb;}
     tbody tr{border-bottom:1px solid var(--border);transition:.12s;}
@@ -149,32 +107,22 @@
     .td-muted{color:var(--text2);font-size:.82rem;}
     .td-link{color:var(--navy);font-weight:600;cursor:pointer;font-size:.85rem;}
     .td-link:hover{text-decoration:underline;}
-
-    /* ── Chips ── */
     .chip{display:inline-flex;align-items:center;padding:3px 12px;border-radius:20px;font-size:.74rem;font-weight:600;}
-    .c-minor   {background:#fef9c3;color:#854d0e;}
-    .c-major   {background:#ffedd5;color:#9a3412;}
-    .c-pending {background:#fef9c3;color:#854d0e;}
+    .c-minor{background:#fef9c3;color:#854d0e;}
+    .c-major{background:#ffedd5;color:#9a3412;}
+    .c-pending{background:#fef9c3;color:#854d0e;}
     .c-resolved{background:#dcfce7;color:#166534;}
-    .c-review  {background:#e0e7ff;color:#3730a3;}
-    .c-blue    {background:#dbeafe;color:#1e40af;}
-    .c-green0  {background:#dcfce7;color:#166534;}
-    .c-green1  {background:#fef9c3;color:#854d0e;}
-    /* ── Buttons ── */
+    .c-review{background:#e0e7ff;color:#3730a3;}
+    .c-green0{background:#dcfce7;color:#166534;}
+    .c-green1{background:#fef9c3;color:#854d0e;}
     .btn{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:8px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:600;transition:.2s;}
     .btn-primary{background:var(--navy);color:white;}
-    .btn-primary:hover{background:var(--navy2);box-shadow:0 3px 10px rgba(30,58,138,.3);}
+    .btn-primary:hover{background:var(--navy2);}
     .btn-outline{background:var(--white);color:var(--navy);border:1px solid var(--border);}
     .btn-outline:hover{background:#f0f4ff;border-color:var(--navy);}
     .btn-ghost{background:rgba(255,255,255,.15);color:white;border:1px solid rgba(255,255,255,.25);}
     .btn-ghost:hover{background:rgba(255,255,255,.25);}
-    .btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca;}
-    .btn-danger:hover{background:#fee2e2;}
-    .btn-success{background:#dcfce7;color:#166534;border:1px solid #bbf7d0;}
-    .btn-success:hover{background:#bbf7d0;}
     .btn-sm{padding:6px 14px;font-size:.78rem;border-radius:6px;}
-
-    /* ── Form ── */
     .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
     .fg-full{grid-column:1/-1;}
     .fg{display:flex;flex-direction:column;gap:7px;}
@@ -186,57 +134,39 @@
     textarea.fi{resize:vertical;}
     .fhint{font-size:.74rem;color:var(--text3);margin-top:2px;}
     .char-count{text-align:right;font-size:.72rem;color:var(--text3);margin-top:2px;}
-
-    /* ── Radio ── */
     .radio-grp{display:flex;gap:10px;flex-wrap:wrap;}
     .rl{display:flex;align-items:center;gap:7px;cursor:pointer;font-size:.88rem;color:var(--text2);padding:8px 16px;border:1px solid var(--border);border-radius:8px;transition:.15s;}
     .rl:hover{border-color:var(--navy);background:#f0f4ff;}
     .rl input{display:none;}
     .rl.sel-minor{border-color:#f59e0b;background:#fffbeb;color:#92400e;font-weight:600;}
     .rl.sel-major{border-color:#f97316;background:#fff7ed;color:#9a3412;font-weight:600;}
-
-    /* ── Inner tabs ── */
     .itabs{display:flex;border-bottom:2px solid var(--border);margin-bottom:20px;}
     .itab{padding:9px 22px;border:none;background:transparent;color:var(--text3);cursor:pointer;font-family:'Inter',sans-serif;font-size:.85rem;font-weight:500;border-bottom:2px solid transparent;margin-bottom:-2px;transition:.15s;}
     .itab:hover{color:var(--navy);}
     .itab.active{color:var(--navy);border-bottom-color:var(--navy);font-weight:700;}
     .tp{display:none;}
     .tp.active{display:block;}
-
-    /* ── Two-col ── */
     .two-col{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start;}
-
-    /* ── Info box ── */
     .infobox{background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid var(--navy);border-radius:8px;padding:14px 18px;margin-bottom:18px;}
     .infobox h4{color:var(--navy);font-size:.85rem;font-weight:700;margin-bottom:7px;}
     .infobox p{font-size:.82rem;color:var(--text2);line-height:1.7;}
     .infobox code{background:white;border:1px solid var(--border);border-radius:3px;padding:1px 6px;font-family:monospace;font-size:.79rem;color:#1e3a8a;}
-
-    /* ── Student preview ── */
     .sp-empty{text-align:center;padding:30px 16px;color:var(--text3);}
     .sp-empty .spe-icon{font-size:2rem;opacity:.25;margin-bottom:8px;}
     .sp-empty p{font-size:.81rem;}
     .sp-filled{padding:16px;}
     .sp-name{font-size:.98rem;font-weight:700;margin-bottom:6px;}
     .sp-row{font-size:.81rem;color:var(--text2);margin-bottom:3px;}
-
-    /* ── Cat guide ── */
     .catguide{display:flex;flex-direction:column;gap:10px;}
     .cg-item{display:flex;align-items:flex-start;gap:10px;font-size:.81rem;color:var(--text2);}
-
-    /* ── Empty ── */
     .empty{text-align:center;padding:48px 20px;color:var(--text3);}
     .empty .ei{font-size:2rem;opacity:.3;margin-bottom:10px;}
     .empty p{font-size:.85rem;}
-
-    /* ── Toast ── */
     #toast{position:fixed;bottom:24px;right:24px;padding:12px 20px;border-radius:8px;font-size:.87rem;font-weight:500;z-index:9999;opacity:0;transform:translateY(14px);transition:.3s;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.15);}
     #toast.show{opacity:1;transform:translateY(0);}
     #toast.success{background:#16a34a;color:white;}
     #toast.error{background:#dc2626;color:white;}
     #toast.info{background:var(--navy);color:white;}
-
-    /* ═══ STUDENT PROFILE MODAL ═══ */
     .modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.45);align-items:center;justify-content:center;}
     .modal-overlay.open{display:flex;}
     .modal{background:var(--white);border-radius:14px;width:520px;max-width:95vw;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:modalIn .25s ease;}
@@ -262,8 +192,6 @@
     .mp-vio-left .mv-type{font-size:.87rem;font-weight:600;color:var(--text);}
     .mp-vio-left .mv-date{font-size:.75rem;color:var(--text3);margin-top:2px;}
     .mp-vio-right{display:flex;flex-direction:column;gap:4px;align-items:flex-end;flex-shrink:0;}
-
-    /* ═══ DASHBOARD STATS ═══ */
     .stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:20px;}
     .stats-card{background:var(--white);border-radius:10px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06);}
     .stats-card-title{font-size:.7rem;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;}
@@ -283,13 +211,12 @@
     .tv-item:last-child{border-bottom:none;}
     .tv-name{font-size:.84rem;color:var(--text);}
     .tv-count{background:var(--navy);color:white;font-size:.75rem;font-weight:700;width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
-
-
+    /* Auto-refresh indicator */
+    .refresh-badge{display:inline-flex;align-items:center;gap:5px;font-size:.72rem;color:rgba(255,255,255,.7);margin-left:8px;}
+    .refresh-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:blink 1s infinite;}
   </style>
 </head>
 <body>
-
-<!-- ═══════════ LOGIN ═══════════ -->
 <div id="login-page">
   <div class="bg-img"></div>
   <div class="bg-overlay"></div>
@@ -323,7 +250,6 @@
   <div class="login-footer">© 2026 PATTS College of Aeronautics. All rights reserved.</div>
 </div>
 
-<!-- ═══════════ APP ═══════════ -->
 <div id="app">
   <div class="topbar">
     <div class="tb-left">
@@ -332,7 +258,10 @@
       <div class="tb-title">Student Violation System</div>
     </div>
     <div class="tb-right">
-      <div class="tb-status"><div class="tb-dot"></div> System Online</div>
+      <div class="tb-status">
+        <div class="tb-dot"></div> System Online
+        <span class="refresh-badge"><div class="refresh-dot"></div> Auto-refresh: 5s</span>
+      </div>
       <button class="btn-logout" onclick="doLogout()">⬛ Logout</button>
       <div class="avatar-wrap" id="av-wrap">
         <div class="avatar-btn" onclick="toggleAvatar()">A</div>
@@ -353,53 +282,36 @@
 
   <div class="layout">
     <div class="sidebar">
-      <div class="nav-item active" id="n-dashboard" onclick="go('dashboard','n-dashboard')">
-        <span class="ni">⊞</span> Dashboard
-      </div>
+      <div class="nav-item active" id="n-dashboard" onclick="go('dashboard','n-dashboard')"><span class="ni">⊞</span> Dashboard</div>
       <div class="sb-group">Students</div>
-      <div class="nav-item" id="n-students" onclick="go('students','n-students')">
-        <span class="ni">☰</span> All Students
-      </div>
-      <div class="nav-item" id="n-register" onclick="go('register','n-register')">
-        <span class="ni">👤</span> Register Student
-      </div>
+      <div class="nav-item" id="n-students" onclick="go('students','n-students')"><span class="ni">☰</span> All Students</div>
+      <div class="nav-item" id="n-register" onclick="go('register','n-register')"><span class="ni">👤</span> Register Student</div>
       <div class="sb-group">Violations</div>
-      <div class="nav-item" id="n-violations" onclick="go('violations','n-violations')">
-        <span class="ni">🔔</span> All Violations
-      </div>
-      <div class="nav-item" id="n-log" onclick="go('log','n-log')">
-        <span class="ni">✏</span> Log Violation
-      </div>
-
+      <div class="nav-item" id="n-violations" onclick="go('violations','n-violations')"><span class="ni">🔔</span> All Violations</div>
+      <div class="nav-item" id="n-log" onclick="go('log','n-log')"><span class="ni">✏</span> Log Violation</div>
     </div>
 
     <div class="main">
-
-      <!-- ══ DASHBOARD ══ -->
+      <!-- DASHBOARD -->
       <div class="page active" id="page-dashboard">
         <div class="ph">
           <div class="ph-l">
             <div class="breadcrumb"><span>Dashboard</span></div>
             <div class="page-title">Overview</div>
           </div>
+          <div style="font-size:.75rem;color:var(--text3);display:flex;align-items:center;gap:6px;">
+            <div class="refresh-dot" style="width:6px;height:6px;border-radius:50%;background:#22c55e;animation:blink 1s infinite;"></div>
+            Live — refreshes every 5 seconds
+          </div>
         </div>
         <div class="stat-row">
-          <div class="stat-card">
-            <div class="sc-l"><div class="sc-num" id="s-students">—</div><div class="sc-lbl">Total Students Registered</div></div>
-            <div class="sc-icon">🎓</div>
-          </div>
-          <div class="stat-card">
-            <div class="sc-l"><div class="sc-num" id="s-violations">—</div><div class="sc-lbl">Total Violations</div></div>
-            <div class="sc-icon">🔔</div>
-          </div>
-          <div class="stat-card">
-            <div class="sc-l"><div class="sc-num" id="s-today">—</div><div class="sc-lbl">Today's Violations</div></div>
-            <div class="sc-icon">📅</div>
-          </div>
+          <div class="stat-card"><div class="sc-l"><div class="sc-num" id="s-students">—</div><div class="sc-lbl">Total Students Registered</div></div><div class="sc-icon">🎓</div></div>
+          <div class="stat-card"><div class="sc-l"><div class="sc-num" id="s-violations">—</div><div class="sc-lbl">Total Violations</div></div><div class="sc-icon">🔔</div></div>
+          <div class="stat-card"><div class="sc-l"><div class="sc-num" id="s-today">—</div><div class="sc-lbl">Today's Violations</div></div><div class="sc-icon">📅</div></div>
         </div>
         <div class="cc">
           <div class="cc-head">
-            <div class="cc-title">☰ Recent Violations</div>
+            <div class="cc-title">☰ Recent Violations <span style="font-size:.72rem;opacity:.7;font-weight:400;">— last 5</span></div>
             <span class="cc-badge" id="d-count">0</span>
           </div>
           <div class="cc-flush">
@@ -413,31 +325,16 @@
           <div class="stats-card">
             <div class="stats-card-title">By Category</div>
             <div>
-              <div class="stat-row-item">
-                <div class="sri-top"><span class="sri-label">Minor</span><span class="sri-count" id="cat-minor-n">0</span></div>
-                <div class="sri-bar"><div class="sri-fill fill-minor" id="cat-minor-b" style="width:0%"></div></div>
-              </div>
-              <div class="stat-row-item">
-                <div class="sri-top"><span class="sri-label">Major</span><span class="sri-count" id="cat-major-n">0</span></div>
-                <div class="sri-bar"><div class="sri-fill fill-major" id="cat-major-b" style="width:0%"></div></div>
-              </div>
+              <div class="stat-row-item"><div class="sri-top"><span class="sri-label">Minor</span><span class="sri-count" id="cat-minor-n">0</span></div><div class="sri-bar"><div class="sri-fill fill-minor" id="cat-minor-b" style="width:0%"></div></div></div>
+              <div class="stat-row-item"><div class="sri-top"><span class="sri-label">Major</span><span class="sri-count" id="cat-major-n">0</span></div><div class="sri-bar"><div class="sri-fill fill-major" id="cat-major-b" style="width:0%"></div></div></div>
             </div>
           </div>
           <div class="stats-card">
             <div class="stats-card-title">By Status</div>
             <div>
-              <div class="stat-row-item">
-                <div class="sri-top"><span class="sri-label">Pending</span><span class="sri-count" id="sts-pending-n">0</span></div>
-                <div class="sri-bar"><div class="sri-fill fill-pending" id="sts-pending-b" style="width:0%"></div></div>
-              </div>
-              <div class="stat-row-item">
-                <div class="sri-top"><span class="sri-label">Under Review</span><span class="sri-count" id="sts-review-n">0</span></div>
-                <div class="sri-bar"><div class="sri-fill fill-review" id="sts-review-b" style="width:0%"></div></div>
-              </div>
-              <div class="stat-row-item">
-                <div class="sri-top"><span class="sri-label">Resolved</span><span class="sri-count" id="sts-resolved-n">0</span></div>
-                <div class="sri-bar"><div class="sri-fill fill-resolved" id="sts-resolved-b" style="width:0%"></div></div>
-              </div>
+              <div class="stat-row-item"><div class="sri-top"><span class="sri-label">Pending</span><span class="sri-count" id="sts-pending-n">0</span></div><div class="sri-bar"><div class="sri-fill fill-pending" id="sts-pending-b" style="width:0%"></div></div></div>
+              <div class="stat-row-item"><div class="sri-top"><span class="sri-label">Under Review</span><span class="sri-count" id="sts-review-n">0</span></div><div class="sri-bar"><div class="sri-fill fill-review" id="sts-review-b" style="width:0%"></div></div></div>
+              <div class="stat-row-item"><div class="sri-top"><span class="sri-label">Resolved</span><span class="sri-count" id="sts-resolved-n">0</span></div><div class="sri-bar"><div class="sri-fill fill-resolved" id="sts-resolved-b" style="width:0%"></div></div></div>
             </div>
           </div>
           <div class="stats-card">
@@ -447,7 +344,7 @@
         </div>
       </div>
 
-      <!-- ══ ALL STUDENTS ══ -->
+      <!-- ALL STUDENTS -->
       <div class="page" id="page-students">
         <div class="ph">
           <div class="ph-l"><div class="breadcrumb"><span>Students</span></div><div class="page-title">All Students</div></div>
@@ -465,7 +362,7 @@
         </div>
       </div>
 
-      <!-- ══ REGISTER ══ -->
+      <!-- REGISTER -->
       <div class="page" id="page-register">
         <div class="ph">
           <div class="ph-l"><div class="breadcrumb">Students / <span>Register</span></div><div class="page-title">Register Student</div></div>
@@ -501,13 +398,16 @@
                   <label>Year Level <span class="req">*</span></label>
                   <select class="fi" id="r-year">
                     <option value="">Select year</option>
-                    <option>Year 1</option><option>Year 2</option>
-                    <option>Year 3</option><option>Year 4</option>
+                    <option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4</option>
                     <option>Senior High School</option>
                   </select>
                 </div>
-                <div class="fg"><label>Email Address <span class="req">*</span></label><input class="fi" type="email" id="r-email" placeholder="student@patts.edu.ph"/><div class="fhint">⚠ Required — violation notifications will be sent to this email automatically</div></div>
-                <div class="fg"><label>Contact Number <span class="req">*</span></label><input class="fi" type="text" id="r-contact" placeholder="09XXXXXXXXX"/></div>
+                <div class="fg">
+                  <label>Email Address <span class="req">*</span></label>
+                  <input class="fi" type="email" id="r-email" placeholder="student@gmail.com"/>
+                  <div class="fhint">⚠ Required — violation notifications will be sent to this email automatically</div>
+                </div>
+                <div class="fg"><label>Contact Number</label><input class="fi" type="text" id="r-contact" placeholder="09XXXXXXXXX"/></div>
                 <div class="fg fg-full">
                   <label>Face ID (from HuskyLens) <span class="req">*</span></label>
                   <input class="fi" type="text" id="r-fid" placeholder="e.g. 1"/>
@@ -522,10 +422,7 @@
           </div>
         </div>
         <div class="tp" id="t-esp32-reg">
-          <div class="infobox">
-            <h4>📡 ESP32 Auto-Registration</h4>
-            <p>ESP32 sends POST to <code>/api/register</code><br/>Fields: <code>studentNumber</code>, <code>faceId</code>, <code>name</code>, <code>course</code>, <code>section</code></p>
-          </div>
+          <div class="infobox"><h4>📡 ESP32 Auto-Registration</h4><p>ESP32 sends POST to <code>/api/register</code><br/>Fields: <code>studentNumber</code>, <code>faceId</code>, <code>name</code>, <code>course</code>, <code>section</code></p></div>
           <div class="cc">
             <div class="cc-head"><div class="cc-title">📡 Simulate ESP32 Request</div></div>
             <div class="cc-body">
@@ -546,7 +443,7 @@
         </div>
       </div>
 
-      <!-- ══ ALL VIOLATIONS ══ -->
+      <!-- ALL VIOLATIONS -->
       <div class="page" id="page-violations">
         <div class="ph">
           <div class="ph-l"><div class="breadcrumb"><span>Violations</span></div><div class="page-title">All Violations</div></div>
@@ -554,27 +451,21 @@
         </div>
         <div class="filter-row">
           <div class="search-box"><span>🔍</span><input type="text" id="vio-search" placeholder="Search by name, student no., violation..." oninput="filterViolations()"/></div>
-          <select class="fsel" id="vio-cat" onchange="filterViolations()">
-            <option value="">All Categories</option>
-            <option>Minor</option><option>Major</option>
-          </select>
-          <select class="fsel" id="vio-sts" onchange="filterViolations()">
-            <option value="">All Statuses</option>
-            <option>Pending</option><option>Resolved</option><option>Under Review</option>
-          </select>
+          <select class="fsel" id="vio-cat" onchange="filterViolations()"><option value="">All Categories</option><option>Minor</option><option>Major</option></select>
+          <select class="fsel" id="vio-sts" onchange="filterViolations()"><option value="">All Statuses</option><option>Pending</option><option>Resolved</option><option>Under Review</option></select>
         </div>
         <div class="cc">
           <div class="cc-head"><div class="cc-title">🔔 Violation Records</div><span class="cc-badge" id="vio-count">0</span></div>
           <div class="cc-flush">
             <table>
               <thead><tr><th>Student No.</th><th>Name</th><th>Violation</th><th>Category</th><th>Status</th><th>Email</th><th>Date & Time</th><th>Actions</th></tr></thead>
-              <tbody id="vio-tbody"><tr><td colspan="7"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr></tbody>
+              <tbody id="vio-tbody"><tr><td colspan="8"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr></tbody>
             </table>
           </div>
         </div>
       </div>
 
-      <!-- ══ LOG VIOLATION ══ -->
+      <!-- LOG VIOLATION -->
       <div class="page" id="page-log">
         <div class="ph">
           <div class="ph-l"><div class="breadcrumb"><span>Log Violation</span></div><div class="page-title">Log Violation</div></div>
@@ -588,21 +479,17 @@
             <div class="cc">
               <div class="cc-head">
                 <div class="cc-title">✏ Violation Information</div>
-                <!-- Scan Mode Toggle -->
-                <button id="scan-mode-btn" class="btn-ghost btn-sm" onclick="toggleScanMode()" style="font-size:.75rem;padding:5px 12px;">
-                  🔴 Scan Mode: OFF
-                </button>
+                <button id="scan-mode-btn" class="btn-ghost btn-sm" onclick="toggleScanMode()" style="font-size:.75rem;padding:5px 12px;">🔴 Scan Mode: OFF</button>
               </div>
               <div class="cc-body">
-                <!-- Scan Mode Info Banner -->
                 <div id="scan-mode-banner" style="display:none;background:#eff6ff;border:1px solid #bfdbfe;border-left:4px solid var(--navy);border-radius:8px;padding:10px 14px;margin-bottom:16px;font-size:.81rem;color:var(--text2);">
-                  🔵 <strong>Scan Mode ON</strong> — Plug your X2-1100 USB barcode scanner into this computer. Click the Student Number field below, then scan a barcode. It will auto-fill and load the student info instantly.
+                  🔵 <strong>Scan Mode ON</strong> — Click the Student Number field below, then scan a barcode. It will auto-fill instantly.
                 </div>
                 <div style="display:flex;flex-direction:column;gap:16px">
                   <div class="fg">
                     <label>Student Number <span class="req">*</span></label>
                     <input class="fi" type="text" id="l-sn" placeholder="e.g. 2021-00123 or scan barcode here" oninput="previewStudent()" onkeydown="handleBarcodeInput(event)"/>
-                    <div class="fhint" id="l-sn-hint">Enter student number or plug in USB barcode scanner and scan here</div>
+                    <div class="fhint">Enter student number or enable Scan Mode and scan barcode</div>
                   </div>
                   <div class="fg">
                     <label>Violation Type <span class="req">*</span></label>
@@ -617,6 +504,7 @@
                       <option>Unauthorized Phone Use</option>
                       <option>Haircut/Haircolor</option>
                       <option>Prohibited Item</option>
+                      <option>No ID Presented</option>
                       <option>Other</option>
                     </select>
                   </div>
@@ -644,14 +532,14 @@
             <div style="display:flex;flex-direction:column;gap:16px">
               <div class="cc">
                 <div class="cc-head"><div class="cc-title">👤 Student Preview</div></div>
-                <div id="sp-wrap"><div class="sp-empty"><div class="spe-icon">👤</div><p>Enter a student number to preview student info</p></div></div>
+                <div id="sp-wrap"><div class="sp-empty"><div class="spe-icon">👤</div><p>Enter a student number to preview</p></div></div>
               </div>
               <div class="cc">
                 <div class="cc-head"><div class="cc-title">📋 Category Guide</div></div>
                 <div class="cc-body">
                   <div class="catguide">
-                    <div class="cg-item"><span class="chip c-minor">Minor</span><span>Improper Uniform, Tardiness, Unauthorized Phone Use, Haircut/Haircolor</span></div>
-                    <div class="cg-item"><span class="chip c-major">Major</span><span>Prohibited Item, Unauthorized Absence, Disruptive Behavior, Academic Dishonesty, Vandalism</span></div>
+                    <div class="cg-item"><span class="chip c-minor">Minor</span><span>Improper Uniform, Tardiness, Phone Use, Haircut/Haircolor</span></div>
+                    <div class="cg-item"><span class="chip c-major">Major</span><span>Prohibited Item, Absence, Disruptive Behavior, Dishonesty, Vandalism</span></div>
                   </div>
                 </div>
               </div>
@@ -659,10 +547,7 @@
           </div>
         </div>
         <div class="tp" id="t-esp32-log">
-          <div class="infobox">
-            <h4>📡 ESP32 Auto-Violation Recording</h4>
-            <p>ESP32 sends POST to <code>/api/violation</code><br/>Fields: <code>studentNumber</code>, <code>faceId</code>, <code>violationType</code>, <code>recordedBy</code></p>
-          </div>
+          <div class="infobox"><h4>📡 ESP32 Auto-Violation Recording</h4><p>ESP32 sends POST to <code>/api/violation</code><br/>Fields: <code>studentNumber</code>, <code>faceId</code>, <code>violationType</code>, <code>recordedBy</code></p></div>
           <div class="cc">
             <div class="cc-head"><div class="cc-title">📡 Simulate ESP32 Violation</div></div>
             <div class="cc-body">
@@ -674,18 +559,16 @@
               </div>
               <button class="btn btn-primary" style="margin-top:16px" onclick="testLogAPI()">Send POST /api/violation</button>
               <div id="tl-res" style="display:none;margin-top:14px">
-                <div style="font-size:.79rem;font-weight:600;color:var(--text2);margin-bottom:6px">Server Response:</div>
                 <pre id="tl-pre" style="background:#f8faff;border:1px solid var(--border);border-radius:8px;padding:14px;font-family:monospace;font-size:.78rem;color:#1e3a8a;overflow-x:auto;white-space:pre-wrap;"></pre>
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
 
-    </div><!-- /main -->
-  </div><!-- /layout -->
-
-  <!-- STUDENT PROFILE MODAL -->
+  <!-- PROFILE MODAL -->
   <div class="modal-overlay" id="profile-modal" onclick="closeProfileModal(event)">
     <div class="modal">
       <div class="modal-head">
@@ -706,7 +589,6 @@
           <div class="mp-field"><div class="mf-label">Year Level</div><div class="mf-val" id="mp-year">—</div></div>
           <div class="mp-field"><div class="mf-label">Email</div><div class="mf-val" id="mp-email">—</div></div>
           <div class="mp-field"><div class="mf-label">Contact</div><div class="mf-val" id="mp-contact">—</div></div>
-          
           <div class="mp-field"><div class="mf-label">Total Violations</div><div class="mf-val" id="mp-total-vio">—</div></div>
         </div>
         <div class="mp-vh-title">Violation History</div>
@@ -724,37 +606,37 @@
   let selectedCat        = '';
   let dashboardInterval  = null;
   let violationsInterval = null;
+  let scanMode           = false;
 
   function $(id){ return document.getElementById(id); }
-  function toast(msg, type='info'){
-    const t=$('toast'); t.textContent=msg; t.className='show '+type;
+  function toast(msg,type='info'){
+    const t=$('toast');t.textContent=msg;t.className='show '+type;
     setTimeout(()=>t.className='',3500);
   }
-  function fmt(iso){ return iso ? new Date(iso).toLocaleString('en-PH',{dateStyle:'medium',timeStyle:'short'}) : '—'; }
+  function fmt(iso){ return iso?new Date(iso).toLocaleString('en-PH',{dateStyle:'medium',timeStyle:'short'}):'—'; }
   function scls(s){
     if(!s) return 'pending';
     if(s==='Resolved') return 'resolved';
     if(s==='Under Review') return 'review';
     return 'pending';
   }
-
   function setNow(){
     const now=new Date();
     const loc=new Date(now-now.getTimezoneOffset()*60000).toISOString().slice(0,16);
-    const el=$('l-dt'); if(el) el.value=loc;
+    const el=$('l-dt');if(el) el.value=loc;
   }
 
   /* ── avatar ── */
   function toggleAvatar(){ $('av-dropdown').classList.toggle('open'); }
   function closeAvatar()  { $('av-dropdown').classList.remove('open'); }
   document.addEventListener('click',function(e){
-    const w=$('av-wrap'); if(w&&!w.contains(e.target)) $('av-dropdown').classList.remove('open');
+    const w=$('av-wrap');if(w&&!w.contains(e.target)) $('av-dropdown').classList.remove('open');
   });
 
   /* ── login ── */
-  function togglePw(){ const i=$('lp'); i.type=i.type==='password'?'text':'password'; }
+  function togglePw(){ const i=$('lp');i.type=i.type==='password'?'text':'password'; }
   function doLogin(){
-    const u=$('lu').value.trim(), p=$('lp').value.trim();
+    const u=$('lu').value.trim(),p=$('lp').value.trim();
     if(u==='admin'&&p==='patts2024'){
       localStorage.setItem('patts_logged_in','true');
       $('login-page').style.display='none';
@@ -776,29 +658,35 @@
     stopViolationsAutoRefresh();
     $('app').style.display='none';
     $('login-page').style.display='flex';
-    $('lu').value=''; $('lp').value='';
+    $('lu').value='';$('lp').value='';
   }
 
   /* ── nav ── */
   function startViolationsAutoRefresh(){
     stopViolationsAutoRefresh();
-    violationsInterval = setInterval(()=>{ loadViolations(); }, 10000);
+    violationsInterval=setInterval(()=>{ loadViolations(); },5000);
   }
   function stopViolationsAutoRefresh(){
-    if(violationsInterval){ clearInterval(violationsInterval); violationsInterval=null; }
+    if(violationsInterval){ clearInterval(violationsInterval);violationsInterval=null; }
+  }
+  function startDashboardAutoRefresh(){
+    stopDashboardAutoRefresh();
+    dashboardInterval=setInterval(()=>{ loadDashboard(); },5000);
+  }
+  function stopDashboardAutoRefresh(){
+    if(dashboardInterval){ clearInterval(dashboardInterval);dashboardInterval=null; }
   }
 
-  function go(name, navId){
+  function go(name,navId){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
     $('page-'+name).classList.add('active');
     if(navId) $(navId).classList.add('active');
-    // stop all auto-refreshes first
     stopDashboardAutoRefresh();
     stopViolationsAutoRefresh();
-    if(name==='dashboard')  { loadDashboard();   startDashboardAutoRefresh(); }
+    if(name==='dashboard')  { loadDashboard();  startDashboardAutoRefresh(); }
     if(name==='students')   { loadStudents(); }
-    if(name==='violations') { loadViolations();  startViolationsAutoRefresh(); }
+    if(name==='violations') { loadViolations(); startViolationsAutoRefresh(); }
     if(name==='log')        { setNow(); }
   }
 
@@ -806,13 +694,42 @@
     const pg=$(pageId);
     pg.querySelectorAll('.tp').forEach(t=>t.classList.remove('active'));
     pg.querySelectorAll('.itab').forEach(t=>t.classList.remove('active'));
-    $(tabId).classList.add('active'); btn.classList.add('active');
+    $(tabId).classList.add('active');btn.classList.add('active');
+  }
+
+  /* ── scan mode ── */
+  function toggleScanMode(){
+    scanMode=!scanMode;
+    const btn=$('scan-mode-btn');
+    const banner=$('scan-mode-banner');
+    if(scanMode){
+      btn.textContent='🟢 Scan Mode: ON';
+      btn.style.background='rgba(34,197,94,0.3)';
+      if(banner) banner.style.display='block';
+      $('l-sn').focus();
+      toast('Scan Mode ON — scan a barcode now','success');
+    } else {
+      btn.textContent='🔴 Scan Mode: OFF';
+      btn.style.background='';
+      if(banner) banner.style.display='none';
+      toast('Scan Mode OFF','info');
+    }
+  }
+  function handleBarcodeInput(e){
+    if(e.key==='Enter'){
+      const sn=$('l-sn').value.trim();
+      if(sn){
+        e.preventDefault();
+        previewStudent();
+        setTimeout(()=>{ $('l-type').focus(); },100);
+      }
+    }
   }
 
   /* ── category ── */
   function autoCat(){
     const type=$('l-type').value;
-    const minor=['Improper Uniform','Haircut/Haircolor','Tardiness','Unauthorized Phone Use'];
+    const minor=['Improper Uniform','Haircut/Haircolor','Tardiness','Unauthorized Phone Use','No ID Presented'];
     const major=['Prohibited Item','Unauthorized Absence','Disruptive Behavior','Academic Dishonesty','Vandalism'];
     if(minor.includes(type)) selCat('Minor');
     else if(major.includes(type)) selCat('Major');
@@ -822,7 +739,7 @@
     selectedCat=v;
     ['Minor','Major'].forEach(c=>{
       const el=$('rl-'+c.toLowerCase());
-      if(el){ el.className='rl'; if(c===v) el.className='rl sel-'+c.toLowerCase(); }
+      if(el){ el.className='rl';if(c===v) el.className='rl sel-'+c.toLowerCase(); }
     });
   }
   function updCC(){ $('cc-num').textContent=$('l-desc').value.length; }
@@ -830,7 +747,7 @@
   function previewStudent(){
     const sn=$('l-sn').value.trim();
     const wrap=$('sp-wrap');
-    if(!sn){ wrap.innerHTML='<div class="sp-empty"><div class="spe-icon">👤</div><p>Enter a student number to preview student info</p></div>'; return; }
+    if(!sn){ wrap.innerHTML='<div class="sp-empty"><div class="spe-icon">👤</div><p>Enter a student number to preview</p></div>';return; }
     const f=allStudents.find(s=>s.studentNumber===sn);
     if(f){
       wrap.innerHTML=`<div class="sp-filled">
@@ -839,6 +756,7 @@
         <div class="sp-row">📚 ${f.course||'N/A'}</div>
         <div class="sp-row">🏫 ${f.section||'N/A'}</div>
         <div class="sp-row">🎓 ${f.year||'N/A'}</div>
+        <div class="sp-row">📧 ${f.email||'No email'}</div>
       </div>`;
     } else {
       wrap.innerHTML='<div class="sp-empty"><div class="spe-icon">❓</div><p>Student not found</p></div>';
@@ -846,29 +764,23 @@
   }
 
   /* ── dashboard ── */
-  function startDashboardAutoRefresh(){
-    stopDashboardAutoRefresh();
-    dashboardInterval = setInterval(()=>{ loadDashboard(); }, 10000); // refresh every 10s
-  }
-  function stopDashboardAutoRefresh(){
-    if(dashboardInterval){ clearInterval(dashboardInterval); dashboardInterval=null; }
-  }
-
   async function loadDashboard(){
-    // Always load students so allStudents array is populated for previews/modals
     try{
-      const rs=await fetch('/api/students'), ds=await rs.json();
+      const rs=await fetch('/api/students'),ds=await rs.json();
       if(ds.success) allStudents=ds.data;
     }catch(e){}
     try{
       const r=await fetch('/api/stats'),d=await r.json();
-      if(d.success){ $('s-students').textContent=d.data.totalStudents; $('s-violations').textContent=d.data.totalViolations; $('s-today').textContent=d.data.todayViolations; }
+      if(d.success){
+        $('s-students').textContent=d.data.totalStudents;
+        $('s-violations').textContent=d.data.totalViolations;
+        $('s-today').textContent=d.data.todayViolations;
+      }
     }catch(e){}
     try{
       const r=await fetch('/api/violations'),d=await r.json();
       if(d.success){
         allViolations=d.data;
-        // Fix 4: only show 5 recent violations
         const rec=d.data.slice(0,5);
         $('d-count').textContent=rec.length;
         const tb=$('d-tbody');
@@ -886,52 +798,46 @@
         }
         renderDashStats();
       }
-    }catch(e){ toast('Cannot connect to server','error'); }
+    }catch(e){}
   }
 
   function renderDashStats(){
-    // By category
-    const minor  = allViolations.filter(v=>(v.category||'Minor')==='Minor').length;
-    const major  = allViolations.filter(v=>(v.category||'')==='Major').length;
-    const catMax = Math.max(minor, major, 1);
-    $('cat-minor-n').textContent = minor;
-    $('cat-major-n').textContent = major;
-    $('cat-minor-b').style.width = minor>0 ? Math.max((minor/catMax*100),4).toFixed(1)+'%' : '0%';
-    $('cat-major-b').style.width = major>0 ? Math.max((major/catMax*100),4).toFixed(1)+'%' : '0%';
-
-    // By status
-    const pending  = allViolations.filter(v=>(v.status||'Pending')==='Pending').length;
-    const review   = allViolations.filter(v=>(v.status||'')==='Under Review').length;
-    const resolved = allViolations.filter(v=>(v.status||'')==='Resolved').length;
-    const stsMax   = Math.max(pending, review, resolved, 1);
-    $('sts-pending-n').textContent  = pending;
-    $('sts-review-n').textContent   = review;
-    $('sts-resolved-n').textContent = resolved;
-    $('sts-pending-b').style.width  = pending>0  ? Math.max((pending/stsMax*100),4).toFixed(1)+'%'  : '0%';
-    $('sts-review-b').style.width   = review>0   ? Math.max((review/stsMax*100),4).toFixed(1)+'%'   : '0%';
-    $('sts-resolved-b').style.width = resolved>0 ? Math.max((resolved/stsMax*100),4).toFixed(1)+'%' : '0%';
-
-    // Top violations
+    const minor=allViolations.filter(v=>(v.category||'Minor')==='Minor').length;
+    const major=allViolations.filter(v=>(v.category||'')==='Major').length;
+    const catMax=Math.max(minor,major,1);
+    $('cat-minor-n').textContent=minor;
+    $('cat-major-n').textContent=major;
+    $('cat-minor-b').style.width=minor>0?Math.max((minor/catMax*100),4).toFixed(1)+'%':'0%';
+    $('cat-major-b').style.width=major>0?Math.max((major/catMax*100),4).toFixed(1)+'%':'0%';
+    const pending=allViolations.filter(v=>(v.status||'Pending')==='Pending').length;
+    const review=allViolations.filter(v=>(v.status||'')==='Under Review').length;
+    const resolved=allViolations.filter(v=>(v.status||'')==='Resolved').length;
+    const stsMax=Math.max(pending,review,resolved,1);
+    $('sts-pending-n').textContent=pending;
+    $('sts-review-n').textContent=review;
+    $('sts-resolved-n').textContent=resolved;
+    $('sts-pending-b').style.width=pending>0?Math.max((pending/stsMax*100),4).toFixed(1)+'%':'0%';
+    $('sts-review-b').style.width=review>0?Math.max((review/stsMax*100),4).toFixed(1)+'%':'0%';
+    $('sts-resolved-b').style.width=resolved>0?Math.max((resolved/stsMax*100),4).toFixed(1)+'%':'0%';
     const counts={};
-    allViolations.forEach(v=>{ const t=v.violationType||'Unknown'; counts[t]=(counts[t]||0)+1; });
+    allViolations.forEach(v=>{ const t=v.violationType||'Unknown';counts[t]=(counts[t]||0)+1; });
     const sorted=Object.entries(counts).sort((a,b)=>b[1]-a[1]).slice(0,5);
-    $('top-violations-list').innerHTML = sorted.length
-      ? sorted.map(([name,count])=>`<div class="tv-item"><span class="tv-name">${name}</span><span class="tv-count">${count}</span></div>`).join('')
-      : '<div class="mp-vh-empty">No data yet</div>';
+    $('top-violations-list').innerHTML=sorted.length
+      ?sorted.map(([name,count])=>`<div class="tv-item"><span class="tv-name">${name}</span><span class="tv-count">${count}</span></div>`).join('')
+      :'<div class="mp-vh-empty">No data yet</div>';
   }
 
   /* ── students ── */
   async function loadStudents(){
     try{
-      const r=await fetch('/api/students'), d=await r.json();
-      if(d.success){ allStudents=d.data; renderStudents(allStudents); }
+      const r=await fetch('/api/students'),d=await r.json();
+      if(d.success){ allStudents=d.data;renderStudents(allStudents); }
     }catch(e){ toast('Cannot load students','error'); }
   }
-
   function renderStudents(list){
     $('stu-count').textContent=list.length;
     const tb=$('stu-tbody');
-    if(!list.length){ tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="ei">👤</div><p>No students registered yet</p></div></td></tr>'; return; }
+    if(!list.length){ tb.innerHTML='<tr><td colspan="6"><div class="empty"><div class="ei">👤</div><p>No students registered yet</p></div></td></tr>';return; }
     tb.innerHTML=list.map(s=>{
       const vc=allViolations.filter(v=>v.studentNumber===s.studentNumber).length;
       const cc=vc===0?'c-green0':'c-green1';
@@ -954,7 +860,7 @@
     try{
       const r=await fetch(`/api/students/${id}`,{method:'DELETE'});
       const d=await r.json();
-      if(d.success){ toast('Student deleted','success'); loadStudents(); loadDashboard(); }
+      if(d.success){ toast('Student deleted','success');loadStudents();loadDashboard(); }
       else toast(d.message||'Error deleting student','error');
     }catch(e){ toast('Server error','error'); }
   }
@@ -968,25 +874,25 @@
     ));
   }
   function viewStu(sn){
-    const s=allStudents.find(s=>s.studentNumber===sn); if(!s) return;
+    const s=allStudents.find(s=>s.studentNumber===sn);if(!s) return;
     const parts=(s.name||'?').split(' ');
     const initials=parts.length>=2?parts[0][0]+parts[parts.length-1][0]:parts[0][0];
     $('mp-avatar').textContent=initials.toUpperCase();
-    $('mp-name').textContent=s.name||'—'; $('mp-num').textContent=s.studentNumber||'—';
-    $('mp-course').textContent=s.course||'—'; $('mp-section').textContent=s.section||'—';
-    $('mp-year').textContent=s.year||'—'; $('mp-email').textContent=s.email||'—';
+    $('mp-name').textContent=s.name||'—';$('mp-num').textContent=s.studentNumber||'—';
+    $('mp-course').textContent=s.course||'—';$('mp-section').textContent=s.section||'—';
+    $('mp-year').textContent=s.year||'—';$('mp-email').textContent=s.email||'—';
     $('mp-contact').textContent=s.contact||'—';
     const viols=allViolations.filter(v=>v.studentNumber===sn);
     $('mp-total-vio').textContent=viols.length;
     const vlist=$('mp-vio-list');
-    vlist.innerHTML=viols.length ? viols.map(v=>`
+    vlist.innerHTML=viols.length?viols.map(v=>`
       <div class="mp-vio-item">
         <div class="mp-vio-left"><div class="mv-type">${v.violationType}</div><div class="mv-date">${fmt(v.timestamp)}</div></div>
         <div class="mp-vio-right">
           <span class="chip c-${(v.category||'minor').toLowerCase()}">${v.category||'Minor'}</span>
           <span class="chip c-${scls(v.status)}">${v.status||'Pending'}</span>
         </div>
-      </div>`).join('') : '<div class="mp-vh-empty">No violations recorded</div>';
+      </div>`).join(''):'<div class="mp-vh-empty">No violations recorded</div>';
     $('profile-modal').classList.add('open');
   }
   function closeProfileModal(e){
@@ -997,39 +903,35 @@
   async function loadViolations(){
     try{
       const r=await fetch('/api/violations'),d=await r.json();
-      if(d.success){ allViolations=d.data; renderViolations(allViolations); }
+      if(d.success){ allViolations=d.data;renderViolations(allViolations); }
     }catch(e){ toast('Cannot connect to server','error'); }
   }
   function renderViolations(list){
     $('vio-count').textContent=list.length;
     const tb=$('vio-tbody');
-    if(!list.length){ tb.innerHTML='<tr><td colspan="7"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr>'; return; }
+    if(!list.length){ tb.innerHTML='<tr><td colspan="8"><div class="empty"><div class="ei">🚨</div><p>No violations recorded yet</p></div></td></tr>';return; }
     tb.innerHTML=list.map(v=>`<tr>
       <td class="td-num">${v.studentNumber}</td>
       <td class="td-bold">${v.studentName}</td>
       <td>${v.violationType}</td>
       <td><span class="chip c-${(v.category||'minor').toLowerCase()}">${v.category||'Minor'}</span></td>
       <td><span class="chip c-${scls(v.status)}">${v.status||'Pending'}</span></td>
-      <td>
-        ${v.emailSent
-          ? '<span style="color:#16a34a;font-size:.8rem;font-weight:600;">✅ Sent</span>'
-          : '<span style="color:#9ca3af;font-size:.8rem;">— Not sent</span>'}
-      </td>
+      <td>${v.emailSent?'<span style="color:#16a34a;font-size:.8rem;font-weight:600;">✅ Sent</span>':'<span style="color:#9ca3af;font-size:.8rem;">— Not sent</span>'}</td>
       <td class="td-muted">${fmt(v.timestamp)}</td>
       <td style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
         <select class="fsel" style="padding:5px 8px;font-size:.75rem;border-radius:6px;" onchange="updateStatus('${v.id||v._id}',this.value)">
-          <option value="Pending"      ${(v.status||'Pending')==='Pending'?'selected':''}>Pending</option>
-          <option value="Resolved"     ${(v.status||'')==='Resolved'?'selected':''}>Resolved</option>
+          <option value="Pending" ${(v.status||'Pending')==='Pending'?'selected':''}>Pending</option>
+          <option value="Resolved" ${(v.status||'')==='Resolved'?'selected':''}>Resolved</option>
           <option value="Under Review" ${(v.status||'')==='Under Review'?'selected':''}>Under Review</option>
         </select>
-        <span class="td-link" style="color:#1e40af;" onclick="resendEmail('${v.id||v._id}','${v.studentNumber}')">📧 Resend</span>
+        <span class="td-link" style="color:#1e40af;" onclick="resendEmail('${v.id||v._id}','${v.studentNumber}')">📧</span>
         <span class="td-link" style="color:#dc2626;" onclick="delVio('${v.id||v._id}')">Delete</span>
       </td>
     </tr>`).join('');
   }
   function filterViolations(){
     const q=$('vio-search').value.toLowerCase();
-    const cat=$('vio-cat').value; const sts=$('vio-sts').value;
+    const cat=$('vio-cat').value;const sts=$('vio-sts').value;
     renderViolations(allViolations.filter(v=>{
       const mq=!q||v.studentNumber.toLowerCase().includes(q)||(v.studentName||'').toLowerCase().includes(q)||(v.violationType||'').toLowerCase().includes(q);
       const mc=!cat||(v.category||'Minor')===cat;
@@ -1041,7 +943,7 @@
     try{
       const r=await fetch(`/api/violations/${id}/status`,{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({status})});
       const d=await r.json();
-      if(d.success){ toast(`Status updated to: ${status}`,'success'); const v=allViolations.find(v=>(v.id||v._id)===id); if(v) v.status=status; loadDashboard(); }
+      if(d.success){ toast(`Status updated to: ${status}`,'success');loadDashboard(); }
       else toast(d.message||'Error','error');
     }catch(e){ toast('Server error','error'); }
   }
@@ -1050,7 +952,7 @@
     try{
       const r=await fetch(`/api/violations/${id}`,{method:'DELETE'});
       const d=await r.json();
-      if(d.success){ toast('Violation deleted','success'); loadViolations(); loadDashboard(); }
+      if(d.success){ toast('Violation deleted','success');loadViolations();loadDashboard(); }
     }catch(e){ toast('Server error','error'); }
   }
 
@@ -1063,13 +965,13 @@
     try{
       const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d=await r.json();
-      if(d.success){ toast('Student registered successfully!','success'); clearRegForm(); }
+      if(d.success){ toast('Student registered successfully!','success');clearRegForm(); }
       else toast(d.message||'Error','error');
     }catch(e){ toast('Server error','error'); }
   }
   function clearRegForm(){
     ['r-sn','r-fn','r-ln','r-email','r-contact','r-fid'].forEach(id=>$(id).value='');
-    $('r-course').value=''; $('r-year').value='';
+    $('r-course').value='';$('r-year').value='';
   }
 
   /* ── log violation ── */
@@ -1081,16 +983,16 @@
     try{
       const r=await fetch('/api/violation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d=await r.json();
-      if(d.success){ toast('Violation recorded!','success'); clearLogForm(); }
+      if(d.success){ toast('Violation recorded!','success');clearLogForm(); }
       else toast(d.message||'Error','error');
     }catch(e){ toast('Server error','error'); }
   }
   function clearLogForm(){
     ['l-sn','l-type','l-desc','l-by'].forEach(id=>$(id).value='');
     selectedCat='';
-    ['minor','major'].forEach(c=>{ const el=$('rl-'+c); if(el) el.className='rl'; });
+    ['minor','major'].forEach(c=>{ const el=$('rl-'+c);if(el) el.className='rl'; });
     $('cc-num').textContent='0';
-    $('sp-wrap').innerHTML='<div class="sp-empty"><div class="spe-icon">👤</div><p>Enter a student number to preview student info</p></div>';
+    $('sp-wrap').innerHTML='<div class="sp-empty"><div class="spe-icon">👤</div><p>Enter a student number to preview</p></div>';
     setNow();
   }
 
@@ -1100,31 +1002,30 @@
     try{
       const r=await fetch('/api/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d=await r.json();
-      $('te-res').style.display='block'; $('te-pre').textContent=JSON.stringify(d,null,2);
+      $('te-res').style.display='block';$('te-pre').textContent=JSON.stringify(d,null,2);
       toast(d.success?'Success!':d.message,d.success?'success':'error');
-    }catch(e){ $('te-res').style.display='block'; $('te-pre').textContent='Error: '+e.message; }
+    }catch(e){ $('te-res').style.display='block';$('te-pre').textContent='Error: '+e.message; }
   }
   async function testLogAPI(){
     const body={studentNumber:$('tl-sn').value.trim(),faceId:$('tl-fi').value.trim(),violationType:$('tl-type').value.trim()||'General',recordedBy:$('tl-by').value.trim()||'ESP32 Device'};
     try{
       const r=await fetch('/api/violation',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
       const d=await r.json();
-      $('tl-res').style.display='block'; $('tl-pre').textContent=JSON.stringify(d,null,2);
+      $('tl-res').style.display='block';$('tl-pre').textContent=JSON.stringify(d,null,2);
       toast(d.success?'Success!':d.message,d.success?'success':'error');
-    }catch(e){ $('tl-res').style.display='block'; $('tl-pre').textContent='Error: '+e.message; }
+    }catch(e){ $('tl-res').style.display='block';$('tl-pre').textContent='Error: '+e.message; }
   }
 
-
-  async function resendEmail(id, studentNumber) {
+  /* ── resend email ── */
+  async function resendEmail(id,studentNumber){
     if(!confirm(`Resend violation email to student: ${studentNumber}?`)) return;
-    try {
-      const r = await fetch(`/api/violations/${id}/resend-email`, { method: 'PATCH' });
-      const d = await r.json();
-      if(d.success) { toast(`✅ Email resent to ${studentNumber}`, 'success'); loadViolations(); }
-      else toast(d.message || 'Could not resend email', 'error');
-    } catch(e) { toast('Server error', 'error'); }
+    try{
+      const r=await fetch(`/api/violations/${id}/resend-email`,{method:'PATCH'});
+      const d=await r.json();
+      if(d.success){ toast(`✅ Email resent to ${studentNumber}`,'success');loadViolations(); }
+      else toast(d.message||'Could not resend email','error');
+    }catch(e){ toast('Server error','error'); }
   }
-
 </script>
 </body>
 </html>
