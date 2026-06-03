@@ -46,86 +46,109 @@ async function sendViolationEmail(student, violation) {
     dateStyle: 'long', timeStyle: 'short'
   });
 
+
+  // Map violation type to handbook category description
+  const violationMap = {
+    'Improper Uniform':       { code: 'MINOR 3', desc: 'Not adhering to the Dress and Grooming Guidelines for students' },
+    'Haircut/Haircolor':      { code: 'MINOR 3', desc: 'Not adhering to the Dress and Grooming Guidelines for students' },
+    'Improper ID':            { code: 'MINOR 2', desc: 'Not wearing the school ID properly or failure to present ID' },
+    'No ID Presented':        { code: 'MINOR 2', desc: 'Failure to present valid school ID when required' },
+    'Tardiness':              { code: 'MINOR 1', desc: 'Tardiness or unauthorized late arrival to class or school premises' },
+    'Unauthorized Phone Use': { code: 'MINOR 4', desc: 'Use of mobile phone or electronic devices without permission' },
+    'Prohibited Item':        { code: 'MAJOR 1', desc: 'Possession of prohibited items within school premises' },
+    'Unauthorized Absence':   { code: 'MAJOR 2', desc: 'Unauthorized absence from class or school activity' },
+    'Disruptive Behavior':    { code: 'MAJOR 3', desc: 'Disruptive or disorderly conduct within school premises' },
+    'Academic Dishonesty':    { code: 'MAJOR 4', desc: 'Academic dishonesty including cheating, plagiarism, or falsification' },
+    'Vandalism':              { code: 'MAJOR 5', desc: 'Vandalism or destruction of school property' },
+  };
+  const vInfo = violationMap[violation.violationType] || {
+    code: violation.category === 'Major' ? 'MAJOR' : 'MINOR',
+    desc: violation.violationType
+  };
+  const lastName = student.name ? student.name.split(' ').pop() : 'Student';
+  const formattedDate = new Date(violation.timestamp).toLocaleString('en-PH', {
+    month: 'long', day: 'numeric', year: 'numeric',
+    hour: 'numeric', minute: '2-digit', hour12: true
+  });
+
   const html = `
 <!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"/></head>
-<body style="margin:0;padding:0;background:#f1f4f9;font-family:'Segoe UI',Arial,sans-serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#f1f4f9;padding:32px 0;">
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:Arial,sans-serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f4f4;padding:32px 0;">
   <tr><td align="center">
-    <table width="560" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.10);">
+    <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:4px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
 
       <!-- Header -->
       <tr>
-        <td style="background:#1e3a8a;padding:28px 32px;text-align:center;">
-          <div style="color:white;font-size:20px;font-weight:700;letter-spacing:0.5px;">PATTS College of Aeronautics</div>
-          <div style="color:rgba(255,255,255,0.70);font-size:13px;margin-top:4px;">Student Violation Notification</div>
+        <td style="background:#1e3a8a;padding:24px 32px;text-align:center;">
+          <div style="color:white;font-size:18px;font-weight:700;">PATTS College of Aeronautics</div>
+          <div style="color:rgba(255,255,255,0.75);font-size:12px;margin-top:4px;letter-spacing:1px;text-transform:uppercase;">Discipline Formation Office</div>
         </td>
       </tr>
 
       <!-- Body -->
       <tr>
-        <td style="padding:32px;">
+        <td style="padding:36px 40px;color:#222222;font-size:14px;line-height:1.8;">
 
-          <p style="font-size:15px;color:#374151;margin:0 0 6px 0;">Dear <strong>${student.name}</strong>,</p>
-          <p style="font-size:14px;color:#6b7280;margin:0 0 24px 0;">
-            A violation has been recorded against your student record. Please review the details below.
+          <p style="margin:0 0 18px 0;"><strong>Dear Mx. \${lastName},</strong></p>
+
+          <p style="margin:0 0 18px 0;">
+            The Discipline Formation Office received a report regarding your <strong>possible noncompliance</strong>
+            with our <a href="https://patts.edu.ph/student-handbook" style="color:#1e3a8a;">Student Handbook</a>, particularly on:
           </p>
 
-          <!-- Violation details box -->
-          <table width="100%" cellpadding="0" cellspacing="0" style="background:#f8faff;border:1px solid #dbeafe;border-left:4px solid #1e3a8a;border-radius:8px;margin-bottom:24px;">
-            <tr><td style="padding:20px 24px;">
-              <div style="font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px;">Violation Details</div>
-              <table width="100%" cellpadding="0" cellspacing="0">
-                <tr>
-                  <td style="padding:6px 0;font-size:13px;color:#6b7280;width:140px;">Student Number</td>
-                  <td style="padding:6px 0;font-size:13px;color:#111827;font-weight:600;">${student.studentNumber}</td>
-                </tr>
-                <tr>
-                  <td style="padding:6px 0;font-size:13px;color:#6b7280;">Course</td>
-                  <td style="padding:6px 0;font-size:13px;color:#111827;">${student.course || 'N/A'}</td>
-                </tr>
-                <tr>
-                  <td style="padding:6px 0;font-size:13px;color:#6b7280;">Violation Type</td>
-                  <td style="padding:6px 0;font-size:13px;color:#111827;font-weight:600;">${violation.violationType}</td>
-                </tr>
-                <tr>
-                  <td style="padding:6px 0;font-size:13px;color:#6b7280;">Category</td>
-                  <td style="padding:6px 0;">
-                    <span style="display:inline-block;background:${categoryBg};color:${categoryColor};font-size:12px;font-weight:700;padding:3px 12px;border-radius:20px;">${violation.category}</span>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding:6px 0;font-size:13px;color:#6b7280;">Recorded By</td>
-                  <td style="padding:6px 0;font-size:13px;color:#111827;">${violation.recordedBy}</td>
-                </tr>
-                <tr>
-                  <td style="padding:6px 0;font-size:13px;color:#6b7280;">Date & Time</td>
-                  <td style="padding:6px 0;font-size:13px;color:#111827;">${dateStr}</td>
-                </tr>
-                ${violation.description ? `
-                <tr>
-                  <td style="padding:6px 0;font-size:13px;color:#6b7280;vertical-align:top;">Description</td>
-                  <td style="padding:6px 0;font-size:13px;color:#111827;">${violation.description}</td>
-                </tr>` : ''}
-              </table>
-            </td></tr>
-          </table>
+          <ul style="margin:0 0 20px 0;padding-left:20px;">
+            <li style="margin-bottom:6px;"><strong>\${vInfo.code}. \${vInfo.desc};</strong></li>
+            <li style="color:#555555;">\${formattedDate}</li>
+          </ul>
 
-          <!-- Status -->
-          <table width="100%" cellpadding="0" cellspacing="0" style="background:#fffbeb;border:1px solid #fde68a;border-radius:8px;margin-bottom:24px;">
-            <tr><td style="padding:14px 20px;">
-              <div style="font-size:13px;color:#92400e;">
-                <strong>⚠ Current Status:</strong> Pending — This violation is under review by school administration.
-              </div>
-            </td></tr>
-          </table>
-
-          <p style="font-size:13px;color:#6b7280;line-height:1.7;margin:0 0 8px 0;">
-            If you believe this violation was recorded in error, please visit the Dean's Office or contact your class adviser within <strong>3 working days</strong>.
+          <p style="margin:0 0 18px 0;">
+            <strong>To help us understand and address this matter appropriately, please reply to the
+            following questions. The use of AI is strictly prohibited and, if detected, will be treated
+            as a major offense.</strong>
           </p>
-          <p style="font-size:13px;color:#6b7280;line-height:1.7;margin:0;">
-            Please note that accumulation of violations may affect your academic standing and enrollment eligibility.
+
+          <ol style="margin:0 0 24px 0;padding-left:20px;line-height:2;">
+            <li>What specific noncompliance occurred?</li>
+            <li>What factors influenced your noncompliance?</li>
+            <li>How do you think your actions affect others and the learning environment?</li>
+          </ol>
+
+          <p style="margin:0 0 10px 0;">
+            Please take the time to carefully consider your responses and provide thoughtful and detailed
+            answers to each question as this will be required to determine your formation based on the new
+            <a href="https://patts.edu.ph/code-of-conduct" style="color:#1e3a8a;font-weight:700;">Student Code of Conduct and Discipline</a>:
+          </p>
+
+          <!-- Offense tier table -->
+          <table width="100%" cellpadding="0" cellspacing="0" style="margin:16px 0 28px 0;border-collapse:collapse;">
+            <tr>
+              <td style="background:#1e3a8a;color:white;font-size:11px;font-weight:700;padding:8px 12px;text-align:center;border:1px solid #1e3a8a;">OFFENSES</td>
+              <td style="background:#1e3a8a;color:white;font-size:11px;font-weight:700;padding:8px 12px;text-align:center;border:1px solid #1e3a8a;">FIRST</td>
+              <td style="background:#1e3a8a;color:white;font-size:11px;font-weight:700;padding:8px 12px;text-align:center;border:1px solid #1e3a8a;">SECOND</td>
+              <td style="background:#1e3a8a;color:white;font-size:11px;font-weight:700;padding:8px 12px;text-align:center;border:1px solid #1e3a8a;">THIRD</td>
+              <td style="background:#1e3a8a;color:white;font-size:11px;font-weight:700;padding:8px 12px;text-align:center;border:1px solid #1e3a8a;">MORE</td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">Minor</td>
+              <td style="font-size:12px;padding:8px 12px;border:1px solid #e5e7eb;text-align:center;color:#555;">Verbal Warning</td>
+              <td style="font-size:12px;padding:8px 12px;border:1px solid #e5e7eb;text-align:center;color:#555;">Written Warning</td>
+              <td style="font-size:12px;padding:8px 12px;border:1px solid #e5e7eb;text-align:center;color:#555;">Community Service</td>
+              <td style="font-size:12px;padding:8px 12px;border:1px solid #e5e7eb;text-align:center;color:#555;">Suspension</td>
+            </tr>
+            <tr>
+              <td style="font-size:12px;padding:8px 12px;border:1px solid #e5e7eb;font-weight:600;">Major</td>
+              <td style="font-size:12px;padding:8px 12px;border:1px solid #e5e7eb;text-align:center;color:#555;">Suspension</td>
+              <td style="font-size:12px;padding:8px 12px;border:1px solid #e5e7eb;text-align:center;color:#555;">Exclusion</td>
+              <td style="font-size:12px;padding:8px 12px;border:1px solid #e5e7eb;text-align:center;color:#555;">Dismissal</td>
+              <td style="font-size:12px;padding:8px 12px;border:1px solid #e5e7eb;text-align:center;color:#555;">Expulsion</td>
+            </tr>
+          </table>
+
+          <p style="margin:0;font-size:13px;color:#555555;">
+            This is an automated notification from the PATTS Violation Monitoring System. Please reply directly to this email with your responses.
           </p>
 
         </td>
@@ -133,9 +156,9 @@ async function sendViolationEmail(student, violation) {
 
       <!-- Footer -->
       <tr>
-        <td style="background:#f8faff;border-top:1px solid #e5e7eb;padding:20px 32px;text-align:center;">
-          <div style="font-size:12px;color:#9ca3af;">This is an automated message from the PATTS Violation Monitoring System.</div>
-          <div style="font-size:12px;color:#9ca3af;margin-top:4px;">PATTS College of Aeronautics — Do not reply to this email.</div>
+        <td style="background:#f8f8f8;border-top:1px solid #e5e7eb;padding:16px 40px;text-align:center;">
+          <div style="font-size:11px;color:#999999;">PATTS College of Aeronautics — Discipline Formation Office</div>
+          <div style="font-size:11px;color:#999999;margin-top:2px;">This is an automated message from the PATTS Violation Monitoring System.</div>
         </td>
       </tr>
 
